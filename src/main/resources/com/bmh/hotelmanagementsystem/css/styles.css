@@ -1,0 +1,60 @@
+#login_vbox{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+    -fx-effect: dropshadow(gaussian, #a4a4a489, 10, 0.5, 5, 5);
+}
+
+#login_background{
+    -fx-background-color: #F8F8F8;
+}
+
+.text-field{
+    -fx-background-color: #F8F8F8;
+    -fx-background-radius: 15;
+    -fx-padding: 10;
+}
+
+.btn{
+    -fx-background-color: #423F3F;
+    -fx-padding: 10;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 15;
+}
+
+
+    /*--------------HOME-----------------*/
+.whiteBackGround{
+    -fx-background-color: #FFFFFF;
+}
+
+.lightGreyBackground{
+    -fx-background-color: #F8F8F8;
+}
+
+#side_bar{
+    -fx-effect: dropshadow(gaussian, #88878742, 10, 0.5, 3, 5);
+}
+
+.side-bar-button{
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #000000;
+    fx-font-size: 24px;
+    -fx-font-weight: bold;
+}
+
+.side-bar-button:hover{
+    -fx-background-color: #000000;
+    -fx-text-fill: #FFFFFF;
+}
+
+.box{
+    -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(gaussian, #88878742, 10, 0.5, 3, 5);
+    -fx-background-radius: 15;
+}
+
+.title_text{
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
