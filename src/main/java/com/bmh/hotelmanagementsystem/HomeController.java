@@ -16,10 +16,44 @@ public class HomeController {
     private Stage primaryStage;
 
     @FXML
-    private VBox side_bar;
+    private Button checkIn;
+
+    @FXML
+    private Button checkOut;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    @FXML
+    public void initialize()  {
+        checkIn.setOnAction(event -> {
+            checkIn();
+        });
+        checkOut.setOnAction(event -> {
+            checkOut();
+        });
+    }
+
+
+    @FXML
+    protected void checkIn(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("checkIn-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void checkOut(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("checkOut-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

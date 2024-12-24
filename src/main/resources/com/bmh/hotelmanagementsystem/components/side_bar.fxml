@@ -40,7 +40,7 @@
         <!-- Bottom Section: Sidebar buttons -->
         <VBox alignment="TOP_CENTER" prefHeight="558.0" prefWidth="362.0" spacing="20.0">
           <children>
-             <Button fx:id="side_bar_rooms" mnemonicParsing="false" onAction="#home" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Home" />
+             <Button fx:id="side_bar_home" mnemonicParsing="false" onAction="#home" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Home" />
              <Button fx:id="side_bar_rooms" mnemonicParsing="false" onAction="#rooms" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Rooms" />
              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Inventory" />
              <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="House Keeping" />

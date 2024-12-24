@@ -1,4 +1,4 @@
 package com.bmh.hotelmanagementsystem;
 
-public class RoomController {
+public class CheckInAndOutController {
 }

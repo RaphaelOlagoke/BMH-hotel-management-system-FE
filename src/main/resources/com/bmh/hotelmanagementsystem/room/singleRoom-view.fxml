@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.SingleRoomController">
+   <children>
+    <!--             Side Bar -->
+      <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
+      <VBox prefHeight="200.0" prefWidth="1750.0" styleClass="box" stylesheets="@../css/styles.css">
+         <children>
+            <ScrollPane prefHeight="1080.0" prefWidth="1000.0" styleClass="box" stylesheets="@../css/styles.css">
+               <content>
+                  <AnchorPane prefHeight="984.0" prefWidth="1176.0">
+                     <children>
+                        <Label layoutX="104.0" layoutY="59.0" styleClass="title_text" stylesheets="@../css/styles.css" text="Room" />
+                        <Label layoutX="114.0" layoutY="121.0" text="Room Type:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="115.0" layoutY="162.0" text="Room Price:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="590.0" layoutY="117.0" text="Status:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="113.0" layoutY="247.0" text="Guest Details:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="134.0" layoutY="292.0" text="Name:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="137.0" layoutY="331.0" text="Email:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="135.0" layoutY="368.0" text="Phone Number:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="134.0" layoutY="404.0" text="Check-in Date:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="136.0" layoutY="439.0" text="Payment Status:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="627.0" layoutY="267.0" text="Cleaning Details:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="645.0" layoutY="313.0" text="Assigned to:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="646.0" layoutY="348.0" text="Last Assigned to:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="644.0" layoutY="385.0" text="Assigned On:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="126.0" layoutY="498.0" text="Maintenance:">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="157.0" layoutY="816.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="258.0" styleClass="btn" stylesheets="@../css/styles.css" text="Room Service">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="674.0" layoutY="810.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="258.0" styleClass="btn" stylesheets="@../css/styles.css" text="Generate Invoice">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button layoutX="874.0" layoutY="98.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Mark as done">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+         </children>
+         <HBox.margin>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </HBox.margin>
+      </VBox>
+   </children>
+</HBox>

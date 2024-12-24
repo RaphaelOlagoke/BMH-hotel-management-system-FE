@@ -1,6 +1,8 @@
 package com.bmh.hotelmanagementsystem.components;
 
 import com.bmh.hotelmanagementsystem.BMHApplication;
+import com.bmh.hotelmanagementsystem.HomeController;
+import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,13 +28,18 @@ public class SideBarController {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/home-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
+
+        HomeController homeController = fxmlLoader.getController();
+        homeController.setPrimaryStage(primaryStage);
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
-        primaryStage.setTitle("BMH");
-        primaryStage.setHeight(1080);
-        primaryStage.setWidth(1920);
+////        primaryStage.setTitle("BMH");
+//        primaryStage.setHeight(1080);
+//        primaryStage.setWidth(1920);
         primaryStage.setScene(scene);
-//        stage.setFullScreen(true);
+//        primaryStage.setMaximized(true);
+//        primaryStage.setFullScreen(true);
+//        primaryStage.setFullScreenExitHint("");
         primaryStage.show();
     }
 
@@ -41,13 +48,16 @@ public class SideBarController {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+        Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
-        primaryStage.setTitle("BMH - Rooms");
-        primaryStage.setHeight(1080);
-        primaryStage.setWidth(1920);
+//        primaryStage.setTitle("BMH - Rooms");
+//        primaryStage.setHeight(1080);
+//        primaryStage.setWidth(1920);
         primaryStage.setScene(scene);
-//        stage.setFullScreen(true);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+//        primaryStage.setMaximized(true);
+//        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
