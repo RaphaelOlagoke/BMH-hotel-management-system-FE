@@ -1,18 +1,25 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
+import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class AvailableRoomsController extends Controller {
 
@@ -27,16 +34,47 @@ public class AvailableRoomsController extends Controller {
     private FlowPane available_rooms;
 
     @FXML
-    public void initialize(){
-        List<String> itemsFromDatabase = List.of("Item 1", "Item 2", "Item 3");
+    private Button back;
 
-        // Iterate over the data and create a button for each item
-        for (String item : itemsFromDatabase) {
-            addButtonToContainer(item);
+    @FXML
+    public void initialize() throws IOException {
+
+        List<Room> rooms;
+
+        try {
+            String response = RestClient.get("/room/status?roomStatus=Available");
+
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // Convert JSON string to ApiResponse
+            ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {});
+
+            // Extract the list of rooms
+            rooms = apiResponse.getData();
+
+        } catch (Exception e) {
+            System.out.println(e);
+            rooms = new ArrayList<>();
         }
+
+//        List<String> itemsFromDatabase = List.of("Item 1", "Item 2", "Item 3");
+
+        for (Room room : rooms) {
+            addButtonToContainer(room);
+        }
+        if (rooms.isEmpty()){
+            Label message = (Label) available_rooms.lookup("#message");
+            message.setText("No rooms available");
+        }
+        else {
+            Label message = (Label) available_rooms.lookup("#message");
+            message.setText("");
+        }
+
+        back.setOnAction(event -> goBack());
     }
 
-    private void addButtonToContainer(String item) {
+    private void addButtonToContainer(Room room) {
         try {
             FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/room_button.fxml"));
             Button button = buttonLoader.load();
@@ -46,10 +84,11 @@ public class AvailableRoomsController extends Controller {
             Label roomNumberLabel = (Label) graphic.lookup("#room_number");
             Label roomTypeLabel = (Label) graphic.lookup("#room_type");
 
-            roomNumberLabel.setText(item);
+            roomNumberLabel.setText(String.valueOf(room.getRoomNumber()));
+            roomTypeLabel.setText(String.valueOf(room.getRoomType()));
 
             // Set an action for the button
-            button.setOnAction(event -> onButtonClick(item));
+            button.setOnAction(event -> onButtonClick(room));
 
             // Add the button to the FlowPane container
             available_rooms.getChildren().add(button);
@@ -59,10 +98,19 @@ public class AvailableRoomsController extends Controller {
         }
     }
 
-    public void onButtonClick(String item){
+    public void onButtonClick(Room room){
         try {
             Utils utils = new Utils();
             utils.switchScreen("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void goBack(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room-view.fxml", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

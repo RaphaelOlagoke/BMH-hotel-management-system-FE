@@ -15,6 +15,7 @@
       <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
       <VBox prefHeight="200.0" prefWidth="1750.0" styleClass="box" stylesheets="@../css/styles.css">
          <children>
+         <fx:include fx:id="back" source="../components/back_button.fxml" />
             <ScrollPane prefHeight="1080.0" prefWidth="1000.0" styleClass="box" stylesheets="@../css/styles.css">
                <content>
                   <AnchorPane prefHeight="984.0" prefWidth="1176.0">
