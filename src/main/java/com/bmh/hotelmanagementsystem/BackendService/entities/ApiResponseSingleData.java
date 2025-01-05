@@ -2,9 +2,9 @@ package com.bmh.hotelmanagementsystem.BackendService.entities;
 
 import java.util.List;
 
-public class ApiResponse<T> {
+public class ApiResponseSingleData<T> {
     private ResponseHeader responseHeader;
-    private List<T> data;
+    private T data;
     private String error;
 
     // Getters and Setters
@@ -16,11 +16,11 @@ public class ApiResponse<T> {
         this.responseHeader = responseHeader;
     }
 
-    public List<T> getData() {
+    public T getData() {
         return data;
     }
 
-    public void setData(List<T> data) {
+    public void setData(T data) {
         this.data = data;
     }
 

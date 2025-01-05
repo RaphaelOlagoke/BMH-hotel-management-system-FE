@@ -1,5 +1,8 @@
 package com.bmh.hotelmanagementsystem;
 
+import com.bmh.hotelmanagementsystem.BackendService.entities.DTO;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
+import com.bmh.hotelmanagementsystem.RoomManagement.SingleRoomController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,4 +27,17 @@ public class Utils {
         primaryStage.setScene(scene);
         setControllerPrimaryStage(loader, primaryStage);
     }
+
+    @FXML
+    public void switchScreenWithRoom(String view, Stage primaryStage, Room room) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+        Scene scene = new Scene(loader.load());
+
+        SingleRoomController singleRoomController = loader.getController();
+        singleRoomController.setRoom(room);
+
+        primaryStage.setScene(scene);
+        setControllerPrimaryStage(loader, primaryStage);
+    }
+
 }

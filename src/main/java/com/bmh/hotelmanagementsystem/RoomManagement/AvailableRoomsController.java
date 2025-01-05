@@ -2,6 +2,7 @@ package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
+import com.bmh.hotelmanagementsystem.BackendService.entities.DTO;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.xml.stream.events.DTD;
 
 public class AvailableRoomsController extends Controller {
 
@@ -54,21 +57,26 @@ public class AvailableRoomsController extends Controller {
 
         } catch (Exception e) {
             System.out.println(e);
-            rooms = new ArrayList<>();
+            rooms = null;
         }
 
 //        List<String> itemsFromDatabase = List.of("Item 1", "Item 2", "Item 3");
 
-        for (Room room : rooms) {
-            addButtonToContainer(room);
+        if(rooms == null){
+            Label message = (Label) available_rooms.lookup("#message");
+            message.setText("Error");
         }
-        if (rooms.isEmpty()){
+        else if (rooms.isEmpty()){
             Label message = (Label) available_rooms.lookup("#message");
             message.setText("No rooms available");
         }
         else {
             Label message = (Label) available_rooms.lookup("#message");
             message.setText("");
+
+            for (Room room : rooms) {
+                addButtonToContainer(room);
+            }
         }
 
         back.setOnAction(event -> goBack());
@@ -101,7 +109,7 @@ public class AvailableRoomsController extends Controller {
     public void onButtonClick(Room room){
         try {
             Utils utils = new Utils();
-            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage);
+            utils.switchScreenWithRoom("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage, room);
         } catch (Exception e) {
             e.printStackTrace();
         }

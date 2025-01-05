@@ -38,7 +38,7 @@
                                     <Image url="@images/rooms/view_more.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="100">
+                              <Label fx:id="availableRoomsCount" layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -69,7 +69,7 @@
                                     <Image url="@images/rooms/view_more.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="150">
+                              <Label fx:id="occupiedRoomsCount" layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -100,7 +100,7 @@
                                     <Image url="@images/rooms/view_more.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="1">
+                              <Label fx:id="maintenanceRoomsCount" layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
@@ -141,7 +141,7 @@
                                     <Image url="@images/rooms/view_more.png" />
                                  </image>
                               </ImageView>
-                              <Label layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="5">
+                              <Label fx:id="cleaningRoomsCount" layoutX="32.0" layoutY="109.0" styleClass="title_text" stylesheets="@css/styles.css" text="0">
                                  <font>
                                     <Font size="24.0" />
                                  </font>

@@ -7,11 +7,12 @@ module com.example.bmhhotelmanagementsystem {
     requires java.net.http;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
-
+    requires com.fasterxml.jackson.datatype.jsr310;
 
     opens com.bmh.hotelmanagementsystem to javafx.fxml;
     exports com.bmh.hotelmanagementsystem;
     exports com.bmh.hotelmanagementsystem.components;
+    exports com.bmh.hotelmanagementsystem.BackendService.entities;
     opens com.bmh.hotelmanagementsystem.components to javafx.fxml;
     exports com.bmh.hotelmanagementsystem.RoomManagement;
     opens com.bmh.hotelmanagementsystem.RoomManagement to javafx.fxml;

@@ -15,25 +15,25 @@
       <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
       <VBox prefHeight="200.0" prefWidth="1750.0" styleClass="box" stylesheets="@../css/styles.css">
          <children>
-         <fx:include fx:id="back" source="../components/back_button.fxml" />
             <ScrollPane prefHeight="1080.0" prefWidth="1000.0" styleClass="box" stylesheets="@../css/styles.css">
                <content>
-                  <AnchorPane prefHeight="984.0" prefWidth="1176.0">
+                  <AnchorPane prefHeight="984.0" prefWidth="1000.0">
                      <children>
-                        <Label layoutX="104.0" layoutY="59.0" styleClass="title_text" stylesheets="@../css/styles.css" text="Room" />
-                        <Label layoutX="114.0" layoutY="121.0" text="Room Type:">
+                     <fx:include fx:id="back" source="../components/back_button.fxml" />
+                        <Label fx:id="room_number" layoutX="104.0" layoutY="59.0" styleClass="title_text" stylesheets="@../css/styles.css" text="Room" />
+                        <Label fx:id="room_type" layoutX="114.0" layoutY="121.0" text="Room Type:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="115.0" layoutY="162.0" text="Room Price:">
+<!--                         <Label fx:id="room_price" layoutX="115.0" layoutY="162.0" text="Room Price:"> -->
+<!--                            <font> -->
+<!--                               <Font size="20.0" /> -->
+<!--                            </font> -->
+<!--                         </Label> -->
+                        <Label fx:id="room_status" layoutX="590.0" layoutY="117.0" text="Status:">
                            <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="590.0" layoutY="117.0" text="Status:">
-                           <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                         <Label layoutX="113.0" layoutY="247.0" text="Guest Details:">
@@ -41,29 +41,29 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutX="134.0" layoutY="292.0" text="Name:">
+                        <Label fx:id="guest_name" layoutX="134.0" layoutY="292.0" text="Name:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="137.0" layoutY="331.0" text="Email:">
+<!--                         <Label layoutX="137.0" layoutY="331.0" text="Email:"> -->
+<!--                            <font> -->
+<!--                               <Font size="24.0" /> -->
+<!--                            </font> -->
+<!--                         </Label> -->
+<!--                         <Label layoutX="135.0" layoutY="368.0" text="Phone Number:"> -->
+<!--                            <font> -->
+<!--                               <Font size="24.0" /> -->
+<!--                            </font> -->
+<!--                         </Label> -->
+                        <Label fx:id="check_in_date" layoutX="131.0" layoutY="322.0" text="Check-in Date:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="135.0" layoutY="368.0" text="Phone Number:">
+                        <Label fx:id="payment_status" layoutX="133.0" layoutY="357.0" text="Payment Status:">
                            <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="134.0" layoutY="404.0" text="Check-in Date:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="136.0" layoutY="439.0" text="Payment Status:">
-                           <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                         <Label layoutX="627.0" layoutY="267.0" text="Cleaning Details:">
@@ -71,24 +71,24 @@
                               <Font size="24.0" />
                            </font>
                         </Label>
-                        <Label layoutX="645.0" layoutY="313.0" text="Assigned to:">
+                        <Label fx:id="cleaning_assigned_to" layoutX="645.0" layoutY="313.0" text="Assigned to:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="646.0" layoutY="348.0" text="Last Assigned to:">
+                        <Label fx:id="cleaning_last_assigned_to" layoutX="646.0" layoutY="348.0" text="Last Assigned to:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="644.0" layoutY="385.0" text="Assigned On:">
+                        <Label fx:id="cleaning_assigned_on" layoutX="644.0" layoutY="385.0" text="Assigned On:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label layoutX="126.0" layoutY="498.0" text="Maintenance:">
+                        <Label fx:id="maintenance_description" layoutX="126.0" layoutY="498.0" text="Maintenance:">
                            <font>
-                              <Font size="24.0" />
+                              <Font size="20.0" />
                            </font>
                         </Label>
                         <Button layoutX="157.0" layoutY="816.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="258.0" styleClass="btn" stylesheets="@../css/styles.css" text="Room Service">
