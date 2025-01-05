@@ -9,6 +9,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
@@ -16,6 +17,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OccupiedRoomsController extends Controller {
@@ -46,10 +48,19 @@ public class OccupiedRoomsController extends Controller {
             ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {});
 
             // Extract the list of rooms
-            rooms = apiResponse.getData();
+            if (apiResponse.getData() == null){
+                rooms = new ArrayList<>();
+            }
+            else {
+                rooms = apiResponse.getData();
+            }
 
         } catch (Exception e) {
             System.out.println(e);
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setContentText("Something went wrong. Please try again.");
+            errorAlert.showAndWait();
             rooms = null;
         }
 
@@ -61,7 +72,7 @@ public class OccupiedRoomsController extends Controller {
         }
         else if (rooms.isEmpty()){
             Label message = (Label) occupied_rooms.lookup("#message");
-            message.setText("No rooms available");
+            message.setText("No rooms Occupied");
         }
         else {
             Label message = (Label) occupied_rooms.lookup("#message");

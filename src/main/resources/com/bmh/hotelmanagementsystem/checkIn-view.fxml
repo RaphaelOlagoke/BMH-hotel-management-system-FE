@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.CheckInAndOutController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.CheckInController">
     <children>
     <!--             Side Bar -->
          <fx:include fx:id="side_bar" source="components/side_bar.fxml" />
@@ -44,38 +44,38 @@
                                           <Image url="@images/userIcon.png" />
                                        </image>
                                     </ImageView>
-                                    <TextField prefHeight="37.0" prefWidth="214.0" promptText="Name" styleClass="text-field" stylesheets="@css/styles.css" />
+                                    <TextField fx:id="guest_name" prefHeight="37.0" prefWidth="214.0" promptText="Name" styleClass="text-field" stylesheets="@css/styles.css" />
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                  </padding>
                               </HBox>
-                              <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground">
-                                 <children>
-                                    <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/EmailIcon.png" />
-                                       </image>
-                                    </ImageView>
-                                    <TextField prefHeight="37.0" prefWidth="214.0" promptText="Email" styleClass="text-field" stylesheets="@css/styles.css" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
-                              <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground">
-                                 <children>
-                                    <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@images/PhoneIcon.png" />
-                                       </image>
-                                    </ImageView>
-                                    <TextField prefHeight="37.0" prefWidth="214.0" promptText="Phone number" styleClass="text-field" stylesheets="@css/styles.css" />
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </padding>
-                              </HBox>
+<!--                               <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground"> -->
+<!--                                  <children> -->
+<!--                                     <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true"> -->
+<!--                                        <image> -->
+<!--                                           <Image url="@images/EmailIcon.png" /> -->
+<!--                                        </image> -->
+<!--                                     </ImageView> -->
+<!--                                     <TextField prefHeight="37.0" prefWidth="214.0" promptText="Email" styleClass="text-field" stylesheets="@css/styles.css" /> -->
+<!--                                  </children> -->
+<!--                                  <padding> -->
+<!--                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" /> -->
+<!--                                  </padding> -->
+<!--                               </HBox> -->
+<!--                               <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground"> -->
+<!--                                  <children> -->
+<!--                                     <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true"> -->
+<!--                                        <image> -->
+<!--                                           <Image url="@images/PhoneIcon.png" /> -->
+<!--                                        </image> -->
+<!--                                     </ImageView> -->
+<!--                                     <TextField prefHeight="37.0" prefWidth="214.0" promptText="Phone number" styleClass="text-field" stylesheets="@css/styles.css" /> -->
+<!--                                  </children> -->
+<!--                                  <padding> -->
+<!--                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" /> -->
+<!--                                  </padding> -->
+<!--                               </HBox> -->
                            </children>
                         </HBox>
                         <Label layoutX="97.0" layoutY="231.0" text="Room Details:">
@@ -88,24 +88,35 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="239.0" layoutY="269.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
+                        <ComboBox fx:id="room_type" layoutX="239.0" layoutY="269.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
                         <Label layoutX="516.0" layoutY="270.0" text="Room :">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ComboBox layoutX="600.0" layoutY="268.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
-                        <HBox alignment="CENTER" layoutX="101.0" layoutY="693.0" prefHeight="77.0" prefWidth="279.0" spacing="15.0">
+                        <ComboBox fx:id="room" layoutX="600.0" layoutY="268.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
+                        <HBox alignment="CENTER" layoutX="101.0" layoutY="577.0" prefHeight="77.0" prefWidth="279.0" spacing="15.0">
                            <children>
                               <Label alignment="CENTER" styleClass="title_text" stylesheets="@css/styles.css" text="Price:" />
-                              <Label text="85,000">
+                              <Label fx:id="price" text="0.00">
                                  <font>
                                     <Font size="32.0" />
                                  </font>
                               </Label>
                            </children>
                         </HBox>
-                        <Button layoutX="582.0" layoutY="700.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="184.0" styleClass="btn" stylesheets="@css/styles.css" text="Check-in" />
+                        <Button fx:id="checkIn" layoutX="582.0" layoutY="584.0" mnemonicParsing="false" onAction="#checkIn" prefHeight="60.0" prefWidth="184.0" styleClass="btn" stylesheets="@css/styles.css" text="Check-in" />
+                        <Label fx:id="rooms_message" layoutX="787.0" layoutY="272.0" text="" textFill="#dd1c1c">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="113.0" layoutY="319.0" text="Payment Method:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="payment_method" layoutX="274.0" layoutY="320.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
                      </children>
                   </AnchorPane>
                </content>

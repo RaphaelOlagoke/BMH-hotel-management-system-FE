@@ -1,6 +1,8 @@
 package com.bmh.hotelmanagementsystem;
 
+import com.bmh.hotelmanagementsystem.BackendService.entities.CheckIn;
 import com.bmh.hotelmanagementsystem.BackendService.entities.DTO;
+import com.bmh.hotelmanagementsystem.BackendService.entities.GuestLog;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
 import com.bmh.hotelmanagementsystem.RoomManagement.SingleRoomController;
 import javafx.fxml.FXML;
@@ -35,6 +37,30 @@ public class Utils {
 
         SingleRoomController singleRoomController = loader.getController();
         singleRoomController.setRoom(room);
+
+        primaryStage.setScene(scene);
+        setControllerPrimaryStage(loader, primaryStage);
+    }
+
+    @FXML
+    public void switchScreenWithCheckInData(String view, Stage primaryStage, CheckIn checkInData) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+        Scene scene = new Scene(loader.load());
+
+        CheckInInvoiceController checkInInvoiceController = loader.getController();
+        checkInInvoiceController.setCheckInData(checkInData);
+
+        primaryStage.setScene(scene);
+        setControllerPrimaryStage(loader, primaryStage);
+    }
+
+    @FXML
+    public void switchScreenWithGuestLog(String view, Stage primaryStage, GuestLog guestLog) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+        Scene scene = new Scene(loader.load());
+
+        InvoiceController invoiceController = loader.getController();
+        invoiceController.setGuestLog(guestLog);
 
         primaryStage.setScene(scene);
         setControllerPrimaryStage(loader, primaryStage);

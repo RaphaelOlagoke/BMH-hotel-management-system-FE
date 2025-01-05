@@ -4,6 +4,7 @@ import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Invoice {
 //    private GuestLog guestLog;
@@ -12,7 +13,8 @@ public class Invoice {
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
     private String service;
-    private String serviceDetails;
+//    private String serviceDetails;
+    private List<Item> items;
 
     public LocalDateTime getIssueDate() {
         return issueDate;
@@ -54,11 +56,20 @@ public class Invoice {
         this.service = service;
     }
 
-    public String getServiceDetails() {
-        return serviceDetails;
+//    public String getServiceDetails() {
+//        return serviceDetails;
+//    }
+//
+//    public void setServiceDetails(String serviceDetails) {
+//        this.serviceDetails = serviceDetails;
+//    }
+
+
+    public List<Item> getItems() {
+        return items;
     }
 
-    public void setServiceDetails(String serviceDetails) {
-        this.serviceDetails = serviceDetails;
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 }
