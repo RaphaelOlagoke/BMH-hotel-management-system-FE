@@ -2,6 +2,7 @@ package com.bmh.hotelmanagementsystem;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +12,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -46,7 +50,12 @@ public class CheckOutController extends Controller{
     @FXML
     private Button check_out;
 
+    @FXML
+    private FlowPane rooms_flowPane;
+
     private GuestLog guestLog;
+
+    private List<Integer> selectedRooms = new ArrayList<>();
 
 
     @FXML
@@ -88,26 +97,71 @@ public class CheckOutController extends Controller{
                     });
 
                     guestLog = apiResponse.getData();
+                    Double total_price = 0.0;
 
-                    try {
-                        RoomPrices roomPrice;
-                        String responseRoomPrice = RestClient.get("/roomPrices/?roomType=" + guestLog.getRoom().getRoomType());
-                        ApiResponseSingleData<RoomPrices> apiResponseRoomPrice = objectMapper.readValue(responseRoomPrice, new TypeReference<ApiResponseSingleData<RoomPrices>>() {
-                        });
+                    StringBuilder types = new StringBuilder();
 
-                        roomPrice = apiResponseRoomPrice.getData();
-                        DecimalFormat formatter = new DecimalFormat("#,###.00");
-
-                        String formattedPrice = formatter.format(roomPrice.getRoomPrice());
-                        room_price.setText(formattedPrice);
+                    int size = guestLog.getGuestLogRooms().size();
+                    int index = 0;
 
 
-                    } catch (Exception e) {
-                        System.out.println(e);
+                    for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
+
+                        try {
+                            RoomPrices roomPrice;
+                            String responseRoomPrice = RestClient.get("/roomPrices/?roomType=" + guestLogRoom.getRoom().getRoomType());
+                            ApiResponseSingleData<RoomPrices> apiResponseRoomPrice = objectMapper.readValue(responseRoomPrice, new TypeReference<ApiResponseSingleData<RoomPrices>>() {
+                            });
+
+                            roomPrice = apiResponseRoomPrice.getData();
+                            total_price += roomPrice.getRoomPrice();
+
+                            types.append(guestLogRoom.getRoom().getRoomType());
+                            if (index < size - 1) {
+                                types.append(", ");
+                            }
+                            index++;
+
+
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
                     }
 
+                    DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+                    selectedRooms = new ArrayList<>();
+                    rooms_flowPane.getChildren().clear();
+
+                    List<GuestLogRoom> activeGuestLogRooms = new ArrayList<>();
+
+
+                    for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
+
+                        if(guestLogRoom.getGuestLogStatus() == GuestLogStatus.ACTIVE) {
+
+                            FXMLLoader hboxLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/add_room.fxml"));
+                            HBox hBox = hboxLoader.load();
+                            Label roomNumberLabel = (Label) hBox.lookup("#roomNumber");
+                            Button cancelButton = (Button) hBox.lookup("#cancel");
+
+                            activeGuestLogRooms.add(guestLogRoom);
+
+                            roomNumberLabel.setText(String.valueOf(guestLogRoom.getRoom().getRoomNumber()));
+                            if (activeGuestLogRooms.size() > 1) {
+                                cancelButton.setOnAction(event -> removeRoom(guestLogRoom.getRoom().getRoomNumber(), hBox));
+                            }
+
+                            rooms_flowPane.getChildren().add(hBox);
+                            selectedRooms.add(guestLogRoom.getRoom().getRoomNumber());
+                        }
+                    }
+
+                    String formattedPrice = formatter.format(total_price);
+                    room_price.setText(formattedPrice);
+
                     guest_name.setText("Name:    " + guestLog.getGuestName());
-                    room_type.setText("Room Type:    " + guestLog.getRoom().getRoomType());
+                    room_type.setText("Room Type(s):    " + types);
                     outstanding_payments.setText("Outstanding Payment:    " + guestLog.getTotalAmountDue());
 
                 } catch (Exception e) {
@@ -120,7 +174,21 @@ public class CheckOutController extends Controller{
         check_out.setOnAction(event -> checkOut());
     }
 
+    public void removeRoom(Integer roomNumber,HBox hBox){
+        rooms_flowPane.getChildren().remove(hBox);
+        selectedRooms.remove(roomNumber);
+
+//        rooms.getSelectionModel().clearSelection();
+    }
+
     public void generateInvoice(){
+        if(rooms.getSelectionModel().getSelectedItem() == null){
+            Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+            warningAlert.setTitle("Invalid Request");
+            warningAlert.setContentText("Field can not be null.");
+            warningAlert.showAndWait();
+            return;
+        }
         try {
             Utils utils = new Utils();
             utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice-view.fxml", primaryStage,guestLog);
@@ -130,12 +198,17 @@ public class CheckOutController extends Controller{
     }
 
     public void checkOut(){
-        if(rooms != null){
+        if(rooms.getSelectionModel().getSelectedItem() != null){
             try {
-                RoomPrices roomPrice;
-                String response = RestClient.post("/guestLog/check-out?roomId=" + rooms.getSelectionModel().getSelectedItem(),"");
+                UpdateGuestLogRequest request = new UpdateGuestLogRequest();
+                request.setRoomNumbers(selectedRooms);
 
                 ObjectMapper objectMapper = new ObjectMapper();
+
+                String jsonString = objectMapper.writeValueAsString(request);
+
+                String response = RestClient.post("/guestLog/check-out",jsonString);
+
                 ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
                 });
 

@@ -8,6 +8,8 @@ import java.util.List;
 
 public class Invoice {
 //    private GuestLog guestLog;
+
+    private String ref;
     private LocalDateTime issueDate;
     private Double totalAmount;
     private PaymentStatus paymentStatus;
@@ -15,6 +17,15 @@ public class Invoice {
     private String service;
 //    private String serviceDetails;
     private List<Item> items;
+
+
+    public String getRef() {
+        return ref;
+    }
+
+    public void setRef(String ref) {
+        this.ref = ref;
+    }
 
     public LocalDateTime getIssueDate() {
         return issueDate;

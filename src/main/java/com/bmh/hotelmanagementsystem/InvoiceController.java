@@ -1,20 +1,25 @@
 package com.bmh.hotelmanagementsystem;
 
-import com.bmh.hotelmanagementsystem.BackendService.entities.GuestLog;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Item;
+import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
+import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.components.PaymentItemController;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class InvoiceController extends Controller{
 
@@ -33,15 +38,41 @@ public class InvoiceController extends Controller{
 
     @FXML
     private FlowPane outstanding_payments;
+
+    @FXML
+    private Button back;
+    @FXML
+    private Button  complete;
+
+    @FXML
+    private ComboBox<String> payment_method;
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
     public void setGuestLog(GuestLog guestLog) throws IOException {
+        StringBuilder rooms = new StringBuilder();
+        StringBuilder types = new StringBuilder();
+
+        int size = guestLog.getGuestLogRooms().size();
+        int index = 0;
+
+        for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
+            rooms.append(guestLogRoom.getRoom().getRoomNumber());
+            types.append(guestLogRoom.getRoom().getRoomType());
+
+            if (index < size - 1) {
+                rooms.append(", ");
+                types.append(", ");
+            }
+            index++;
+        }
+
         this.guestLog = guestLog;
         guest_name.setText("Guest Name:   " + guestLog.getGuestName());
-        room.setText("Room:   " + guestLog.getRoom().getRoomNumber());
-        room_type.setText("Room type:   " + guestLog.getRoom().getRoomType());
+        room.setText("Room(s):   " + rooms);
+        room_type.setText("Room type(s):   " + types);
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
         String formattedOutstandingPrice = formatter.format(guestLog.getTotalAmountDue());
@@ -93,6 +124,84 @@ public class InvoiceController extends Controller{
 
     @FXML
     public void initialize() throws IOException {
+        back.setOnAction(event -> goBack());
+        complete.setOnAction(event -> resolveInvoice());
+        ObservableList<String> payment_Methods = FXCollections.observableArrayList();
 
+        payment_Methods.add(PaymentMethod.CARD.toJson());
+        payment_Methods.add(PaymentMethod.TRANSFER.toJson());
+        payment_Methods.add(PaymentMethod.CASH.toJson());
+
+        payment_method.setItems(payment_Methods);
+    }
+
+    public void goBack(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("checkOut-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void resolveInvoice(){
+        if (payment_method.getSelectionModel().getSelectedItem() == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid request");
+//                alert.setHeaderText("This is a header");
+            alert.setContentText("Payment method can not be empty");
+            alert.showAndWait();
+            return;
+        }
+        try {
+            List<String> invoiveRefs = new ArrayList<>();
+            for (Invoice invoice : guestLog.getInvoices()){
+                if (invoice.getPaymentStatus().equals(PaymentStatus.DUE)){
+                    invoiveRefs.add(invoice.getRef());
+                }
+            }
+
+            if (invoiveRefs.isEmpty()){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Invalid request");
+//                alert.setHeaderText("This is a header");
+                alert.setContentText("There are no outstanding payments");
+                alert.showAndWait();
+                return;
+            }
+
+            ResolveInvoiceRequest request = new ResolveInvoiceRequest();
+            request.setPaymentMethod(PaymentMethod.valueOf(payment_method.getSelectionModel().getSelectedItem()));
+            request.setInvoiceRefs(invoiveRefs);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString(request);
+
+            String response = RestClient.post("/invoice/resolve",jsonString);
+            ApiResponse<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<?>>() {
+            });
+
+            if(apiResponse.getResponseHeader().getResponseCode().equals("00")){
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Payment Complete");
+                alert.setContentText("Payment Successful");
+                alert.showAndWait();
+                goBack();
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
+                alert.setContentText(apiResponse.getError());
+                alert.showAndWait();
+            }
+
+        } catch (Exception e) {
+            System.out.println(e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+//                alert.setHeaderText("This is a header");
+            alert.setContentText("Something went wrong");
+            alert.showAndWait();
+        }
     }
 }

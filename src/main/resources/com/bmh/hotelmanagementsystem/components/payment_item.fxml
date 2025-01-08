@@ -30,8 +30,11 @@
          <content>
             <FlowPane fx:id="items" />
          </content>
+         <padding>
+            <Insets bottom="50.0" />
+         </padding>
       </ScrollPane>
-      <Label fx:id="total_price" layoutX="404.0" layoutY="181.0" stylesheets="@../css/styles.css" text="Total Price">
+      <Label fx:id="total_price" layoutX="428.0" layoutY="124.0" prefHeight="60.0" stylesheets="@../css/styles.css" text="Total Price" AnchorPane.bottomAnchor="-16.0">
          <font>
             <Font size="20.0" />
          </font>

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class GuestLog {
     private String guestName;
-    private Room room;
+    private List<GuestLogRoom> guestLogRooms;
     private LocalDateTime checkInDate;
     private LocalDateTime checkOutDate;
     private PaymentStatus paymentStatus;
@@ -26,12 +26,12 @@ public class GuestLog {
         this.guestName = guestName;
     }
 
-    public Room getRoom() {
-        return room;
+    public List<GuestLogRoom> getGuestLogRooms() {
+        return guestLogRooms;
     }
 
-    public void setRoom(Room room) {
-        this.room = room;
+    public void setGuestLogRooms(List<GuestLogRoom> guestLogRooms) {
+        this.guestLogRooms = guestLogRooms;
     }
 
     public LocalDateTime getCheckInDate() {

@@ -11,7 +11,11 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -41,30 +45,27 @@ public class CheckInController extends Controller{
     private ComboBox<Integer> room;
 
     @FXML
-    private ComboBox<String> payment_method;
-
-    @FXML
     private Label price;
+    @FXML
+    private Label total_price;
 
     @FXML
     private Label rooms_message;
 
+    @FXML
+    private FlowPane rooms_flowPane;
+
     CheckIn checkInData = new CheckIn();
+
+    private List<Integer> selectedRooms = new ArrayList<>();
+
+    private Double currentPrice = 0.0;
+    private List<SelectedRoom> selectedRoomList = new ArrayList<>();
+
+    private Double total;
 
     @FXML
     public void initialize() throws IOException {
-
-        ObservableList<String> payment_Methods = FXCollections.observableArrayList();
-
-//        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
-//            payment_Methods.add(paymentMethod.toJson());
-//        }
-        payment_Methods.add(PaymentMethod.CARD.toJson());
-        payment_Methods.add(PaymentMethod.TRANSFER.toJson());
-        payment_Methods.add(PaymentMethod.CASH.toJson());
-
-        payment_method.setItems(payment_Methods);
-
 
         ObservableList<String> roomTypes = FXCollections.observableArrayList();
 
@@ -95,7 +96,7 @@ public class CheckInController extends Controller{
 
                     // Extract the list of rooms
                     rooms = apiResponse.getData();
-                    checkInData.setRoomType(RoomType.valueOf(newValue));
+//                    checkInData.setRoomType(RoomType.valueOf(newValue));
                     if (rooms != null){
                         for (Room room : rooms) {
                             roomsData.add(room.getRoomNumber());
@@ -125,11 +126,13 @@ public class CheckInController extends Controller{
                     });
 
                     roomPrice = apiResponse.getData();
-                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
+//                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
                     DecimalFormat formatter = new DecimalFormat("#,###.00");
 
                     String formattedPrice = formatter.format(roomPrice.getRoomPrice());
                     price.setText(formattedPrice);
+
+                    currentPrice = roomPrice.getRoomPrice();
 
 
                 } catch (Exception e) {
@@ -143,17 +146,75 @@ public class CheckInController extends Controller{
         });
 
         room.setItems(roomsData);
+        room.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Integer>() {
+            @Override
+            public void changed(ObservableValue<? extends Integer> observable, Integer oldValue, Integer newValue) {
+                FXMLLoader hboxLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/add_room.fxml"));
+                try {
+                    if (newValue != null && !selectedRooms.contains(newValue)) {
+                        HBox hBox = hboxLoader.load();
+                        Label roomNumberLabel = (Label) hBox.lookup("#roomNumber");
+                        Button cancelButton = (Button) hBox.lookup("#cancel");
+
+                        SelectedRoom selectedRoom = new SelectedRoom();
+                        selectedRoom.setRoomNumber(newValue);
+                        selectedRoom.setRoomPrice(currentPrice);
+                        selectedRoom.setRoomType(RoomType.valueOf(room_type.getSelectionModel().getSelectedItem()));
+
+                        roomNumberLabel.setText(newValue.toString());
+                        cancelButton.setOnAction(event -> removeRoom(newValue,hBox, selectedRoom));
+
+                        rooms_flowPane.getChildren().add(hBox);
+                        selectedRooms.add(newValue);
+
+                        selectedRoomList.add(selectedRoom);
+
+                        total = 0.0;
+                        for (SelectedRoom item : selectedRoomList){
+                            total += item.getRoomPrice();
+                        }
+                        DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+                        String formattedPrice = formatter.format(total);
+                        total_price.setText(formattedPrice);
+
+                    }
+
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
 
 
+    }
+
+    public void removeRoom(Integer roomNumber,HBox hBox, SelectedRoom selectedRoom){
+        rooms_flowPane.getChildren().remove(hBox);
+        selectedRooms.remove(roomNumber);
+        selectedRoomList.remove(selectedRoom);
+
+        total = 0.0;
+        for (SelectedRoom item : selectedRoomList){
+            total += item.getRoomPrice();
+        }
+        DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+        String formattedPrice = formatter.format(total);
+        total_price.setText(formattedPrice);
+
+        room.getSelectionModel().clearSelection();
     }
 
 
     public void checkIn(){
         try {
-            checkInData.setPaymentMethod(payment_method.getSelectionModel().getSelectedItem() != null ? PaymentMethod.valueOf(payment_method.getSelectionModel().getSelectedItem()) : null);
             checkInData.setGuestName(guest_name.getText());
-            checkInData.setRoomNumber(room.getSelectionModel().getSelectedItem() != null? room.getSelectionModel().getSelectedItem() : 0);
-            if (checkInData.getGuestName() == null || checkInData.getRoomType() == null || checkInData.getRoomPrice() == 0 || checkInData.getRoomNumber() == 0 || checkInData.getPaymentMethod() == null){
+            checkInData.setSelectedRooms(selectedRoomList != null && !selectedRoomList.isEmpty() ? selectedRoomList : null);
+            checkInData.setTotalPrice(total);
+//            checkInData.setRoomNumber(room.getSelectionModel().getSelectedItem() != null? room.getSelectionModel().getSelectedItem() : 0);
+//            checkInData.setRoomNumbers(selectedRooms != null && !selectedRooms.isEmpty()? selectedRooms : null);
+            if (checkInData.getGuestName() == null || checkInData.getSelectedRooms() == null){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Invalid request");
 //                alert.setHeaderText("This is a header");

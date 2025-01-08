@@ -12,7 +12,7 @@
             <Font size="15.0" />
          </font>
          <padding>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="5.0" top="5.0" />
          </padding>
       </Label>
       <Label layoutX="86.0" layoutY="40.0" text="x">
@@ -20,12 +20,12 @@
             <Font size="15.0" />
          </font>
          <padding>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="5.0" top="5.0" />
          </padding>
       </Label>
       <Label fx:id="name" layoutX="126.0" layoutY="41.0" text="Name">
          <padding>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="5.0" top="5.0" />
          </padding>
       </Label>
       <Label fx:id="price" layoutX="428.0" layoutY="42.0" text="Price">
@@ -33,7 +33,7 @@
             <Font size="15.0" />
          </font>
          <padding>
-            <Insets bottom="10.0" top="10.0" />
+            <Insets bottom="5.0" top="5.0" />
          </padding>
       </Label>
    </children>

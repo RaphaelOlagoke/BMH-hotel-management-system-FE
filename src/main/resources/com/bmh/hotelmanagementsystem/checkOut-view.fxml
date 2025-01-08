@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -51,17 +52,17 @@
 <!--                               <Font size="18.0" /> -->
 <!--                            </font> -->
 <!--                         </Label> -->
-                        <Label layoutX="638.0" layoutY="200.0" text="Room Details:">
+                        <Label layoutX="552.0" layoutY="200.0" text="Room Details:">
                            <font>
                               <Font size="20.0" />
                            </font>
                         </Label>
-                        <Label fx:id="room_type" layoutX="646.0" layoutY="231.0" prefHeight="0.0" prefWidth="250.0" text="Room Type:">
+                        <Label fx:id="room_type" layoutX="550.0" layoutY="231.0" prefHeight="0.0" prefWidth="400.0" text="Room Type:" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="room_price" layoutX="647.0" layoutY="260.0" prefHeight="0.0" prefWidth="250.0" text="Room Price:">
+                        <Label fx:id="room_price" layoutX="728.0" layoutY="260.0" prefHeight="0.0" prefWidth="250.0" text="Room Price:">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -81,6 +82,17 @@
                               <Font size="15.0" />
                            </font>
                         </Button>
+                        <Label layoutX="551.0" layoutY="263.0" prefHeight="0.0" text="Room(s) Total Price:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label layoutX="123.0" layoutY="340.0" text="Rooms:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <FlowPane fx:id="rooms_flowPane" alignment="CENTER_LEFT" layoutX="201.0" layoutY="332.0" prefHeight="51.0" prefWidth="780.0" />
                      </children>
                   </AnchorPane>
                </content>

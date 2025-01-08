@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -20,7 +21,7 @@
          <children>
             <ScrollPane>
                <content>
-                  <AnchorPane prefHeight="941.0" prefWidth="1080.0" styleClass="box" stylesheets="@css/styles.css">
+                  <AnchorPane prefHeight="941.0" prefWidth="1750.0" styleClass="box" stylesheets="@css/styles.css">
                      <children>
                      <fx:include fx:id="back" source="components/back_button.fxml" />
                         <Label layoutX="495.0" layoutY="39.0" styleClass="title_text" stylesheets="@css/styles.css" text="Invoice" />
@@ -29,12 +30,12 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="room" layoutX="485.0" layoutY="107.0" text="Room:">
+                        <Label fx:id="room" layoutX="518.0" layoutY="106.0" prefWidth="500.0" text="Room:" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <Label fx:id="room_type" layoutX="738.0" layoutY="108.0" text="Room Type:">
+                        <Label fx:id="room_type" layoutX="515.0" layoutY="140.0" prefWidth="520.0" text="Room Type:" wrapText="true">
                            <font>
                               <Font size="18.0" />
                            </font>
@@ -44,9 +45,9 @@
                               <Font size="18.0" />
                            </font>
                         </Label>
-                        <ScrollPane layoutX="37.0" layoutY="260.0" prefHeight="550.0" prefWidth="832.0">
+                        <ScrollPane layoutX="37.0" layoutY="260.0" prefHeight="550.0" prefWidth="830.0">
                            <content>
-                              <FlowPane fx:id="outstanding_payments" prefHeight="547.0" prefWidth="821.0" />
+                              <FlowPane fx:id="outstanding_payments" prefHeight="550.0" prefWidth="810.0" />
                            </content>
                         </ScrollPane>
                         <Button fx:id="complete" layoutX="648.0" layoutY="851.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="215.0" styleClass="btn" stylesheets="@css/styles.css" text="Complete">
@@ -54,6 +55,12 @@
                               <Font size="15.0" />
                            </font>
                         </Button>
+                        <ComboBox fx:id="payment_method" layoutX="791.0" layoutY="212.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@css/styles.css" />
+                        <Label layoutX="626.0" layoutY="213.0" text="Payment Method:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </content>

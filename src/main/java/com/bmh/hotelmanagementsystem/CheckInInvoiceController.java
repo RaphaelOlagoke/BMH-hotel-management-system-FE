@@ -2,15 +2,15 @@ package com.bmh.hotelmanagementsystem;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -19,12 +19,15 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CheckInInvoiceController extends Controller {
 
     private Stage primaryStage;
     private CheckIn checkInData;
+
+    private List<Integer> roomNumbers = new ArrayList<>();
 
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -34,11 +37,29 @@ public class CheckInInvoiceController extends Controller {
     public void setCheckInData(CheckIn checkInData) {
         this.checkInData = checkInData;
         guest_name.setText("Guest Name:  " + checkInData.getGuestName());
-        room_number.setText("Room Number:  " + checkInData.getRoomNumber());
-        room_type.setText("Room Type:  " + checkInData.getRoomType());
+
+        StringBuilder rooms = new StringBuilder();
+        StringBuilder types = new StringBuilder();
+
+        int size = checkInData.getSelectedRooms().size();
+        int index = 0;
+
+        for (SelectedRoom selectedRoom : checkInData.getSelectedRooms()) {
+            rooms.append(selectedRoom.getRoomNumber());
+            types.append(selectedRoom.getRoomType());
+            roomNumbers.add(selectedRoom.getRoomNumber());
+            if (index < size - 1) {
+                rooms.append(", ");
+                types.append(", ");
+            }
+            index++;
+        }
+
+        room_number.setText("Room Number(s):  " + rooms);
+        room_type.setText("Room Type(s):  " + types);
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-        String formattedPrice = formatter.format(checkInData.getRoomPrice());
+        String formattedPrice = formatter.format(checkInData.getTotalPrice());
         room_charge.setText("Room Charge:  " + formattedPrice);
     }
 
@@ -65,7 +86,21 @@ public class CheckInInvoiceController extends Controller {
     private Button checkIn;
 
     @FXML
+    private ComboBox<String> payment_method;
+
+    @FXML
     public void initialize() throws IOException {
+        ObservableList<String> payment_Methods = FXCollections.observableArrayList();
+
+//        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
+//            payment_Methods.add(paymentMethod.toJson());
+//        }
+        payment_Methods.add(PaymentMethod.CARD.toJson());
+        payment_Methods.add(PaymentMethod.TRANSFER.toJson());
+        payment_Methods.add(PaymentMethod.CASH.toJson());
+
+        payment_method.setItems(payment_Methods);
+
         back.setOnAction(event -> goBack());
         checkIn.setOnAction(event -> checkIn());
 //        System.out.println(checkInData.getGuestName());
@@ -82,6 +117,15 @@ public class CheckInInvoiceController extends Controller {
     }
 
     public void checkIn() {
+        checkInData.setPaymentMethod(payment_method.getSelectionModel().getSelectedItem() != null ? PaymentMethod.valueOf(payment_method.getSelectionModel().getSelectedItem()) : null);
+        if( checkInData.getPaymentMethod() == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid request");
+//                alert.setHeaderText("This is a header");
+            alert.setContentText("Payment method can not be empty");
+            alert.showAndWait();
+            return;
+        }
         Stage loadingStage = new Stage();
         ProgressIndicator progressIndicator = new ProgressIndicator();
         StackPane loadingRoot = new StackPane();
@@ -98,7 +142,7 @@ public class CheckInInvoiceController extends Controller {
             try {
                 CreateGuestLogRequest request = new CreateGuestLogRequest();
                 request.setGuestName(checkInData.getGuestName());
-                request.setRoomNumber(checkInData.getRoomNumber());
+                request.setRoomNumbers(roomNumbers);
                 request.setPaymentMethod(checkInData.getPaymentMethod());
 
                 ObjectMapper objectMapper = new ObjectMapper();

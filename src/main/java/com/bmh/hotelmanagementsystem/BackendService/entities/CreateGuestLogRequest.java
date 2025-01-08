@@ -2,9 +2,11 @@ package com.bmh.hotelmanagementsystem.BackendService.entities;
 
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 
+import java.util.List;
+
 public class CreateGuestLogRequest {
     private String guestName;
-    private int roomNumber;
+    private List<Integer> roomNumbers;
     private PaymentMethod paymentMethod;
 
     public String getGuestName() {
@@ -15,12 +17,12 @@ public class CreateGuestLogRequest {
         this.guestName = guestName;
     }
 
-    public int getRoomNumber() {
-        return roomNumber;
+    public List<Integer> getRoomNumbers() {
+        return roomNumbers;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
+    public void setRoomNumbers(List<Integer> roomNumbers) {
+        this.roomNumbers = roomNumbers;
     }
 
     public PaymentMethod getPaymentMethod() {
