@@ -8,7 +8,11 @@ import com.bmh.hotelmanagementsystem.RoomManagement.SingleRoomController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -43,6 +47,18 @@ public class Utils {
     }
 
     @FXML
+    public void switchScreenWithData(String view, Stage primaryStage, Object data, String previousLocation) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
+        Scene scene = new Scene(loader.load());
+
+        Controller controller = loader.getController();
+        controller.setData(data,previousLocation);
+
+        primaryStage.setScene(scene);
+        setControllerPrimaryStage(loader, primaryStage);
+    }
+
+    @FXML
     public void switchScreenWithCheckInData(String view, Stage primaryStage, CheckIn checkInData) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
         Scene scene = new Scene(loader.load());
@@ -55,15 +71,45 @@ public class Utils {
     }
 
     @FXML
-    public void switchScreenWithGuestLog(String view, Stage primaryStage, GuestLog guestLog) throws IOException {
+    public void switchScreenWithGuestLog(String view, Stage primaryStage, GuestLog guestLog, String previousLocation) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(view));
         Scene scene = new Scene(loader.load());
 
-        InvoiceController invoiceController = loader.getController();
-        invoiceController.setGuestLog(guestLog);
+        Controller controller = loader.getController();
+        controller.setGuestLog(guestLog, previousLocation);
 
         primaryStage.setScene(scene);
         setControllerPrimaryStage(loader, primaryStage);
     }
+
+    public static Stage showLoadingScreen(Stage primaryStage){
+        Stage loadingStage = new Stage();
+        ProgressIndicator progressIndicator = new ProgressIndicator();
+        StackPane loadingRoot = new StackPane();
+        loadingRoot.getChildren().add(progressIndicator);
+        Scene loadingScene = new Scene(loadingRoot, 200, 200);
+        loadingStage.setScene(loadingScene);
+        loadingStage.setTitle("Processing...");
+        loadingStage.initOwner(primaryStage);
+        loadingStage.initModality(Modality.APPLICATION_MODAL);
+//        loadingStage.show();
+
+        return loadingStage;
+    }
+
+    public static void showAlertDialog(Alert.AlertType alertType, String title, String content){
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    public static void showServerErrorDialog(){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setContentText("Something went wrong. Please try again.");
+        errorAlert.showAndWait();
+    }
+
 
 }

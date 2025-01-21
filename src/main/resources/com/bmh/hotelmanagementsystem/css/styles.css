@@ -32,20 +32,21 @@
     -fx-background-color: #F8F8F8;
 }
 
-#side_bar{
-    -fx-effect: dropshadow(gaussian, #88878742, 10, 0.5, 3, 5);
-}
+/*#side_bar{*/
+/*    -fx-effect: dropshadow(gaussian, #88878742, 10, 0.5, 3, 5);*/
+/*}*/
 
 .side-bar-button{
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
     fx-font-size: 24px;
-    -fx-font-weight: bold;
+/*    -fx-font-weight: bold;*/
 }
 
 .side-bar-button:hover{
-    -fx-background-color: #000000;
+    -fx-background-color: #d0cfcf;
     -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 15;
 }
 
 .box{
@@ -54,11 +55,31 @@
     -fx-background-radius: 15;
 }
 
+.box-without-shadow{
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 15;
+}
+
 .title_text{
-    -fx-font-size: 32px;
+    -fx-font-size: 24px;
     -fx-font-weight: bold;
 }
 
 .transparent-background{
     -fx-background-color: #ffffff00;
+}
+
+.table_column{
+    -fx-padding: 10;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #4CAF50;  /* Green background */
+    -fx-text-fill: white;            /* White text color */
+    -fx-font-size: 14px;             /* Font size of header text */
+}
+
+/* Style the individual column headers */
+.table-view .column-header {
+    -fx-font-weight: bold;
 }

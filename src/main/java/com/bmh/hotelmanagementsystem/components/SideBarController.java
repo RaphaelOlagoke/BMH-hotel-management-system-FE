@@ -47,7 +47,7 @@ public class SideBarController {
     protected void rooms() throws IOException {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room-management-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
 //        primaryStage.setTitle("BMH - Rooms");

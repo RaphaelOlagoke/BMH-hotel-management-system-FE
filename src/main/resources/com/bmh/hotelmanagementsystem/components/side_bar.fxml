@@ -5,52 +5,175 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="side_bar" alignment="CENTER" prefHeight="1080.0" prefWidth="953.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.components.SideBarController">
+<VBox fx:id="side_bar" alignment="TOP_CENTER" prefHeight="1080.0" prefWidth="939.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.components.SideBarController">
     <children>
-
-        <AnchorPane prefHeight="137.0" prefWidth="507.0">
-            <children>
-               <ImageView fitHeight="73.0" fitWidth="74.0" layoutX="33.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                  <image>
-                     <Image url="@../images/Logo.png" />
-                  </image>
-                  </ImageView>
-            </children>
-        </AnchorPane>
-
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-           <!-- Top Section: Profile Image and User Info -->
-           <children>
-              <ImageView fitHeight="123.0" fitWidth="105.0" pickOnBounds="true" preserveRatio="true">
-                 <image>
-                    <Image url="@../images/Profile.png" />
-                 </image>
-                 <VBox.margin>
-                    <Insets bottom="30.0" />
-                 </VBox.margin>
-              </ImageView>
-              <Label text="User" />
-              <Label text="user@gmail.com" />
-           </children>
-        </VBox>
+         <ImageView fitHeight="73.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/Logo.png" />
+            </image>
+            </ImageView>
 
         <!-- Bottom Section: Sidebar buttons -->
         <VBox alignment="TOP_CENTER" prefHeight="558.0" prefWidth="362.0" spacing="20.0">
           <children>
-             <Button fx:id="side_bar_home" mnemonicParsing="false" onAction="#home" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Home" />
-             <Button fx:id="side_bar_rooms" mnemonicParsing="false" onAction="#rooms" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Rooms" />
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Inventory" />
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="House Keeping" />
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Restaurant and Bar" />
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Event" />
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="362.0" styleClass="side-bar-button" stylesheets="@../css/styles.css" text="Employees" />
+             <Button fx:id="side_bar_home" mnemonicParsing="false" onAction="#home" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/Home.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Home">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic>
+            </Button>
+             <Button fx:id="side_bar_rooms" mnemonicParsing="false" onAction="#rooms" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/side-bar%20icons/rooms.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Rooms">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
+             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/side-bar%20icons/inventory.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Inventory">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
+             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/side-bar%20icons/restaurant-bar.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Restaurant and Bar">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
+             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox prefWidth="320.0" spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/rooms/cleaning_rooms.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="House Keeping">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
+             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/side-bar%20icons/event.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Event">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
+             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+               <graphic>
+                  <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
+                     <children>
+                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/userIcon.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Employees">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+               </graphic></Button>
           </children>
           <padding>
-             <Insets top="50.0" />
+             <Insets left="20.0" right="20.0" top="50.0" />
           </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
         </VBox>
     </children>
+   <padding>
+      <Insets top="80.0" />
+   </padding>
 </VBox>

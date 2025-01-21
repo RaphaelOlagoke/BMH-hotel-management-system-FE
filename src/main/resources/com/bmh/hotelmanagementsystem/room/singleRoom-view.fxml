@@ -4,7 +4,9 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -21,11 +23,6 @@
                      <children>
                      <fx:include fx:id="back" source="../components/back_button.fxml" />
                         <Label fx:id="room_number" layoutX="104.0" layoutY="59.0" styleClass="title_text" stylesheets="@../css/styles.css" text="Room" />
-                        <Label fx:id="room_type" layoutX="114.0" layoutY="121.0" text="Room Type:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
 <!--                         <Label fx:id="room_price" layoutX="115.0" layoutY="162.0" text="Room Price:"> -->
 <!--                            <font> -->
 <!--                               <Font size="20.0" /> -->
@@ -33,80 +30,87 @@
 <!--                         </Label> -->
                         <Label fx:id="room_status" layoutX="590.0" layoutY="117.0" text="Status:">
                            <font>
-                              <Font size="20.0" />
+                              <Font size="15.0" />
                            </font>
                         </Label>
-                        <Label layoutX="113.0" layoutY="247.0" text="Guest Details:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="guest_name" layoutX="134.0" layoutY="292.0" text="Name:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-<!--                         <Label layoutX="137.0" layoutY="331.0" text="Email:"> -->
-<!--                            <font> -->
-<!--                               <Font size="24.0" /> -->
-<!--                            </font> -->
-<!--                         </Label> -->
-<!--                         <Label layoutX="135.0" layoutY="368.0" text="Phone Number:"> -->
-<!--                            <font> -->
-<!--                               <Font size="24.0" /> -->
-<!--                            </font> -->
-<!--                         </Label> -->
-                        <Label fx:id="check_in_date" layoutX="131.0" layoutY="322.0" text="Check-in Date:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="payment_status" layoutX="133.0" layoutY="357.0" text="Payment Status:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="627.0" layoutY="267.0" text="Cleaning Details:">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="cleaning_assigned_to" layoutX="645.0" layoutY="313.0" text="Assigned to:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="cleaning_last_assigned_to" layoutX="646.0" layoutY="348.0" text="Last Assigned to:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="cleaning_assigned_on" layoutX="644.0" layoutY="385.0" text="Assigned On:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="maintenance_description" layoutX="126.0" layoutY="498.0" text="Maintenance:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Button layoutX="157.0" layoutY="816.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="258.0" styleClass="btn" stylesheets="@../css/styles.css" text="Room Service">
+                        <Button fx:id="archiveRoom" layoutX="882.0" layoutY="44.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Archive">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button layoutX="674.0" layoutY="810.0" mnemonicParsing="false" prefHeight="68.0" prefWidth="258.0" styleClass="btn" stylesheets="@../css/styles.css" text="Generate Invoice">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="874.0" layoutY="98.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Mark as done">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
+                        <VBox layoutX="100.0" layoutY="116.0" prefHeight="200.0" spacing="15.0">
+                           <children>
+                              <Label fx:id="room_type" text="Room Type:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="archived" text="Archived:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="needs_cleaning" layoutX="10.0" layoutY="44.0" text="Needs Cleaning:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="needs_maintenance" layoutX="10.0" layoutY="78.0" text="Needs Maintenance::">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="98.0" layoutY="322.0" spacing="30.0">
+                           <children>
+                              <Label fx:id="maintenance_description" prefWidth="644.0" text="Maintenence Description:" wrapText="true">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <FlowPane fx:id="maintenance_flowpane" prefWidth="800.0" rowValignment="TOP" vgap="30.0">
+                                 <padding>
+                                    <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                                 </padding>
+                              </FlowPane>
+                              <VBox prefHeight="200.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Schedule Maintenance:" />
+                                    <TextArea fx:id="maintenance_textBox" prefHeight="200.0" prefWidth="612.0" promptText="Description" wrapText="true" />
+                                 </children>
+                                 <padding>
+                                    <Insets top="30.0" />
+                                 </padding>
+                              </VBox>
+                              <HBox prefHeight="100.0" prefWidth="200.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Button fx:id="maintenanceHistory" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Maintenance History">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="600.0">
+                                       <children>
+                                          <Button fx:id="scheduleMaintenance" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Submit">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
+                     <padding>
+                        <Insets left="20.0" right="20.0" />
+                     </padding>
                   </AnchorPane>
                </content>
             </ScrollPane>

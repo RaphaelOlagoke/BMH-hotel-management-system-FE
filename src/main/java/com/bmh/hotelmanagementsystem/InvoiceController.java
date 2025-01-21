@@ -7,19 +7,24 @@ import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.components.PaymentItemController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class InvoiceController extends Controller{
 
@@ -45,13 +50,17 @@ public class InvoiceController extends Controller{
     private Button  complete;
 
     @FXML
+    private String previousLocation;
+
+    @FXML
     private ComboBox<String> payment_method;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
-    public void setGuestLog(GuestLog guestLog) throws IOException {
+    public void setGuestLog(GuestLog guestLog, String previousLocation) throws IOException {
+        this.previousLocation = previousLocation;
         StringBuilder rooms = new StringBuilder();
         StringBuilder types = new StringBuilder();
 
@@ -138,7 +147,7 @@ public class InvoiceController extends Controller{
     public void goBack(){
         try {
             Utils utils = new Utils();
-            utils.switchScreen("checkOut-view.fxml", primaryStage);
+            utils.switchScreen(previousLocation, primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -153,55 +162,108 @@ public class InvoiceController extends Controller{
             alert.showAndWait();
             return;
         }
-        try {
-            List<String> invoiveRefs = new ArrayList<>();
-            for (Invoice invoice : guestLog.getInvoices()){
-                if (invoice.getPaymentStatus().equals(PaymentStatus.DUE)){
-                    invoiveRefs.add(invoice.getRef());
+
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Payment");
+        confirmationAlert.setHeaderText("Are you sure you want to resolve the outstanding invoice?");
+        confirmationAlert.setContentText("Please confirm your action.");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        List<String> invoiceRefs = new ArrayList<>();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            try {
+                for (Invoice invoice : guestLog.getInvoices()) {
+                    if (invoice.getPaymentStatus().equals(PaymentStatus.DUE)) {
+                        invoiceRefs.add(invoice.getRef());
+                    }
                 }
-            }
 
-            if (invoiveRefs.isEmpty()){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Invalid request");
+                if (invoiceRefs.isEmpty()) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Invalid request");
 //                alert.setHeaderText("This is a header");
-                alert.setContentText("There are no outstanding payments");
-                alert.showAndWait();
-                return;
-            }
+                    alert.setContentText("There are no outstanding payments");
+                    alert.showAndWait();
+                    return;
+                }
 
-            ResolveInvoiceRequest request = new ResolveInvoiceRequest();
-            request.setPaymentMethod(PaymentMethod.valueOf(payment_method.getSelectionModel().getSelectedItem()));
-            request.setInvoiceRefs(invoiveRefs);
+                Stage loadingStage = new Stage();
+                ProgressIndicator progressIndicator = new ProgressIndicator();
+                StackPane loadingRoot = new StackPane();
+                loadingRoot.getChildren().add(progressIndicator);
+                Scene loadingScene = new Scene(loadingRoot, 200, 200);
+                loadingStage.setScene(loadingScene);
+                loadingStage.setTitle("Processing...");
+                loadingStage.initOwner(primaryStage);
+                loadingStage.initModality(Modality.APPLICATION_MODAL);
+                loadingStage.show();
 
-            ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString = objectMapper.writeValueAsString(request);
+                new Thread(() -> {
+                    try {
+                        ResolveInvoiceRequest request = new ResolveInvoiceRequest();
+                        request.setPaymentMethod(PaymentMethod.valueOf(payment_method.getSelectionModel().getSelectedItem()));
+                        request.setInvoiceRefs(invoiceRefs);
 
-            String response = RestClient.post("/invoice/resolve",jsonString);
-            ApiResponse<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<?>>() {
-            });
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        String jsonString = objectMapper.writeValueAsString(request);
 
-            if(apiResponse.getResponseHeader().getResponseCode().equals("00")){
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Payment Complete");
-                alert.setContentText("Payment Successful");
-                alert.showAndWait();
-                goBack();
-            }
-            else{
+                        // Make the API call to resolve the invoice
+                        String response = RestClient.post("/invoice/resolve", jsonString);
+                        ApiResponse<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<?>>() {});
+
+                        Platform.runLater(() -> {
+                            try {
+                                loadingStage.close();
+
+                                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                                    alert.setTitle("Payment Complete");
+                                    alert.setContentText("Payment Successful");
+                                    alert.showAndWait();
+
+                                    goBack();
+                                } else {
+                                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                                    errorAlert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
+                                    errorAlert.setContentText(apiResponse.getError());
+                                    errorAlert.showAndWait();
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                loadingStage.close();
+
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                                errorAlert.setTitle("Error");
+                                errorAlert.setContentText("Something went wrong. Please try again.");
+                                errorAlert.showAndWait();
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Error");
+                            alert.setContentText("Something went wrong. Please try again.");
+                            alert.showAndWait();
+                        });
+                    }
+                }).start();
+
+            } catch (Exception e) {
+                System.out.println(e);
                 Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
-                alert.setContentText(apiResponse.getError());
+                alert.setTitle("Error");
+//                alert.setHeaderText("This is a header");
+                alert.setContentText("Something went wrong");
                 alert.showAndWait();
             }
-
-        } catch (Exception e) {
-            System.out.println(e);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error");
-//                alert.setHeaderText("This is a header");
-            alert.setContentText("Something went wrong");
-            alert.showAndWait();
+        }
+        else {
+            confirmationAlert.close();
         }
     }
 }

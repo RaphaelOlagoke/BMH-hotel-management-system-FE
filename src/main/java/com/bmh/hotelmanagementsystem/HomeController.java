@@ -20,6 +20,8 @@ public class HomeController extends Controller {
 
     @FXML
     private Button checkOut;
+    @FXML
+    private Button guestLog;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -32,6 +34,9 @@ public class HomeController extends Controller {
         });
         checkOut.setOnAction(event -> {
             checkOut();
+        });
+        guestLog.setOnAction(event -> {
+            guestLog();
         });
     }
 
@@ -51,6 +56,16 @@ public class HomeController extends Controller {
         try {
             Utils utils = new Utils();
             utils.switchScreen("checkOut-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    protected void guestLog(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("guest-log-view.fxml", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

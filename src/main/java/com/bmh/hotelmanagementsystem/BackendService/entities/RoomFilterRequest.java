@@ -3,18 +3,14 @@ package com.bmh.hotelmanagementsystem.BackendService.entities;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 
-import java.util.List;
-
-public class Room {
+public class RoomFilterRequest {
 
     private int roomNumber;
     private RoomType roomType;
     private RoomStatus roomStatus;
-
     private Boolean needsCleaning;
     private Boolean needsMaintenance;
     private Boolean archived;
-    private List<Maintenance> maintenance;
 
     public int getRoomNumber() {
         return roomNumber;
@@ -63,13 +59,4 @@ public class Room {
     public void setArchived(Boolean archived) {
         this.archived = archived;
     }
-
-    public List<Maintenance> getMaintenance() {
-        return maintenance;
-    }
-
-    public void setMaintenance(List<Maintenance> maintenance) {
-        this.maintenance = maintenance;
-    }
 }
-

@@ -7,24 +7,26 @@ import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CheckOutController extends Controller{
 
@@ -191,59 +193,100 @@ public class CheckOutController extends Controller{
         }
         try {
             Utils utils = new Utils();
-            utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice-view.fxml", primaryStage,guestLog);
+            utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice-view.fxml", primaryStage,guestLog, "checkOut-view.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void checkOut(){
-        if(rooms.getSelectionModel().getSelectedItem() != null){
-            try {
-                UpdateGuestLogRequest request = new UpdateGuestLogRequest();
-                request.setRoomNumbers(selectedRooms);
-
-                ObjectMapper objectMapper = new ObjectMapper();
-
-                String jsonString = objectMapper.writeValueAsString(request);
-
-                String response = RestClient.post("/guestLog/check-out",jsonString);
-
-                ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
-                });
-
-                if(apiResponse.getResponseHeader().getResponseCode().equals("00")){
-                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                    successAlert.setTitle("Check-out Successful");
-                    successAlert.setContentText("The check-out was successful.");
-                    successAlert.showAndWait();
-
-                    Utils utils = new Utils();
-                    utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
-                }
-                else{
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
-                    errorAlert.setContentText(apiResponse.getError());
-                    errorAlert.showAndWait();
-                }
-
-
-            } catch (Exception e) {
-                System.out.println(e);
-                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                errorAlert.setTitle("Error");
-                errorAlert.setContentText("Something went wrong. Please try again.");
-                errorAlert.showAndWait();
-            }
-        }
-        else {
+    public void checkOut() {
+        if (selectedRooms == null) {
             Alert warningAlert = new Alert(Alert.AlertType.WARNING);
             warningAlert.setTitle("Invalid Request");
-            warningAlert.setContentText("Field can not be null.");
+            warningAlert.setContentText("No room selected");
             warningAlert.showAndWait();
         }
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Check-Out");
+        confirmationAlert.setHeaderText("Are you sure you want to check out?");
+        confirmationAlert.setContentText("Please confirm your action.");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            if (selectedRooms != null) {
+                try {
+                    // Show the loading screen
+                    Stage loadingStage = new Stage();
+                    ProgressIndicator progressIndicator = new ProgressIndicator();
+                    StackPane loadingRoot = new StackPane();
+                    loadingRoot.getChildren().add(progressIndicator);
+                    Scene loadingScene = new Scene(loadingRoot, 200, 200);
+                    loadingStage.setScene(loadingScene);
+                    loadingStage.setTitle("Processing...");
+                    loadingStage.initOwner(primaryStage);
+                    loadingStage.initModality(Modality.APPLICATION_MODAL);
+                    loadingStage.show();
+
+                    UpdateGuestLogRequest request = new UpdateGuestLogRequest();
+                    request.setRoomNumbers(selectedRooms);
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    String jsonString = objectMapper.writeValueAsString(request);
+
+                    String response = RestClient.post("/guestLog/check-out", jsonString);
+                    ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {});
+
+                    Platform.runLater(() -> {
+                        try {
+                            loadingStage.close();
+
+                            if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                                successAlert.setTitle("Check-out Successful");
+                                successAlert.setContentText("The check-out was successful.");
+                                successAlert.showAndWait();
+
+                                // Switch screen to home view
+                                Utils utils = new Utils();
+                                utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+                            } else {
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                                errorAlert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
+                                errorAlert.setContentText(apiResponse.getError());
+                                errorAlert.showAndWait();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            loadingStage.close();
+
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                            errorAlert.setTitle("Error");
+                            errorAlert.setContentText("Something went wrong. Please try again.");
+                            errorAlert.showAndWait();
+                        }
+                    });
+
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setContentText("Something went wrong. Please try again.");
+                        alert.showAndWait();
+                    });
+                }
+            } else {
+                Alert warningAlert = new Alert(Alert.AlertType.WARNING);
+                warningAlert.setTitle("Invalid Request");
+                warningAlert.setContentText("Field cannot be null.");
+                warningAlert.showAndWait();
+            }
+        } else {
+            confirmationAlert.close();
+        }
     }
+
 
 
 }

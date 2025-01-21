@@ -21,6 +21,7 @@ import java.net.http.HttpResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CheckInInvoiceController extends Controller {
 
@@ -126,81 +127,94 @@ public class CheckInInvoiceController extends Controller {
             alert.showAndWait();
             return;
         }
-        Stage loadingStage = new Stage();
-        ProgressIndicator progressIndicator = new ProgressIndicator();
-        StackPane loadingRoot = new StackPane();
-        loadingRoot.getChildren().add(progressIndicator);
-        Scene loadingScene = new Scene(loadingRoot, 200, 200);
-        loadingStage.setScene(loadingScene);
-        loadingStage.setTitle("Processing...");
-        loadingStage.initOwner(primaryStage);
-        loadingStage.initModality(Modality.APPLICATION_MODAL);
-        loadingStage.show();
 
-        new Thread(() -> {
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Check-In");
+        confirmationAlert.setHeaderText("Are you sure you want to proceed with the check-in?");
+        confirmationAlert.setContentText("Please confirm your action.");
 
-            try {
-                CreateGuestLogRequest request = new CreateGuestLogRequest();
-                request.setGuestName(checkInData.getGuestName());
-                request.setRoomNumbers(roomNumbers);
-                request.setPaymentMethod(checkInData.getPaymentMethod());
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
 
-                ObjectMapper objectMapper = new ObjectMapper();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage loadingStage = new Stage();
+            ProgressIndicator progressIndicator = new ProgressIndicator();
+            StackPane loadingRoot = new StackPane();
+            loadingRoot.getChildren().add(progressIndicator);
+            Scene loadingScene = new Scene(loadingRoot, 200, 200);
+            loadingStage.setScene(loadingScene);
+            loadingStage.setTitle("Processing...");
+            loadingStage.initOwner(primaryStage);
+            loadingStage.initModality(Modality.APPLICATION_MODAL);
+            loadingStage.show();
 
-                String jsonString = objectMapper.writeValueAsString(request);
+            new Thread(() -> {
 
-                String response = RestClient.post("/guestLog/", jsonString);
-                ApiResponseSingleData<CreateGuestLogRequest> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<CreateGuestLogRequest>>() {
-                });
+                try {
+                    CreateGuestLogRequest request = new CreateGuestLogRequest();
+                    request.setGuestName(checkInData.getGuestName());
+                    request.setRoomNumbers(roomNumbers);
+                    request.setPaymentMethod(checkInData.getPaymentMethod());
 
-                Platform.runLater(() -> {
-                    try {
-                        if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-                            // Close the loading screen
-                            loadingStage.close();
+                    ObjectMapper objectMapper = new ObjectMapper();
 
-                            // Show success message and navigate to home
-                            Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
-                            successAlert.setTitle("Check-In Successful");
-                            successAlert.setContentText("The check-in was successful.");
-                            successAlert.showAndWait();
+                    String jsonString = objectMapper.writeValueAsString(request);
 
-                            // Switch screen to home view
-                            Utils utils = new Utils();
-                            utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
-                        } else {
-                            // Close the loading screen
-                            loadingStage.close();
+                    String response = RestClient.post("/guestLog/", jsonString);
+                    ApiResponseSingleData<CreateGuestLogRequest> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<CreateGuestLogRequest>>() {
+                    });
 
-                            // Show error message from API response
+                    Platform.runLater(() -> {
+                        try {
+                            if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                                // Close the loading screen
+                                loadingStage.close();
+
+                                // Show success message and navigate to home
+                                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                                successAlert.setTitle("Check-In Successful");
+                                successAlert.setContentText("The check-in was successful.");
+                                successAlert.showAndWait();
+
+                                // Switch screen to home view
+                                Utils utils = new Utils();
+                                utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+                            } else {
+                                // Close the loading screen
+                                loadingStage.close();
+
+                                // Show error message from API response
+                                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                                errorAlert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
+                                errorAlert.setContentText(apiResponse.getError());
+                                errorAlert.showAndWait();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            loadingStage.close();  // Close the loading screen in case of error
+
+                            // Show general error message
                             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                            errorAlert.setTitle(apiResponse.getResponseHeader().getResponseMessage());
-                            errorAlert.setContentText(apiResponse.getError());
+                            errorAlert.setTitle("Error");
+                            errorAlert.setContentText("Something went wrong. Please try again.");
                             errorAlert.showAndWait();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        loadingStage.close();  // Close the loading screen in case of error
-
-                        // Show general error message
-                        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                        errorAlert.setTitle("Error");
-                        errorAlert.setContentText("Something went wrong. Please try again.");
-                        errorAlert.showAndWait();
-                    }
-                });
+                    });
 
 
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    loadingStage.close();
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Server Error");
-                    alert.setContentText("Something went wrong. Please try again.");
-                    alert.showAndWait();
-                });
-            }
-        }).start();
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Server Error");
+                        alert.setContentText("Something went wrong. Please try again.");
+                        alert.showAndWait();
+                    });
+                }
+            }).start();
+        }
+        else {
+            confirmationAlert.close();
+        }
     }
 
 }
