@@ -27,7 +27,7 @@ public class CleaningRoomsController {
 
     private void addButtonToContainer(String item) {
         try {
-            FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/room_button.fxml"));
+            FXMLLoader buttonLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/room_button.fxml"));
             Button button = buttonLoader.load();
 
             AnchorPane graphic = (AnchorPane) button.getGraphic();

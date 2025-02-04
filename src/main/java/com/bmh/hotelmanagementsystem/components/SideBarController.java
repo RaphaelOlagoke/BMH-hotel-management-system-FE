@@ -47,7 +47,7 @@ public class SideBarController {
     protected void rooms() throws IOException {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room-management-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
 //        primaryStage.setTitle("BMH - Rooms");
@@ -58,6 +58,45 @@ public class SideBarController {
         utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
 //        primaryStage.setMaximized(true);
 //        primaryStage.setFullScreen(true);
+        primaryStage.show();
+    }
+
+    @FXML
+    protected void houseKeeping() throws IOException {
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/HouseKeeping/cleaning-log-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
+    @FXML
+    protected void invoice() throws IOException {
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/invoice/invoice-log-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
+    @FXML
+    protected void restaurant() throws IOException {
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/Restaurant/restaurant-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
         primaryStage.show();
     }
 

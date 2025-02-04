@@ -1,8 +1,6 @@
 package com.bmh.hotelmanagementsystem;
 
-import com.bmh.hotelmanagementsystem.BackendService.entities.DTO;
-import com.bmh.hotelmanagementsystem.BackendService.entities.GuestLog;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
 import javafx.stage.Stage;
 
 import java.io.IOException;

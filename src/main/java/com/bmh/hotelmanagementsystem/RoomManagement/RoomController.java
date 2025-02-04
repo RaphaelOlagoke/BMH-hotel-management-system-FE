@@ -2,7 +2,7 @@ package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,10 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.util.List;
 
 public class RoomController extends Controller {
 

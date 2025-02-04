@@ -1,16 +1,15 @@
 package com.bmh.hotelmanagementsystem;
 
-import com.bmh.hotelmanagementsystem.BackendService.entities.CheckIn;
-import com.bmh.hotelmanagementsystem.BackendService.entities.DTO;
-import com.bmh.hotelmanagementsystem.BackendService.entities.GuestLog;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Room;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CheckIn;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
+import com.bmh.hotelmanagementsystem.RoomManagement.CheckInInvoiceController;
 import com.bmh.hotelmanagementsystem.RoomManagement.SingleRoomController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -104,7 +103,7 @@ public class Utils {
         alert.showAndWait();
     }
 
-    public static void showServerErrorDialog(){
+    public static void showGeneralErrorDialog(){
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
         errorAlert.setContentText("Something went wrong. Please try again.");

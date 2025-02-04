@@ -1,8 +1,11 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
-import com.bmh.hotelmanagementsystem.BackendService.dto.MaintenanceDTO;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CompleteMaintenanceRequest;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CreateMaintenanceRequest;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Maintenance;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
 import com.bmh.hotelmanagementsystem.BackendService.enums.MaintenanceStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -94,7 +97,7 @@ public class SingleRoomController extends Controller {
             for (Maintenance maintenance : currentRoom.getMaintenance()){
                 if (maintenance.getStatus() == MaintenanceStatus.ACTIVE) {
                     try {
-                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/maintenance_item.fxml"));
+                        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/maintenance_item.fxml"));
                         HBox hbox = fxmlLoader.load();
                         Label description = (Label) hbox.lookup("#description");
                         description.setText(maintenance.getDescription());
@@ -159,7 +162,7 @@ public class SingleRoomController extends Controller {
                         try {
                             currentRoom.setArchived(!currentRoom.getArchived());
                             Utils utils = new Utils();
-                            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room-management-view.fxml");
+                            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
                         } catch (Exception e) {
                             e.printStackTrace();
                             alert = new Alert(Alert.AlertType.ERROR);
@@ -199,7 +202,7 @@ public class SingleRoomController extends Controller {
                         try {
                             currentRoom.setArchived(!currentRoom.getArchived());
                             Utils utils = new Utils();
-                            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room-management-view.fxml");
+                            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
                         } catch (Exception e) {
                             e.printStackTrace();
                             alert = new Alert(Alert.AlertType.ERROR);
@@ -277,7 +280,7 @@ public class SingleRoomController extends Controller {
                                 successAlert.showAndWait();
 
                                 Utils utils = new Utils();
-                                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,apiResponse.getData(), "/com/bmh/hotelmanagementsystem/room-management-view.fxml");
+                                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,apiResponse.getData(), "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
                             } else {
                                 loadingStage.close();
                                 Alert errorAlert = new Alert(Alert.AlertType.ERROR);
@@ -360,7 +363,7 @@ public class SingleRoomController extends Controller {
                                 Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Maintenance completed Successfully", "The request was successful");
 
                                 Utils utils = new Utils();
-                                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,apiResponse.getData(), "/com/bmh/hotelmanagementsystem/room-management-view.fxml");
+                                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,apiResponse.getData(), "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
                             } else {
                                 loadingStage.close();
                                 Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
@@ -368,7 +371,7 @@ public class SingleRoomController extends Controller {
                         } catch (Exception e) {
                             e.printStackTrace();
                             loadingStage.close();
-                            Utils.showServerErrorDialog();
+                            Utils.showGeneralErrorDialog();
                         }
                     });
                 }
@@ -376,7 +379,7 @@ public class SingleRoomController extends Controller {
                     Platform.runLater(() -> {
                         e.printStackTrace();
                         loadingStage.close();
-                        Utils.showServerErrorDialog();
+                        Utils.showGeneralErrorDialog();
                     });
                 }
             }).start();
@@ -388,10 +391,10 @@ public class SingleRoomController extends Controller {
     public void viewMaintenanceHistory(){
         try {
             Utils utils = new Utils();
-            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/maintenance-history-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room-management-view.fxml");
+            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/maintenance-history-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
         } catch (Exception e) {
             e.printStackTrace();
-            Utils.showServerErrorDialog();
+            Utils.showGeneralErrorDialog();
         }
     }
 

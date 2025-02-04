@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.SingleInvoiceLogController">
+   <children>
+   <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
+      <VBox prefHeight="200.0" prefWidth="1750.0">
+         <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+         </padding>
+         <children>
+         <fx:include fx:id="back" source="../components/back_button.fxml" />
+            <ScrollPane>
+               <content>
+                  <AnchorPane prefHeight="941.0" prefWidth="1750.0" styleClass="box" stylesheets="@../css/styles.css">
+                     <children>
+                        <Label fx:id="total_amount" layoutX="119.0" layoutY="247.0" text="Total Amount:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <ScrollPane fx:id="scroll_pane_payments" layoutX="54.0" layoutY="313.0" prefWidth="830.0">
+                           <content>
+                              <FlowPane fx:id="payments" prefHeight="550.0" prefWidth="810.0" />
+                           </content>
+                        </ScrollPane>
+                        <VBox layoutX="63.0" layoutY="145.0" prefHeight="46.0" prefWidth="404.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="issue_date" text="Issue Date:" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="payment_date" text="Payment Date:" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="644.0" layoutY="145.0" prefHeight="46.0" prefWidth="435.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="payment_status" prefWidth="500.0" text="Payment Status:" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="payment_method" prefWidth="520.0" text="Payment Method:" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="service_type" layoutX="10.0" layoutY="43.0" prefWidth="520.0" text="Service Type:" wrapText="true">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER" layoutX="3.0" layoutY="4.0" prefHeight="100.0" prefWidth="1072.0">
+                           <children>
+      <!--                      <fx:include fx:id="back" source="components/back_button.fxml" /> -->
+                              <Label fx:id="invoice_ref" styleClass="title_text" stylesheets="@../css/styles.css" text="Invoice" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</HBox>

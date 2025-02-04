@@ -45,7 +45,7 @@ public class HomeController extends Controller {
     protected void checkIn(){
         try {
             Utils utils = new Utils();
-            utils.switchScreen("checkIn-view.fxml", primaryStage);
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/checkIn-view.fxml", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,7 +55,7 @@ public class HomeController extends Controller {
     protected void checkOut(){
         try {
             Utils utils = new Utils();
-            utils.switchScreen("checkOut-view.fxml", primaryStage);
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/checkOut-view.fxml", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,7 +65,7 @@ public class HomeController extends Controller {
     protected void guestLog(){
         try {
             Utils utils = new Utils();
-            utils.switchScreen("guest-log-view.fxml", primaryStage);
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/guest-log-view.fxml", primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
         }

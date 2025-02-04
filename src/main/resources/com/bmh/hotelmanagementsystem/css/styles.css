@@ -83,3 +83,34 @@
 .table-view .column-header {
     -fx-font-weight: bold;
 }
+
+.round-image {
+/*    -fx-shape: "M 0,0 L 1,0 L 1,1 L 0,1 Z"; */
+    -fx-background-radius: 50%;
+/*    -fx-border-radius: 50%;*/
+/*    -fx-border-width: 2px; */
+/*    -fx-border-color: black; */
+/*    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 5, 0.5, 2, 2); */
+}
+
+.selected-vbox {
+    -fx-background-color: #F9F9F9; /* Soft white */
+    -fx-border-color: #003366; /* Navy blue */
+    -fx-border-width: 5px;
+    -fx-border-radius: 5px;
+}
+
+.selected-label {
+    -fx-text-fill: #003366; /* Navy blue */
+    -fx-font-weight: bold;
+}
+
+
+
+
+
+
+.default-vbox {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
