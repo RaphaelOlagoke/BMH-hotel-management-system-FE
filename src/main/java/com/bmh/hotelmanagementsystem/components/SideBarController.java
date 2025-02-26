@@ -100,4 +100,17 @@ public class SideBarController {
         primaryStage.show();
     }
 
+    @FXML
+    protected void inventory() throws IOException {
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/inventory/inventory-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
 }

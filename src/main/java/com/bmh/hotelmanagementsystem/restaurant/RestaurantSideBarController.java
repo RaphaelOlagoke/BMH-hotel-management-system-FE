@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BMHApplication;
+import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
@@ -57,5 +58,16 @@ public class RestaurantSideBarController {
 //        primaryStage.setMaximized(true);
 //        primaryStage.setFullScreen(true);
         primaryStage.show();
+    }
+
+    @FXML
+    protected void inventory() throws IOException {
+        Stage primaryStage = (Stage) side_bar_orders.getScene().getWindow() ;
+        try {
+            Utils utils = new Utils();
+            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/components/request-inventory.fxml", primaryStage, StockItemCategory.RESTAURANT_BAR, "/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

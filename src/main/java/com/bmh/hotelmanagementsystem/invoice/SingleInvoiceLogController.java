@@ -2,6 +2,7 @@ package com.bmh.hotelmanagementsystem.invoice;
 
 import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.Invoice;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.Item;
+import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
@@ -29,12 +30,25 @@ public class SingleInvoiceLogController extends Controller {
         this.primaryStage = primaryStage;
     }
 
+    DecimalFormat formatter = new DecimalFormat("#,###.00");
+
     public void setData(Object data, String previousLocation){
         this.data = (Invoice) data;
         this.previousLocation = previousLocation;
 
         invoice_ref.setText("Invoice Ref:  " + this.data.getRef());
-        payment_status.setText("Payment Status:   " + this.data.getPaymentStatus());
+        payment_status.setText(this.data.getPaymentStatus().toJson());
+        if (this.data.getPaymentStatus() == PaymentStatus.PAID) {
+            payment_status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+        } else if (this.data.getPaymentStatus() == PaymentStatus.UNPAID) {
+            payment_status.setStyle("-fx-text-fill: #8B8000; -fx-background-color: #fff9c4; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+        }
+        else if (this.data.getPaymentStatus() == PaymentStatus.DEBIT) {
+            payment_status.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+        }
+        else if (this.data.getPaymentStatus() == PaymentStatus.REFUNDED) {
+            payment_status.setStyle("-fx-text-fill: #0059AC; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+        }
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         payment_method.setText("Payment Method:   " + this.data.getPaymentMethod());
         service_type.setText("Service Type:   " + this.data.getService());
@@ -42,7 +56,7 @@ public class SingleInvoiceLogController extends Controller {
         if (this.data.getPaymentDate() != null) {
             payment_date.setText("Payment Date:   " + this.data.getPaymentDate().format(dateTimeFormatter));
         }
-        total_amount.setText("Total Amount:   " + this.data.getTotalAmount());
+        total_amount.setText("Total Amount:   ₦" + formatter.format(this.data.getTotalAmount()));
         double totalPrice = 0.0;
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 

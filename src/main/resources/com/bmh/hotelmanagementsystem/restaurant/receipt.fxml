@@ -11,84 +11,89 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="836.0" prefWidth="1457.0" spacing="20.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.OrderReceiptController">
-   <children>
-      <ImageView fitHeight="116.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/Logo.png" />
-         </image>
-      </ImageView>
-      <VBox prefHeight="627.0" prefWidth="1543.0" spacing="15.0">
+
+<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.OrderReceiptController">
+   <content>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="52.0" prefWidth="1187.0" spacing="400.0">
+            <ImageView fitHeight="116.0" fitWidth="126.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/Logo.png" />
+               </image>
+            </ImageView>
+            <VBox spacing="15.0">
                <children>
-                  <Label fx:id="invoice" text="Invoice:">
+                  <HBox alignment="CENTER_LEFT" prefHeight="52.0" spacing="400.0">
+                     <children>
+                        <Label fx:id="invoice" text="Invoice:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="date" text="Date:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Line endX="580.3358154296875" startX="-100.0" />
+                  <Label fx:id="customerName" text="Customer's Name: ">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="date" text="Date:">
+                  <ScrollPane prefHeight="288.0">
+                     <content>
+                        <VBox fx:id="items" prefHeight="282.0" prefWidth="1300.0" />
+                     </content>
+                  </ScrollPane>
+                  <Line endX="580.3358154296875" layoutX="111.0" layoutY="78.0" startX="-100.0" />
+                  <Label fx:id="subtotal" text="Sub Total:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="tax" layoutX="10.0" layoutY="327.0" text="Tax:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="discount" layoutX="10.0" layoutY="346.0" text="Discount">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="amountPaid" layoutX="10.0" layoutY="365.0" text="Amount Paid">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="change" layoutX="25.0" layoutY="397.0" text="Change:">
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Label>
                </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+            <HBox alignment="CENTER_RIGHT">
+               <children>
+                  <Button fx:id="print" mnemonicParsing="false" prefHeight="49.0" prefWidth="137.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets left="15.0" />
+               </padding>
             </HBox>
-            <Line endX="580.3358154296875" startX="-100.0" />
-            <Label fx:id="customerName" text="Customer's Name: ">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <ScrollPane prefHeight="288.0" prefWidth="1474.0">
-               <content>
-                  <VBox fx:id="items" prefHeight="282.0" prefWidth="1300.0" />
-               </content>
-            </ScrollPane>
-            <Line endX="580.3358154296875" layoutX="111.0" layoutY="78.0" startX="-100.0" />
-            <Label fx:id="subtotal" text="Sub Total:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="tax" layoutX="10.0" layoutY="327.0" text="Tax:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="discount" layoutX="10.0" layoutY="346.0" text="Discount">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="amountPaid" layoutX="10.0" layoutY="365.0" text="Amount Paid">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
-            <Label fx:id="change" layoutX="25.0" layoutY="397.0" text="Change:">
-               <font>
-                  <Font size="15.0" />
-               </font>
-            </Label>
          </children>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
       </VBox>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="print" mnemonicParsing="false" prefHeight="49.0" prefWidth="137.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets left="15.0" />
-         </padding>
-      </HBox>
-   </children>
-   <padding>
-      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-   </padding>
-</VBox>
+   </content>
+</ScrollPane>

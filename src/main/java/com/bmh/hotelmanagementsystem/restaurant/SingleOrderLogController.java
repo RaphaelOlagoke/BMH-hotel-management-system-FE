@@ -4,6 +4,7 @@ import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.BillItem;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.Order;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RestaurantOrderStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -60,6 +61,9 @@ public class SingleOrderLogController extends Controller {
     @FXML
     private Button back;
 
+//    @FXML
+//    private Button cancelOrder;
+
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -74,7 +78,18 @@ public class SingleOrderLogController extends Controller {
         orderRef.setText("Order Ref:  " + this.data.getRef());
         customerName.setText("Customer's Name:  " + this.data.getCustomerName());
         date.setText("Date:  " + dateTimeFormatter.format(this.data.getCreatedDateTime()));
-        status.setText("Status:  " + this.data.getStatus());
+        status.setText(this.data.getStatus().toJson());
+        if (this.data.getStatus() == RestaurantOrderStatus.COMPLETED) {
+            status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+        } else if (this.data.getStatus() == RestaurantOrderStatus.READY) {
+            status.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+        }
+        else if (this.data.getStatus() == RestaurantOrderStatus.IN_PROGRESS) {
+            status.setStyle("-fx-text-fill: #8B8000; -fx-background-color: #fff9c4; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+        }
+        else if (this.data.getStatus() == RestaurantOrderStatus.CANCELED) {
+            status.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+        }
         amountPaid.setText("Amount Paid:  " + formatter.format(this.data.getInvoice().getTotalAmount()) );
 
         double totalPrice = 0.0;
@@ -116,6 +131,7 @@ public class SingleOrderLogController extends Controller {
         else{
             update.setText("Mark as Complete");
             update.setDisable(true);
+//            cancelOrder.setDisable(true);
         }
 
     }

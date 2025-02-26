@@ -61,7 +61,7 @@
                      </padding>
                   </HBox>
                </graphic></Button>
-             <Button mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+             <Button mnemonicParsing="false" onAction="#inventory" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
                <graphic>
                   <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
                      <children>

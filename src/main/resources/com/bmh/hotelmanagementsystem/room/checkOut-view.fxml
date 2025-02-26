@@ -5,103 +5,95 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.CheckOutController">
-    <children>
-        <!--             Side Bar -->
-         <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
-      <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="1750.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
-         <children>
-            <ScrollPane prefHeight="1077.0" prefWidth="900.0" style="-fx-background-radius: 15;">
-               <content>
-                  <AnchorPane prefHeight="900.0" prefWidth="700.0" styleClass="box" stylesheets="@../css/styles.css">
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.CheckOutController">
+   <content>
+      <HBox minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+          <children>
+              <!--             Side Bar -->
+               <fx:include fx:id="side_bar" maxWidth="300.0" source="room_sidebar.fxml" />
+            <VBox maxHeight="-Infinity" spacing="25.0" styleClass="box" stylesheets="@../css/styles.css">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="74.0" prefWidth="1000.0">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="74.0" prefWidth="1000.0">
+                        <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Check-out" />
+                     </children>
+                  </HBox>
+                  <VBox spacing="25.0">
+                     <children>
+                        <Label text="Room:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="rooms" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                     </children>
+                  </VBox>
+                  <FlowPane fx:id="rooms_flowPane" alignment="CENTER_LEFT" prefHeight="94.0" prefWidth="1000.0" />
+                  <Label fx:id="guest_name" text="Name:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="room_type" text="Room Type:" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox spacing="30.0">
+                     <children>
+                        <Label text="Total  Price:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="room_price">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label fx:id="outstanding_payments" text="Oustanding Payments">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Button fx:id="generate_invoice" mnemonicParsing="false" prefHeight="65.0" prefWidth="204.0" styleClass="btn" stylesheets="@../css/styles.css" text="Generate Invoice">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="732.0">
                            <children>
-                              <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Check-out" />
+                              <Button fx:id="check_out" mnemonicParsing="false" prefHeight="65.0" prefWidth="204.0" styleClass="btn" stylesheets="@../css/styles.css" text="Check-out">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </HBox>
-                        <Label layoutX="130.0" layoutY="139.0" text="Room:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="rooms" layoutX="198.0" layoutY="141.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
-                        <Label layoutX="128.0" layoutY="205.0" text="Guest Details:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="guest_name" layoutX="130.0" layoutY="241.0" prefHeight="0.0" prefWidth="250.0" text="Name:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-<!--                         <Label layoutX="130.0" layoutY="273.0" prefHeight="0.0" prefWidth="117.0" text="Email:"> -->
-<!--                            <font> -->
-<!--                               <Font size="18.0" /> -->
-<!--                            </font> -->
-<!--                         </Label> -->
-<!--                         <Label layoutX="130.0" layoutY="300.0" prefHeight="0.0" prefWidth="138.0" text="Phone Number:"> -->
-<!--                            <font> -->
-<!--                               <Font size="18.0" /> -->
-<!--                            </font> -->
-<!--                         </Label> -->
-                        <Label layoutX="552.0" layoutY="200.0" text="Room Details:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="room_type" layoutX="550.0" layoutY="231.0" prefHeight="0.0" prefWidth="400.0" text="Room Type:" wrapText="true">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="room_price" layoutX="728.0" layoutY="260.0" prefHeight="0.0" prefWidth="250.0" text="Room Price:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="outstanding_payments" layoutX="128.0" layoutY="386.0" text="Oustanding Payments">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="generate_invoice" layoutX="83.0" layoutY="659.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="230.0" styleClass="btn" stylesheets="@../css/styles.css" text="Generate Invoice">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="check_out" layoutX="588.0" layoutY="659.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="230.0" styleClass="btn" stylesheets="@../css/styles.css" text="Check-out">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <Label layoutX="551.0" layoutY="263.0" prefHeight="0.0" text="Room(s) Total Price:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="123.0" layoutY="340.0" text="Rooms:">
-                           <font>
-                              <Font size="20.0" />
-                           </font>
-                        </Label>
-                        <FlowPane fx:id="rooms_flowPane" alignment="CENTER_LEFT" layoutX="201.0" layoutY="332.0" prefHeight="51.0" prefWidth="780.0" />
                      </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
-         </children>
-         <padding>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-         </padding>
-      </VBox>
-         <!--             Side Bar -->
-    </children>
-</HBox>
+                     <VBox.margin>
+                        <Insets top="30.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="15.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </HBox.margin>
+            </VBox>
+               <!--             Side Bar -->
+          </children>
+      </HBox>
+   </content>
+</ScrollPane>

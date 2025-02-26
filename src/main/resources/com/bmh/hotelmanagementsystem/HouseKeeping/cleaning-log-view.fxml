@@ -5,99 +5,166 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.HouseKeeping.CleaningLogController">
-   <children>
-   <!--             Side Bar -->
-          <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
-      <!--             Side Bar -->
-
-      <VBox prefHeight="200.0" prefWidth="1750.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.HouseKeeping.CleaningLogController">
+   <content>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
          <children>
-            <AnchorPane prefHeight="98.0" prefWidth="1750.0">
+         <!--             Side Bar -->
+                <fx:include fx:id="side_bar" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
+            <VBox>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
                <children>
-                  <Button fx:id="apply" layoutX="794.0" layoutY="28.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="191.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
-                  <Label layoutX="88.0" layoutY="40.0" styleClass="title_text" stylesheets="@../css/styles.css" text="House Keeping" />
+                  <HBox prefHeight="100.0" spacing="200.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                     <children>
+                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" prefHeight="62.0" prefWidth="757.0" styleClass="box" stylesheets="@../css/styles.css">
+                            <children>
+                               <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="46.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                  <graphic>
+                                     <ImageView fitHeight="34.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                           <Image url="@../images/search.png" />
+                                        </image>
+                                     </ImageView>
+                                  </graphic>
+                               </Button>
+                               <TextField prefHeight="37.0" prefWidth="181.0" promptText="Search" styleClass="whiteBackGround" stylesheets="@../css/styles.css" />
+                            </children>
+                         </HBox>
+                        <HBox alignment="CENTER_RIGHT">
+                           <children>
+                              <Button fx:id="inventory" mnemonicParsing="false" prefHeight="49.0" prefWidth="188.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <ImageView fitHeight="45.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/Store.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" left="30.0" top="15.0" />
+                     </padding>
+                  </HBox>
+                  <!--             Side Bar -->
+            
+                  <VBox styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                           <children>
+                              <Label prefHeight="29.0" prefWidth="212.0" styleClass="title_text" stylesheets="@../css/styles.css" text="House Keeping" />
+                              <HBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="820.0">
+                                 <children>
+                                    <Button fx:id="create" mnemonicParsing="false" prefHeight="54.0" prefWidth="191.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                       <graphic>
+                                          <ImageView fitHeight="29.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/add.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                           </padding>
+                        </HBox>
+                        <HBox prefHeight="100.0" spacing="50.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </VBox.margin>
+                           <children>
+                              <VBox prefHeight="200.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Room:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="room_comboBox" prefWidth="150.0" promptText="All" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Status:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="status_comboBox" prefWidth="150.0" promptText="All" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="170.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
+                                 <children>
+                                    <Label text="Start Date:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="start_datePicker" />
+                                 </children>
+                              </VBox>
+                              <VBox layoutX="320.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
+                                 <children>
+                                    <Label text="End Date">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <DatePicker fx:id="end_datePicker" />
+                                 </children>
+                              </VBox>
+                              <Button fx:id="apply" mnemonicParsing="false" prefHeight="55.0" prefWidth="127.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
+                           </children>
+                        </HBox>
+                        <VBox maxHeight="-Infinity" prefHeight="600.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <TableView fx:id="cleaning_logs_table" styleClass="box" stylesheets="@../css/styles.css" VBox.vgrow="ALWAYS">
+                                <columns>
+                                  <TableColumn fx:id="room_column" prefWidth="75.0" text="Room Number" />
+                                    <TableColumn fx:id="status_column" prefWidth="75.0" text="Status" />
+                                    <TableColumn fx:id="assigned_on_column" prefWidth="75.0" text="Assigned on" />
+                                    <TableColumn fx:id="completed_on_column" prefWidth="75.0" text="Completed on" />
+                                    <TableColumn fx:id="viewMore" prefWidth="75.0" />
+                                </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                              <Pagination fx:id="pagination" minHeight="-Infinity" VBox.vgrow="ALWAYS" />
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets left="30.0" right="30.0" />
+                     </padding>
+                  </VBox>
                </children>
-            </AnchorPane>
-            <HBox prefHeight="100.0" spacing="50.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding>
-               <VBox.margin>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-               </VBox.margin>
-               <children>
-                  <VBox prefHeight="200.0" spacing="20.0">
-                     <children>
-                        <Label text="Room:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="room_comboBox" prefWidth="150.0" promptText="All" styleClass="whiteBackGround" stylesheets="@../css/styles.css" />
-                     </children>
-                  </VBox>
-                  <VBox layoutX="20.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
-                     <children>
-                        <Label text="Status:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="status_comboBox" prefWidth="150.0" promptText="All" styleClass="whiteBackGround" stylesheets="@../css/styles.css" />
-                     </children>
-                  </VBox>
-                  <VBox layoutX="170.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
-                     <children>
-                        <Label text="Start Date:">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="start_datePicker" />
-                     </children>
-                  </VBox>
-                  <VBox layoutX="320.0" layoutY="20.0" prefHeight="200.0" spacing="20.0">
-                     <children>
-                        <Label text="End Date">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="end_datePicker" />
-                     </children>
-                  </VBox>
-                  <Button fx:id="create" mnemonicParsing="false" prefHeight="54.0" prefWidth="191.0" styleClass="btn" stylesheets="@../css/styles.css" text="New" />
-               </children>
-            </HBox>
-            <TableView fx:id="cleaning_logs_table" prefHeight="800.0" prefWidth="1064.0">
-              <columns>
-                <TableColumn fx:id="room_column" prefWidth="75.0" text="Room Number" />
-                  <TableColumn fx:id="status_column" prefWidth="75.0" text="Status" />
-                  <TableColumn fx:id="assigned_on_column" prefWidth="75.0" text="Assigned on" />
-                  <TableColumn fx:id="completed_on_column" prefWidth="75.0" text="Completed on" />
-                  <TableColumn fx:id="viewMore" prefWidth="75.0" />
-              </columns>
-               <VBox.margin>
-                  <Insets left="20.0" right="20.0" />
-               </VBox.margin>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+            </VBox>
          </children>
-         <padding>
-            <Insets top="10.0" />
-         </padding>
-         <HBox.margin>
-            <Insets />
-         </HBox.margin></VBox>
-   </children>
-</HBox>
+      </HBox>
+   </content>
+</ScrollPane>

@@ -144,8 +144,8 @@ public class GuestLogController extends Controller {
         ObservableList<String> payment_status = FXCollections.observableArrayList();
 
         payment_status.add(null);
-        payment_status.add(PaymentStatus.COMPLETE.toJson());
-        payment_status.add(PaymentStatus.DUE.toJson());
+        payment_status.add(PaymentStatus.PAID.toJson());
+        payment_status.add(PaymentStatus.UNPAID.toJson());
 
         paymentStatus_comboBox.setItems(payment_status);
 

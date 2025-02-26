@@ -27,10 +27,14 @@ module com.example.bmhhotelmanagementsystem {
     opens com.bmh.hotelmanagementsystem.BackendService.entities.HouseKeeping to com.fasterxml.jackson.databind;
     exports com.bmh.hotelmanagementsystem.BackendService.entities.Invoice;
     opens com.bmh.hotelmanagementsystem.BackendService.entities.Invoice to com.fasterxml.jackson.databind;
+    exports com.bmh.hotelmanagementsystem.BackendService.entities.inventory;
+    opens com.bmh.hotelmanagementsystem.BackendService.entities.inventory to com.fasterxml.jackson.databind;
     exports com.bmh.hotelmanagementsystem.restaurant;
     opens com.bmh.hotelmanagementsystem.restaurant to javafx.fxml;
     opens com.bmh.hotelmanagementsystem.invoice to javafx.fxml;
+    opens com.bmh.hotelmanagementsystem.inventory to javafx.fxml;
     exports com.bmh.hotelmanagementsystem.invoice;
+    exports com.bmh.hotelmanagementsystem.inventory;
     exports com.bmh.hotelmanagementsystem.HouseKeeping;
     opens com.bmh.hotelmanagementsystem.HouseKeeping to javafx.fxml;
 }

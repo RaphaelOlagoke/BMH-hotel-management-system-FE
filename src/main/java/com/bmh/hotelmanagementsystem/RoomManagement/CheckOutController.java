@@ -166,7 +166,7 @@ public class CheckOutController extends Controller {
 
                     guest_name.setText("Name:    " + guestLog.getGuestName());
                     room_type.setText("Room Type(s):    " + types);
-                    outstanding_payments.setText("Outstanding Payment:    " + guestLog.getTotalAmountDue());
+                    outstanding_payments.setText("Outstanding Payment:    ₦" + guestLog.getTotalAmountDue());
 
                 } catch (Exception e) {
                     System.out.println(e);
@@ -195,7 +195,7 @@ public class CheckOutController extends Controller {
         }
         try {
             Utils utils = new Utils();
-            utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "checkOut-view.fxml");
+            utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/room/checkOut-view.fxml");
         } catch (Exception e) {
             e.printStackTrace();
         }

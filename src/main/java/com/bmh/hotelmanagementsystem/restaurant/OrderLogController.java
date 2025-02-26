@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderTableRow;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.Order;
@@ -16,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -56,7 +58,13 @@ public class OrderLogController extends Controller {
     @FXML
     private TableColumn<OrderTableRow, Void> viewMoreColumn;
 
+    @FXML
+    private Pagination pagination;
+
     private ObservableList<OrderTableRow> tableData = FXCollections.observableArrayList();
+
+    private int pageSize = 10;
+    private int page = 0;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -123,106 +131,72 @@ public class OrderLogController extends Controller {
 
         status_comboBox.setItems(order_status);
 
-        Stage loadingStage = showLoadingScreen(primaryStage);
+        customerNameColumn.setCellValueFactory(cellData -> cellData.getValue().customer_columnProperty());
+        orderRefColumn.setCellValueFactory(cellData -> cellData.getValue().ref_columnProperty());
+        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
+        statusColumn.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
+        viewMoreColumn.setCellFactory(createViewMoreButtonCellFactory());
 
-        Platform.runLater(() -> loadingStage.show());
+        ordersTable.setRowFactory(tableView -> {
+            TableRow<OrderTableRow> row = new TableRow<>();
 
-        new Thread(() -> {
-            try {
-                String response = RestClient.get("/restaurant/order/");
+            row.setOnMouseClicked(event -> {
+                if (!row.isEmpty()) {
+                    OrderTableRow clickedRow = row.getItem();
+                    showGuestDetails(clickedRow);
+                }
+            });
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
+            return row;
+        });
 
-                ApiResponse<Order> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Order>>() {
-                });
+        statusColumn.setCellFactory(column -> {
+            return new TableCell<OrderTableRow, RestaurantOrderStatus>() {
+                @Override
+                protected void updateItem(RestaurantOrderStatus item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);
+                    } else {
+                        Label label = new Label(item.toJson());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
 
-                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        customerNameColumn.setCellValueFactory(cellData -> cellData.getValue().customer_columnProperty());
-                        orderRefColumn.setCellValueFactory(cellData -> cellData.getValue().ref_columnProperty());
-                        dateColumn.setCellValueFactory(cellData -> cellData.getValue().dateProperty());
-                        statusColumn.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
-                        viewMoreColumn.setCellFactory(createViewMoreButtonCellFactory());
 
-                        ordersTable.setRowFactory(tableView -> {
-                            TableRow<OrderTableRow> row = new TableRow<>();
-
-                            row.setOnMouseClicked(event -> {
-                                if (!row.isEmpty()) {
-                                    OrderTableRow clickedRow = row.getItem();
-                                    showGuestDetails(clickedRow);
-                                }
-                            });
-
-                            return row;
-                        });
-
-                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-                        for (Order order : apiResponse.getData()) {
-                            String date = "";
-                            if (order.getCreatedDateTime() != null) {
-                                date = order.getCreatedDateTime().format(dateTimeFormatter);
-                            }
-
-                            OrderTableRow orderTableRow = new OrderTableRow(order.getCustomerName(), order.getRef(), order.getStatus(), date, order);
-                            tableData.add(orderTableRow);
+                        if (item == RestaurantOrderStatus.READY) {
+                            label.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+                        } else if (item == RestaurantOrderStatus.COMPLETED) {
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        }
+                        else if (item == RestaurantOrderStatus.IN_PROGRESS) {
+                            label.setStyle("-fx-text-fill: #8B8000; -fx-background-color: #fff9c4; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+                        else if (item == RestaurantOrderStatus.CANCELED) {
+                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+                        else {
+                            label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
                         }
 
-                        ordersTable.setItems(tableData);
-
-                        for (TableColumn<OrderTableRow, ?> column : ordersTable.getColumns()) {
-                            column.setStyle("-fx-pref-height: 70px;");
-                        }
-
-                        statusColumn.setCellFactory(column -> {
-                            return new TableCell<OrderTableRow, RestaurantOrderStatus>() {
-                                @Override
-                                protected void updateItem(RestaurantOrderStatus item, boolean empty) {
-                                    super.updateItem(item, empty);
-                                    if (empty || item == null) {
-                                        setText(null);
-                                        setGraphic(null);
-                                    } else {
-                                        Label label = new Label(item.toJson());
-                                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
-
-
-                                        if (item == RestaurantOrderStatus.IN_PROGRESS) {
-                                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 15;");
-                                        } else if (item == RestaurantOrderStatus.COMPLETED) {
-                                            label.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 15;");
-                                        } else {
-                                            label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
-                                        }
-
-                                        setGraphic(label);  // Set the Label as the graphic for this cell
-                                    }
-                                }
-                            };
-                        });
-
-                    });
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
                 }
-                else {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        Utils.showAlertDialog(Alert.AlertType.ERROR,apiResponse.getResponseHeader().getResponseMessage(),apiResponse.getError() );
-                    });
-                }
+            };
+        });
 
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    loadingStage.close();
-                    System.out.println(e);
-                    Utils.showGeneralErrorDialog();
-                });
-            }
-        }).start();
 
-        apply.setOnAction(event -> apply());
+        pagination.setPageFactory(this::createPage);
+
+        apply.setOnAction(event -> apply(page, pageSize));
+    }
+
+    private void loadPage(int page, int size) {
+        apply(page,size);
+    }
+
+    private Node createPage(int pageIndex) {
+        loadPage(pageIndex, pageSize);
+        return ordersTable;
     }
 
     private Callback<TableColumn<OrderTableRow, Void>, TableCell<OrderTableRow, Void>> createViewMoreButtonCellFactory() {
@@ -276,7 +250,7 @@ public class OrderLogController extends Controller {
         }
     }
 
-    private void apply() {
+    private void apply(int page, int size) {
         Stage loadingStage = Utils.showLoadingScreen(primaryStage);
         loadingStage.show();
 
@@ -295,7 +269,7 @@ public class OrderLogController extends Controller {
 
                 String jsonString = objectMapper.writeValueAsString(request);
 
-                String response = RestClient.post("/restaurant/order/filter", jsonString);
+                String response = RestClient.post("/restaurant/order/filter?page=" + page + "&size=" + size, jsonString);
                 ApiResponse<Order> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Order>>() {});
 
 
@@ -318,6 +292,8 @@ public class OrderLogController extends Controller {
                             }
 
                             ordersTable.setItems(tableData);
+                            pagination.setPageCount(apiResponse.getTotalPages());
+                            pagination.setCurrentPageIndex(page);
                         } else {
                             loadingStage.close();
                             Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());

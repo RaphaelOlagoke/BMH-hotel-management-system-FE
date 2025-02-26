@@ -6,7 +6,9 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CompleteMainte
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CreateMaintenanceRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Maintenance;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.MaintenanceStatus;
+import com.bmh.hotelmanagementsystem.BackendService.enums.RoomStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -54,6 +57,8 @@ public class SingleRoomController extends Controller {
     private Label needs_maintenance;
     @FXML
     private Button archiveRoom;
+    @FXML
+    private Button update;
 
     @FXML
     private TextArea maintenance_textBox;
@@ -84,7 +89,12 @@ public class SingleRoomController extends Controller {
         if (currentRoom != null) {
             room_number.setText("Room " + currentRoom.getRoomNumber());
             room_type.setText("Room Type: " + currentRoom.getRoomType());
-            room_status.setText("Status: " + currentRoom.getRoomStatus());
+            room_status.setText(currentRoom.getRoomStatus().toJson());
+            if (currentRoom.getRoomStatus() == RoomStatus.AVAILABLE) {
+                room_status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+            } else if (currentRoom.getRoomStatus() == RoomStatus.OCCUPIED) {
+                room_status.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+            }
             archived.setText("Archived: " + currentRoom.getArchived());
             needs_cleaning.setText("Needs Cleaning: " + currentRoom.getNeedsCleaning());
             needs_maintenance.setText("Needs Maintenance: " + currentRoom.getNeedsMaintenance());
@@ -123,6 +133,7 @@ public class SingleRoomController extends Controller {
 
         back.setOnAction(event -> goBack());
         archiveRoom.setOnAction(event -> archive());
+        update.setOnAction(event -> updateRoom());
         scheduleMaintenance.setOnAction(event -> {
             try {
                 scheduleMaintenance();
@@ -392,6 +403,34 @@ public class SingleRoomController extends Controller {
         try {
             Utils utils = new Utils();
             utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/maintenance-history-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void updateRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/update_room.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            UpdateRoomController controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+
+            controller.setData(currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            Utils utils = new Utils();
+            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,currentRoom, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+
         } catch (Exception e) {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();

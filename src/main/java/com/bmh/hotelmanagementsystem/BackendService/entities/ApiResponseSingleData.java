@@ -7,6 +7,9 @@ public class ApiResponseSingleData<T> {
     private T data;
     private String error;
 
+    protected long totalElements;
+    protected int totalPages;
+
     // Getters and Setters
     public ResponseHeader getResponseHeader() {
         return responseHeader;
@@ -30,6 +33,22 @@ public class ApiResponseSingleData<T> {
 
     public void setError(String error) {
         this.error = error;
+    }
+
+    public long getTotalElements() {
+        return totalElements;
+    }
+
+    public void setTotalElements(long totalElements) {
+        this.totalElements = totalElements;
+    }
+
+    public int getTotalPages() {
+        return totalPages;
+    }
+
+    public void setTotalPages(int totalPages) {
+        this.totalPages = totalPages;
     }
 
     @Override

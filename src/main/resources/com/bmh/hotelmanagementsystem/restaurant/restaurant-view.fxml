@@ -13,14 +13,14 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrollPane" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantController">
+<ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantController">
    <content>
-      <HBox fx:id="home_background" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+      <HBox fx:id="home_background" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
       <!--             Side Bar -->
            <fx:include fx:id="side_bar" maxWidth="300.0" source="restaurant_side_bar.fxml" />
       <!--             Side Bar -->
-            <VBox prefHeight="1080.0" prefWidth="988.0" spacing="15.0">
+            <VBox prefWidth="988.0" spacing="15.0">
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
                      <children>
@@ -80,7 +80,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@images/restaurant/appetizers.jpg" />
+                                          <Image url="@../images/restaurant/Cake.png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="appetizerLabel" text="Appetizers">
@@ -98,7 +98,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@../images/restaurant/mains.jpg" />
+                                          <Image url="@../images/restaurant/Union%20(1).png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="mainLabel" text="Mains">
@@ -116,7 +116,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@../images/restaurant/dessert.jpg" />
+                                          <Image url="@../images/restaurant/Union%20(2).png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="dessertLabel" text="Dessert">
@@ -134,7 +134,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@images/restaurant/sides.jpg" />
+                                          <Image url="@../images/restaurant/Vector.png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="sidesLabel" text="Sides">
@@ -152,7 +152,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@images/restaurant/beverages.jpg" />
+                                          <Image url="@../images/restaurant/Union.png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="beverageLabel" text="Beverages">
@@ -170,7 +170,7 @@
                                  <children>
                                     <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
                                        <image>
-                                          <Image url="@../images/restaurant/special.jpg" />
+                                          <Image url="@../images/restaurant/Star_fill.png" />
                                        </image>
                                     </ImageView>
                                     <Label fx:id="specialLabel" text="Specials">
@@ -192,10 +192,17 @@
                         <Label fx:id="menuCategory" styleClass="title_text" stylesheets="@../css/styles.css" text="Menu" />
                         <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="735.0">
                            <children>
-                              <Button fx:id="create" mnemonicParsing="false" prefHeight="44.0" prefWidth="65.0" styleClass="btn" stylesheets="@../css/styles.css" text="+">
+                              <Button fx:id="create" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
                                  <font>
-                                    <Font name="System Bold" size="20.0" />
+                                    <Font size="15.0" />
                                  </font>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
                               </Button>
                            </children>
                         </HBox>
@@ -207,7 +214,7 @@
                   <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
                </padding>
             </VBox>
-            <VBox prefHeight="200.0" prefWidth="700.0">
+            <VBox prefWidth="700.0">
                <children>
                   <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Bills" />
                   <ScrollPane prefWidth="600.0">
@@ -325,7 +332,10 @@
                                  <graphic>
                                     <VBox fx:id="cashVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
                                        <children>
-                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image" />
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Money_fill.png" />
+                                             </image></ImageView>
                                           <Label fx:id="cashLabel" text="Cash">
                                              <font>
                                                 <Font size="15.0" />
@@ -339,7 +349,10 @@
                                  <graphic>
                                     <VBox fx:id="cardVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
                                        <children>
-                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image" />
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Credit%20card_fill.png" />
+                                             </image></ImageView>
                                           <Label fx:id="cardLabel" text="Card">
                                              <font>
                                                 <Font size="15.0" />
@@ -353,8 +366,29 @@
                                  <graphic>
                                     <VBox fx:id="transferVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
                                        <children>
-                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image" />
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Phone.png" />
+                                             </image></ImageView>
                                           <Label fx:id="transferLabel" text="Transfer">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="chargeToRoom" layoutX="436.0" layoutY="10.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox fx:id="transferVbox1" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Key.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="transferLabel1" text="Charge to room">
                                              <font>
                                                 <Font size="15.0" />
                                              </font>

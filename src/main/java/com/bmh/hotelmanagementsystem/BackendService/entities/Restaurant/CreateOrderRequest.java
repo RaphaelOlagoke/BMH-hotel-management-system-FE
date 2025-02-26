@@ -11,6 +11,8 @@ public class CreateOrderRequest {
 
     private PaymentMethod paymentMethod;
 
+    private int roomNumber;
+
     public String getCustomerName() {
         return customerName;
     }
@@ -33,6 +35,14 @@ public class CreateOrderRequest {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public int getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
     }
 }
 

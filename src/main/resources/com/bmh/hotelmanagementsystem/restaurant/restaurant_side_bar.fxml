@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="side_bar" alignment="TOP_CENTER" prefHeight="1080.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantSideBarController">
+<VBox fx:id="side_bar" alignment="TOP_CENTER" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantSideBarController">
     <children>
          <ImageView fitHeight="73.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true">
             <image>
@@ -47,7 +47,7 @@
                      <children>
                         <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/side-bar%20icons/rooms.png" />
+                              <Image url="@../images/invoice.png" />
                            </image>
                         </ImageView>
                         <Label text="Orders">
@@ -61,7 +61,7 @@
                      </padding>
                   </HBox>
                </graphic></Button>
-             <Button fx:id="side_bar_inventory" mnemonicParsing="false" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
+             <Button fx:id="side_bar_inventory" mnemonicParsing="false" onAction="#inventory" prefHeight="50.0" prefWidth="314.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
                <graphic>
                   <HBox spacing="10.0" styleClass="side-bar-button" stylesheets="@../css/styles.css">
                      <children>

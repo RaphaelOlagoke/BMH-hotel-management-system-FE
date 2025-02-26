@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderDetails;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.BillItem;
@@ -17,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -114,6 +117,8 @@ public class RestaurantController extends Controller {
     private Button card;
     @FXML
     private Button transfer;
+    @FXML
+    private Button chargeToRoom;
 
     @FXML
     private VBox cashVbox;
@@ -165,6 +170,7 @@ public class RestaurantController extends Controller {
         cash.setOnAction(event -> onSelectedPaymentMethod(cashVbox, cashLabel, PaymentMethod.CASH));
         card.setOnAction(event -> onSelectedPaymentMethod(cardVbox, cardLabel, PaymentMethod.CARD));
         transfer.setOnAction(event -> onSelectedPaymentMethod(transferVbox, transferLabel, PaymentMethod.TRANSFER));
+        chargeToRoom.setOnAction(event -> chargeToRoom());
 
         create.setOnAction(event -> create());
 //        List<Menu> menuList = new ArrayList<>();
@@ -253,9 +259,35 @@ public class RestaurantController extends Controller {
                                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/Restaurant/menu_item.fxml"));
                                 VBox vBox = fxmlLoader.load();
 
+                                Button viewMore = (Button) vBox.lookup("#viewMore");
                                 Label name = (Label) vBox.lookup("#name");
                                 Label price = (Label) vBox.lookup("#price");
                                 Button add = (Button) vBox.lookup("#add");
+//                                ImageView image = (ImageView) vBox.lookup("#image");
+//
+//                                String imageRootPath = "/com/bmh/hotelmanagementsystem/images/restaurant/";
+//                                Image img = new Image(imageRootPath + "Cake.png");
+//
+//                                if(category.equalsIgnoreCase(MenuItemType.APPETIZER.toJson())) {
+//                                    img = new Image(getClass().getClassLoader().getResource(imageRootPath + "Cake.png").toExternalForm());
+//                                }
+//                                else if (category.equalsIgnoreCase(MenuItemType.MAINS.toJson())) {
+//                                    img = new Image(getClass().getResource(imageRootPath +"Union (1).png").toExternalForm());
+//                                }
+//                                else if (category.equalsIgnoreCase(MenuItemType.DESSERT.toJson())) {
+//                                    img = new Image(getClass().getResource(imageRootPath +"Union (2).png").toExternalForm());
+//                                }
+//                                else if (category.equalsIgnoreCase(MenuItemType.SIDES.toJson())) {
+//                                    img = new Image(getClass().getResource(imageRootPath +"/Vector.png").toExternalForm());
+//                                }
+//                                else if (category.equalsIgnoreCase(MenuItemType.BEVERAGE.toJson())) {
+//                                    img = new Image(getClass().getResource(imageRootPath +"Union.png").toExternalForm());
+//                                }
+//                                else if (category.equalsIgnoreCase(MenuItemType.SPECIALS.toJson())) {
+//                                    img = new Image(getClass().getResource(imageRootPath +"Star_fill.png").toExternalForm());
+//                                }
+//
+//                                image.setImage(img);
 
                                 add.setOnAction(event -> {
                                     try {
@@ -268,6 +300,7 @@ public class RestaurantController extends Controller {
 
                                 name.setText(menuItem.getName());
                                 price.setText("$" + formatter.format(menuItem.getPrice()));
+                                viewMore.setOnAction(event -> editMenuItem(menuItem));
 
                                 menu_flowPane.getChildren().add(vBox);
                             }
@@ -555,6 +588,72 @@ public class RestaurantController extends Controller {
 
             controller.setData(orderDetails, "/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml");
 
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            bill_flowPane.getChildren().clear();
+            billItems.clear();
+
+            subTotal = 0.0;
+            discount = 0.0;
+            tax = 0.0;
+            total= 0.0;
+
+            subtotalLabel.setText(String.valueOf(formatter.format(subTotal)));
+            totalLabel.setText(String.valueOf(formatter.format(total)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void editMenuItem(MenuItemDto menuItemDto){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/restaurant/update_menuItem.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            UpdateMenuItemController controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+            controller.setData(menuItemDto, "/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml");
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void chargeToRoom(){
+        if(total == 0){
+            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid Request", "No item Selected");
+            return;
+        }
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/restaurant/charge_to_room.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Charge to room");
+
+            Controller controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+
+            OrderDetails orderDetails = new OrderDetails();
+            orderDetails.setPaymentMethod(paymentMethod);
+            orderDetails.setBillItems(billItems);
+
+            controller.setData(orderDetails, "/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml");
 
             Scene formScene = new Scene(form);
             formStage.setScene(formScene);

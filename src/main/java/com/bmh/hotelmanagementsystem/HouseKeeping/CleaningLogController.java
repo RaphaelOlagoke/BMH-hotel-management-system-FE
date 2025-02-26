@@ -1,6 +1,8 @@
 package com.bmh.hotelmanagementsystem.HouseKeeping;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
+import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.dto.HouseKeeping.CleaningRow;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.HouseKeeping.CleaningLog;
@@ -9,6 +11,7 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
 import com.bmh.hotelmanagementsystem.BackendService.enums.CleaningStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
+import com.bmh.hotelmanagementsystem.dto.room.GuestReservation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,6 +20,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
@@ -66,6 +70,9 @@ public class CleaningLogController extends Controller {
 //    private TableColumn<CleaningRow, Void> assign_column;
 
     @FXML
+    private Pagination pagination;
+
+    @FXML
     private ComboBox<Integer> room_comboBox;
     @FXML
     private ComboBox<String> status_comboBox;
@@ -79,10 +86,15 @@ public class CleaningLogController extends Controller {
 
     @FXML
     private Button create;
+    @FXML
+    private Button inventory;
 
     private ObservableList<CleaningRow> logs = FXCollections.observableArrayList();
 
     private List<Room> allRooms = new ArrayList<>();
+
+    private int pageSize = 10;
+    private int page = 0;
 
 
     public void initialize() {
@@ -131,6 +143,62 @@ public class CleaningLogController extends Controller {
             }
         });
 
+        room_column.setCellValueFactory(cellData -> cellData.getValue().room_columnProperty().asObject());
+        status_column.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
+        assigned_on_column.setCellValueFactory(cellData -> cellData.getValue().assigned_on_columnProperty());
+        completed_on_column.setCellValueFactory(cellData -> cellData.getValue().completed_on_columnProperty());
+        viewMore.setCellFactory(assignCellFactory());
+
+        status_column.setCellFactory(column -> {
+            return new TableCell<CleaningRow, CleaningStatus>() {
+                @Override
+                protected void updateItem(CleaningStatus item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);  // Reset cell content
+                    } else {
+                        // Create a Label for the status
+                        Label label = new Label(item.toJson());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+
+                        // Apply styles based on the status
+                        if (item == CleaningStatus.COMPLETED) {
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        } else if (item == CleaningStatus.IN_PROGRESS) {
+                            label.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+                        }
+                        else if (item == CleaningStatus.PENDING) {
+                            label.setStyle("-fx-text-fill: #8B8000; -fx-background-color: #fff9c4; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+                        else if (item == CleaningStatus.CANCELED) {
+                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+                        else {
+                            label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
+                        }
+
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
+                }
+            };
+        });
+
+//                        cleaning_logs_table.setRowFactory(tableView -> {
+//                            TableRow<CleaningRow> row = new TableRow<>();
+//
+//                            // Add a mouse click event listener to each row
+//                            row.setOnMouseClicked(event -> {
+//                                // Check if the row is not empty (i.e., not the header)
+//                                if (!row.isEmpty()) {
+//                                    CleaningRow clickedRow = row.getItem();  // Get the item (data) in the clicked row
+//                                    showRoomDetails(clickedRow);
+//                                }
+//                            });
+//
+//                            return row;
+//                        });
+
         Stage loadingStage = showLoadingScreen(primaryStage);
 
         Platform.runLater(() -> loadingStage.show());
@@ -146,6 +214,7 @@ public class CleaningLogController extends Controller {
 
                 if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
                     Platform.runLater(() -> {
+                        loadingStage.close();
                         ObservableList<Integer> roomNumber = FXCollections.observableArrayList();
 
                         roomNumber.add(null);
@@ -166,67 +235,11 @@ public class CleaningLogController extends Controller {
 
                         status_comboBox.setItems(cleaningStatus);
 
-                        apply.setOnAction(event -> apply());
+                        apply.setOnAction(event -> apply(page, pageSize));
                         create.setOnAction(event -> create());
+                        inventory.setOnAction(event -> inventory());
 
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        Utils.showAlertDialog(Alert.AlertType.ERROR,apiResponse.getResponseHeader().getResponseMessage(),apiResponse.getError() );
-                    });
-
-                }
-
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    e.printStackTrace();
-                    Utils.showGeneralErrorDialog();
-                });
-            }
-
-            try {
-                String response = RestClient.get("/cleaningLog/");
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
-
-                ApiResponse<CleaningLog> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<CleaningLog>>() {});
-
-                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        room_column.setCellValueFactory(cellData -> cellData.getValue().room_columnProperty().asObject());
-                        status_column.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
-                        assigned_on_column.setCellValueFactory(cellData -> cellData.getValue().assigned_on_columnProperty());
-                        completed_on_column.setCellValueFactory(cellData -> cellData.getValue().completed_on_columnProperty());
-                        viewMore.setCellFactory(assignCellFactory());
-
-//                        cleaning_logs_table.setRowFactory(tableView -> {
-//                            TableRow<CleaningRow> row = new TableRow<>();
-//
-//                            // Add a mouse click event listener to each row
-//                            row.setOnMouseClicked(event -> {
-//                                // Check if the row is not empty (i.e., not the header)
-//                                if (!row.isEmpty()) {
-//                                    CleaningRow clickedRow = row.getItem();  // Get the item (data) in the clicked row
-//                                    showRoomDetails(clickedRow);
-//                                }
-//                            });
-//
-//                            return row;
-//                        });
-                        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                        for (CleaningLog log : apiResponse.getData()){
-                            String assignedOn = log.getAssignedOn().format(dateTimeFormatter);
-                            String completedOn = "";
-                            if (log.getCompletedOn() != null) {
-                                completedOn = log.getCompletedOn().format(dateTimeFormatter);
-                            }
-                            CleaningRow cleaningRow = new CleaningRow(log.getRef(), log.getRoom().getRoomNumber(), log.getStatus(), assignedOn, completedOn, log);
-                            logs.add(cleaningRow);
-                        }
-
-                        cleaning_logs_table.setItems(logs);
+                        pagination.setPageFactory(this::createPage);
 
                     });
                 } else {
@@ -244,9 +257,17 @@ public class CleaningLogController extends Controller {
                     Utils.showGeneralErrorDialog();
                 });
             }
-
         }).start();
 
+    }
+
+    private void loadPage(int page, int size) {
+        apply(page,size);
+    }
+
+    private Node createPage(int pageIndex) {
+        loadPage(pageIndex, pageSize);
+        return cleaning_logs_table;
     }
 
     private Callback<TableColumn<CleaningRow, Void>, TableCell<CleaningRow, Void>> assignCellFactory() {
@@ -290,7 +311,7 @@ public class CleaningLogController extends Controller {
         };
     }
 
-    public void apply(){
+    public void apply(int page, int size){
         Stage loadingStage = Utils.showLoadingScreen(primaryStage);
         loadingStage.show();
 
@@ -316,7 +337,7 @@ public class CleaningLogController extends Controller {
 
                 String jsonString = objectMapper.writeValueAsString(request);
 
-                String response = RestClient.post("/cleaningLog/filter", jsonString);
+                String response = RestClient.post("/cleaningLog/filter?page=" + page + "&size=" + size, jsonString);
                 ApiResponse<CleaningLog> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<CleaningLog>>() {});
 
 
@@ -338,6 +359,8 @@ public class CleaningLogController extends Controller {
                             }
 
                             cleaning_logs_table.setItems(logs);
+                            pagination.setPageCount(apiResponse.getTotalPages());
+                            pagination.setCurrentPageIndex(page);
                         } else {
                             loadingStage.close();
                             Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(),apiResponse.getError() );
@@ -416,6 +439,15 @@ public class CleaningLogController extends Controller {
         } catch (Exception e) {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void inventory(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/components/request-inventory.fxml", primaryStage, StockItemCategory.HOUSE_KEEPING, "/com/bmh/hotelmanagementsystem/HouseKeeping/cleaning-log-view.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -5,67 +5,94 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1600.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.InvoiceController">
-   <children>
-   <fx:include fx:id="side_bar" source="../components/side_bar.fxml" />
-      <VBox prefHeight="200.0" prefWidth="1750.0">
-         <padding>
-            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
-         </padding>
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.InvoiceController">
+   <content>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
-            <ScrollPane>
-               <content>
-                  <AnchorPane prefHeight="941.0" prefWidth="1750.0" styleClass="box" stylesheets="@../css/styles.css">
+         <fx:include fx:id="side_bar" maxWidth="300.0" source="../room/room_sidebar.fxml" />
+            <VBox spacing="25.0" styleClass="box" stylesheets="@../css/styles.css">
+               <padding>
+                  <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+               </padding>
+               <children>
+               <fx:include fx:id="back" source="../components/back_button.fxml" />
+                  <HBox alignment="CENTER" prefHeight="74.0">
                      <children>
-                     <fx:include fx:id="back" source="../components/back_button.fxml" />
-                        <Label layoutX="495.0" layoutY="39.0" styleClass="title_text" stylesheets="@../css/styles.css" text="Invoice" />
-                        <Label fx:id="guest_name" layoutX="118.0" layoutY="108.0" text="Guest Name:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="room" layoutX="518.0" layoutY="106.0" prefWidth="500.0" text="Room:" wrapText="true">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="room_type" layoutX="515.0" layoutY="140.0" prefWidth="520.0" text="Room Type:" wrapText="true">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="total_outstanding_payment" layoutX="119.0" layoutY="213.0" text="Outstanding Payments:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutX="37.0" layoutY="260.0" prefHeight="550.0" prefWidth="830.0">
-                           <content>
-                              <FlowPane fx:id="outstanding_payments" prefHeight="550.0" prefWidth="810.0" />
-                           </content>
-                        </ScrollPane>
-                        <Button fx:id="complete" layoutX="648.0" layoutY="851.0" mnemonicParsing="false" prefHeight="76.0" prefWidth="215.0" styleClass="btn" stylesheets="@../css/styles.css" text="Complete">
+                        <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Invoice" />
+                     </children>
+                  </HBox>
+                  <Label fx:id="guest_name" text="Guest Name:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="room" text="Room:" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="room_type" text="Room Type:" wrapText="true">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefWidth="868.0">
+                     <children>
+                        <VBox spacing="25.0">
+                           <children>
+                              <Label text="Payment Method:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="payment_method" prefHeight="45.0" prefWidth="268.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <Label fx:id="total_outstanding_payment" text="Outstanding Payments:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane maxWidth="-Infinity" prefHeight="392.0" prefWidth="981.0">
+                     <content>
+                        <FlowPane fx:id="outstanding_payments" prefHeight="486.0" prefWidth="979.0" vgap="15.0">
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </FlowPane>
+                     </content>
+                  </ScrollPane>
+                  <HBox>
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <ComboBox fx:id="payment_method" layoutX="791.0" layoutY="212.0" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
-                        <Label layoutX="626.0" layoutY="213.0" text="Payment Method:">
-                           <font>
-                              <Font size="18.0" />
-                           </font>
-                        </Label>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="766.0">
+                           <children>
+                              <Button fx:id="complete" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="btn" stylesheets="@../css/styles.css" text="Mark As Paid">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
                      </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </HBox.margin>
+            </VBox>
          </children>
-      </VBox>
-   </children>
-</HBox>
+      </HBox>
+   </content>
+</ScrollPane>

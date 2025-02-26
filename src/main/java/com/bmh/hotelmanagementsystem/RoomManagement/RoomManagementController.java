@@ -1,6 +1,10 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
+import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
+import com.bmh.hotelmanagementsystem.dto.restaurant.OrderDetails;
+import com.bmh.hotelmanagementsystem.dto.room.GuestReservation;
 import com.bmh.hotelmanagementsystem.dto.room.RoomManagement;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
@@ -9,6 +13,7 @@ import com.bmh.hotelmanagementsystem.BackendService.enums.RoomStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
+import com.bmh.hotelmanagementsystem.restaurant.CreateOrderController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,8 +22,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -56,6 +63,8 @@ public class RoomManagementController extends Controller {
     @FXML
     private TableColumn<RoomManagement, Void> viewMore;
 
+    @FXML
+    private Pagination pagination;
 
     @FXML
     private ComboBox<String> room_type;
@@ -72,6 +81,13 @@ public class RoomManagementController extends Controller {
     private ComboBox<Boolean> archive_comboBox;
     @FXML
     private Button apply;
+    @FXML
+    private Button create;
+    @FXML
+    private Button inventory;
+
+    private int pageSize = 10;
+    private int page = 0;
 
 
     List<Room> rooms = new ArrayList<>();
@@ -80,16 +96,176 @@ public class RoomManagementController extends Controller {
     private ObservableList<RoomManagement> data = FXCollections.observableArrayList();
 
     public void initialize() {
+        pagination.setPageFactory(this::createPage);
+
+        room_number_column.setCellValueFactory(cellData -> cellData.getValue().room_number_columnProperty());
+        type_column.setCellValueFactory(cellData -> cellData.getValue().type_columnProperty());
+        status_column.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
+        needs_cleaning_column.setCellValueFactory(cellData -> cellData.getValue().needs_cleaning_columnProperty());
+        needs_maintenance_column.setCellValueFactory(cellData -> cellData.getValue().needs_maintenance_columnProperty());
+        archive.setCellValueFactory(cellData -> cellData.getValue().archiveProperty());
+
+        viewMore.setCellFactory(createViewMoreButtonCellFactory());
+
+        status_column.setCellFactory(column -> {
+            return new TableCell<RoomManagement, RoomStatus>() {
+                @Override
+                protected void updateItem(RoomStatus item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);  // Reset cell content
+                    } else {
+                        // Create a Label for the status
+                        Label label = new Label(item.toJson());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+
+                        // Apply styles based on the status
+                        if (item == RoomStatus.AVAILABLE) {
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        } else if (item == RoomStatus.OCCUPIED) {
+                            label.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+                        } else {
+                            label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
+                        }
+
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
+                }
+            };
+        });
+
+        needs_cleaning_column.setCellFactory(column -> {
+            return new TableCell<RoomManagement, Boolean>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);  // Reset cell content
+                    } else {
+                        // Create a Label for the status
+                        Label label = new Label(item.toString());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+
+                        // Apply styles based on the status
+                        if (!item) {
+                            label.setText("NO");
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        } else {
+                            label.setText("YES");
+                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
+                }
+            };
+        });
+
+        needs_maintenance_column.setCellFactory(column -> {
+            return new TableCell<RoomManagement, Boolean>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);  // Reset cell content
+                    } else {
+                        // Create a Label for the status
+                        Label label = new Label(item.toString());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+
+                        // Apply styles based on the status
+                        if (!item) {
+                            label.setText("NO");
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        } else {
+                            label.setText("YES");
+                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
+                }
+            };
+        });
+
+        archive.setCellFactory(column -> {
+            return new TableCell<RoomManagement, Boolean>() {
+                @Override
+                protected void updateItem(Boolean item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item == null) {
+                        setText(null);
+                        setGraphic(null);  // Reset cell content
+                    } else {
+                        // Create a Label for the status
+                        Label label = new Label(item.toString());
+                        label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
+
+                        // Apply styles based on the status
+                        if (!item) {
+                            label.setText("NO");
+                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+                        } else {
+                            label.setText("YES");
+                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                        }
+
+                        setGraphic(label);  // Set the Label as the graphic for this cell
+                    }
+                }
+            };
+        });
+
+        rooms_table.setRowFactory(tableView -> {
+            TableRow<RoomManagement> row = new TableRow<>();
+
+            // Add a mouse click event listener to each row
+            row.setOnMouseClicked(event -> {
+                // Check if the row is not empty (i.e., not the header)
+                if (!row.isEmpty()) {
+                    RoomManagement clickedRow = row.getItem();  // Get the item (data) in the clicked row
+                    showRoomDetails(clickedRow);
+                }
+            });
+
+            return row;
+        });
+    }
+
+    private void loadPage(int page, int size) {
+
         Stage loadingStage = showLoadingScreen(primaryStage);
 
         Platform.runLater(() -> loadingStage.show());
 
         new Thread(() -> {
             try {
-                String response = RestClient.get("/room/");
+                Integer selectedRoom = room_number.getSelectionModel().getSelectedItem();
+
+                RoomFilterRequest request = new RoomFilterRequest();
+                request.setRoomType(room_type.getSelectionModel().getSelectedItem() != null? RoomType.valueOf(room_type.getSelectionModel().getSelectedItem()) : null);
+                request.setRoomStatus(room_status.getSelectionModel().getSelectedItem() != null? RoomStatus.valueOf(room_status.getSelectionModel().getSelectedItem()) : null);
+                request.setNeedsCleaning(needs_cleaning.getSelectionModel().getSelectedItem() != null? needs_cleaning.getSelectionModel().getSelectedItem() : null);
+                request.setNeedsMaintenance(needs_maintenance.getSelectionModel().getSelectedItem() != null? needs_maintenance.getSelectionModel().getSelectedItem() : null);
+                request.setArchived(archive_comboBox.getSelectionModel().getSelectedItem() != null? archive_comboBox.getSelectionModel().getSelectedItem() : null);
+
+                try{
+                    request.setRoomNumber(room_number.getSelectionModel().getSelectedItem());
+                }
+                catch (NullPointerException e){
+                    request.setRoomNumber(0);
+                }
+
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
+
+                String jsonString = objectMapper.writeValueAsString(request);
+
+                String response = RestClient.post("/room/find?page=" + page + "&size=" + pageSize, jsonString);
 
                 ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {});
 
@@ -132,6 +308,10 @@ public class RoomManagementController extends Controller {
 
                         apply.setOnAction(event -> apply());
 
+                        create.setOnAction(event -> createRoom());
+
+                        inventory.setOnAction(event -> inventory());
+
                         allRooms = apiResponse.getData();
                         rooms = apiResponse.getData();
 
@@ -141,30 +321,10 @@ public class RoomManagementController extends Controller {
 
                         room_number.setItems(listOfRooms);
 
-                        room_number_column.setCellValueFactory(cellData -> cellData.getValue().room_number_columnProperty());
-                        type_column.setCellValueFactory(cellData -> cellData.getValue().type_columnProperty());
-                        status_column.setCellValueFactory(cellData -> cellData.getValue().status_columnProperty());
-                        needs_cleaning_column.setCellValueFactory(cellData -> cellData.getValue().needs_cleaning_columnProperty());
-                        needs_maintenance_column.setCellValueFactory(cellData -> cellData.getValue().needs_maintenance_columnProperty());
-                        archive.setCellValueFactory(cellData -> cellData.getValue().archiveProperty());
+                        pagination.setPageCount(apiResponse.getTotalPages());
+                        pagination.setCurrentPageIndex(page);
 
-                        viewMore.setCellFactory(createViewMoreButtonCellFactory());
-
-                        rooms_table.setRowFactory(tableView -> {
-                            TableRow<RoomManagement> row = new TableRow<>();
-
-                            // Add a mouse click event listener to each row
-                            row.setOnMouseClicked(event -> {
-                                // Check if the row is not empty (i.e., not the header)
-                                if (!row.isEmpty()) {
-                                    RoomManagement clickedRow = row.getItem();  // Get the item (data) in the clicked row
-                                    showRoomDetails(clickedRow);
-                                }
-                            });
-
-                            return row;
-                        });
-
+                        data.clear();
 
                         for (Room room : rooms){
                             RoomManagement roomManagement = new RoomManagement(String.valueOf(room.getRoomNumber()), room.getRoomType(), room.getRoomStatus(), room.getNeedsCleaning(), room.getNeedsMaintenance(), room.getArchived(), room);
@@ -190,6 +350,12 @@ public class RoomManagementController extends Controller {
                 });
             }
         }).start();
+
+    }
+
+    private Node createPage(int pageIndex) {
+        loadPage(pageIndex, pageSize);
+        return rooms_table;
     }
 
     private Callback<TableColumn<RoomManagement, Void>, TableCell<RoomManagement, Void>> createViewMoreButtonCellFactory() {
@@ -285,7 +451,7 @@ public class RoomManagementController extends Controller {
 
                 String jsonString = objectMapper.writeValueAsString(request);
 
-                String response = RestClient.post("/room/find", jsonString);
+                String response = RestClient.post("/room/find?page=" + page + "&size=" + pageSize, jsonString);
                 ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {});
 
 
@@ -302,6 +468,8 @@ public class RoomManagementController extends Controller {
                                 data.add(roomManagement);
                             }
                             rooms_table.setItems(data);
+                            pagination.setPageCount(apiResponse.getTotalPages());
+                            pagination.setCurrentPageIndex(page);
                         } else {
                             loadingStage.close();
 
@@ -333,5 +501,39 @@ public class RoomManagementController extends Controller {
                 });
             }
         }).start();
+    }
+
+    public void createRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/create_room.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            CreateRoomController controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+
+            controller.setData(null, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void inventory(){
+        try {
+            Utils utils = new Utils();
+            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/components/request-inventory.fxml", primaryStage, StockItemCategory.ROOM, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

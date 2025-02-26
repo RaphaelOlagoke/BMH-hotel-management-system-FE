@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.invoice;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.InvoiceSummary;
 import com.bmh.hotelmanagementsystem.dto.invoice.InvoiceRow;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.Invoice;
@@ -16,12 +17,17 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -44,6 +50,27 @@ public class InvoiceLogController extends Controller {
         this.data = data;
         this.previousLocation = previousLocation;
     }
+
+    @FXML
+    private Label paidCount;
+    @FXML
+    private Label paidValue;
+    @FXML
+    private Label dueCount;
+    @FXML
+    private Label dueValue;
+
+    @FXML
+    private Label debitCount;
+    @FXML
+    private Label debitValue;
+    @FXML
+    private Label refundedCount;
+    @FXML
+    private Label refundedValue;
+
+    @FXML
+    private Pagination pagination;
 
     @FXML
     private TableView<InvoiceRow> invoiceTable;
@@ -79,9 +106,15 @@ public class InvoiceLogController extends Controller {
     private DatePicker end_datePicker;
     @FXML
     private Button apply;
+    @FXML
+    private Button create;
 
     private ObservableList<InvoiceRow> invoiceData = FXCollections.observableArrayList();
 
+    private int pageSize = 10;
+    private int page = 0;
+
+    DecimalFormat priceFormatter = new DecimalFormat("#,###.00");
 
     public void initialize() {
 
@@ -155,6 +188,69 @@ public class InvoiceLogController extends Controller {
 
         service_comboBox.setItems(service_type);
 
+        try {
+            InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+            request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
+            request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
+            request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
+
+            request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
+            request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
+
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+
+            String jsonString = objectMapper.writeValueAsString(request);
+
+            String response = RestClient.post("/invoice/invoiceSummary", jsonString);
+            ApiResponseSingleData<InvoiceSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<InvoiceSummary>>() {});
+
+
+            Platform.runLater(() -> {
+                try {
+                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+
+                        InvoiceSummary invoiceSummary = apiResponse.getData();
+
+                        paidCount.setText("Count: " + invoiceSummary.getNoOfPaidInvoice());
+                        paidValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfPaidInvoice()));
+
+                        dueCount.setText("Count: " + invoiceSummary.getNoOfUnPaidInvoice());
+                        dueValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfUnPaidInvoice()));
+
+                        debitCount.setText("Count: " + invoiceSummary.getNoOfDebitInvoice());
+                        debitValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfDebitInvoice()));
+
+                        refundedCount.setText("Count: " + invoiceSummary.getNoOfRefundedInvoice());
+                        refundedValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfRefundedInvoice()));
+
+                    } else {
+                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utils.showGeneralErrorDialog();
+                }
+            });
+
+
+        } catch (Exception e) {
+            Platform.runLater(() -> {
+                e.printStackTrace();
+                Utils.showGeneralErrorDialog();
+            });
+        }
+
+        pagination.setPageFactory(this::createPage);
+
+
+        apply.setOnAction(event -> apply());
+        create.setOnAction(event -> create());
+    }
+
+    private void loadPage(int page, int size) {
+
         Stage loadingStage = showLoadingScreen(primaryStage);
 
         Platform.runLater(() -> loadingStage.show());
@@ -164,10 +260,21 @@ public class InvoiceLogController extends Controller {
             listOfRooms.add(null);
 
             try {
-                String response = RestClient.get("/invoice/");
+                InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+                request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
+
+                request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
+                request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
+
 
                 ObjectMapper objectMapper = new ObjectMapper();
                 objectMapper.registerModule(new JavaTimeModule());
+
+                String jsonString = objectMapper.writeValueAsString(request);
+
+                String response = RestClient.post("/invoice/filter?page=" + page + "&size=" + size, jsonString);
 
                 ApiResponse<Invoice> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Invoice>>() {
                 });
@@ -207,6 +314,8 @@ public class InvoiceLogController extends Controller {
                             return row;
                         });
 
+                        invoiceData.clear();
+
                         for (Invoice invoice : apiResponse.getData()) {
 
                             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -223,7 +332,11 @@ public class InvoiceLogController extends Controller {
                             invoiceData.add(invoiceRow);
                         }
 
+
                         invoiceTable.setItems(invoiceData);
+
+                        pagination.setPageCount(apiResponse.getTotalPages());
+                        pagination.setCurrentPageIndex(page);
 
                         payment_status_column.setCellFactory(column -> {
                             return new TableCell<InvoiceRow, PaymentStatus>() {
@@ -239,12 +352,21 @@ public class InvoiceLogController extends Controller {
                                         label.setStyle("-fx-font-weight: bold; -fx-padding: 5px;");
 
 
-                                        if (item == PaymentStatus.COMPLETE) {
-                                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 15;");
-                                        } else if (item == PaymentStatus.DUE) {
-                                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 7px 15px; -fx-background-radius: 15;");
-                                        } else {
-                                            label.setStyle("-fx-padding: 5px;");
+                                        if (item == PaymentStatus.PAID) {
+                                            label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+
+                                        }
+                                        else if (item == PaymentStatus.UNPAID) {
+                                            label.setStyle("-fx-text-fill: #8B8000; -fx-background-color: #fff9c4; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                                        }
+                                        else if (item == PaymentStatus.DEBIT) {
+                                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                                        }
+                                        else if (item == PaymentStatus.REFUNDED) {
+                                            label.setStyle("-fx-text-fill: #0059AC; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+                                        }
+                                        else {
+                                            label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
                                         }
 
                                         setGraphic(label);  // Set the Label as the graphic for this cell
@@ -272,7 +394,11 @@ public class InvoiceLogController extends Controller {
             }
         }).start();
 
-        apply.setOnAction(event -> apply());
+    }
+
+    private Node createPage(int pageIndex) {
+        loadPage(pageIndex, pageSize);
+        return invoiceTable;
     }
 
     private <T> void setWrapCellFactory(TableColumn<T, String> column) {
@@ -355,7 +481,7 @@ public class InvoiceLogController extends Controller {
 
                 String jsonString = objectMapper.writeValueAsString(request);
 
-                String response = RestClient.post("/invoice/filter", jsonString);
+                String response = RestClient.post("/invoice/filter?page=" + page + "&size=" + pageSize, jsonString);
                 ApiResponse<Invoice> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Invoice>>() {});
 
 
@@ -382,6 +508,8 @@ public class InvoiceLogController extends Controller {
                                 invoiceData.add(invoiceRow);
                             }
                             invoiceTable.setItems(invoiceData);
+                            pagination.setPageCount(apiResponse.getTotalPages());
+                            pagination.setCurrentPageIndex(page);
 
                         } else {
                             loadingStage.close();
@@ -403,6 +531,61 @@ public class InvoiceLogController extends Controller {
                     Utils.showGeneralErrorDialog();
                 });
             }
+
+
+            try {
+                InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+                request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
+
+                request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
+                request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
+
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+
+                String jsonString = objectMapper.writeValueAsString(request);
+
+                String response = RestClient.post("/invoice/invoiceSummary", jsonString);
+                ApiResponseSingleData<InvoiceSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<InvoiceSummary>>() {});
+
+
+                Platform.runLater(() -> {
+                    try {
+                        if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+
+                            InvoiceSummary invoiceSummary = apiResponse.getData();
+
+                            paidCount.setText("Count: " + invoiceSummary.getNoOfPaidInvoice());
+                            paidValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfPaidInvoice()));
+
+                            dueCount.setText("Count: " + invoiceSummary.getNoOfUnPaidInvoice());
+                            dueValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfUnPaidInvoice()));
+
+                            debitCount.setText("Count: " + invoiceSummary.getNoOfDebitInvoice());
+                            debitValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfDebitInvoice()));
+
+                            refundedCount.setText("Count: " + invoiceSummary.getNoOfRefundedInvoice());
+                            refundedValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfRefundedInvoice()));
+
+                        } else {
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Utils.showGeneralErrorDialog();
+                    }
+                });
+
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    e.printStackTrace();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
         }).start();
     }
 
@@ -413,6 +596,30 @@ public class InvoiceLogController extends Controller {
             utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/invoice/single-invoice-log-view.fxml", primaryStage,invoice, "/com/bmh/hotelmanagementsystem/invoice/invoice-log-view.fxml");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void create(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/invoice/create_invoice.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            Controller controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+            controller.setData(null, "/com/bmh/hotelmanagementsystem/invoice/invoice-log-view.fxml");
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
         }
     }
 

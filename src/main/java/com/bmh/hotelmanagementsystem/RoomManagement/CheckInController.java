@@ -10,6 +10,7 @@ import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -90,6 +91,7 @@ public class CheckInController extends Controller {
                     String response = RestClient.get("/room/typeAndStatus?roomType=" +newValue+ "&roomStatus=Available");
 
                     ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
 
                     // Convert JSON string to ApiResponse
                     ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {
@@ -133,7 +135,7 @@ public class CheckInController extends Controller {
                     DecimalFormat formatter = new DecimalFormat("#,###.00");
 
                     String formattedPrice = formatter.format(roomPrice.getRoomPrice());
-                    price.setText(formattedPrice);
+                    price.setText("₦"+formattedPrice);
 
                     currentPrice = roomPrice.getRoomPrice();
 
@@ -179,7 +181,7 @@ public class CheckInController extends Controller {
                         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
                         String formattedPrice = formatter.format(total);
-                        total_price.setText(formattedPrice);
+                        total_price.setText("₦"+formattedPrice);
 
                     }
 

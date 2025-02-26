@@ -28,6 +28,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,6 +65,8 @@ public class InvoiceController extends Controller {
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
+
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public void setGuestLog(GuestLog guestLog, String previousLocation) throws IOException {
         this.previousLocation = previousLocation;
@@ -108,8 +111,13 @@ public class InvoiceController extends Controller {
             FlowPane itemsFlowPane = controller.getItems();
 
             service.setText(invoice.getService().toJson());
-            date.setText(String.valueOf(invoice.getIssueDate()));
+            date.setText(invoice.getIssueDate().format(dateTimeFormatter));
             status.setText(invoice.getPaymentStatus().toJson());
+            if (invoice.getPaymentStatus() == PaymentStatus.PAID) {
+                status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
+            } else if (invoice.getPaymentStatus() == PaymentStatus.UNPAID) {
+                status.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
+            }
             double totalPrice = 0.0;
 
             for(Item item : invoice.getItems()){
@@ -182,7 +190,7 @@ public class InvoiceController extends Controller {
 
             try {
                 for (Invoice invoice : guestLog.getInvoices()) {
-                    if (invoice.getPaymentStatus().equals(PaymentStatus.DUE)) {
+                    if (invoice.getPaymentStatus().equals(PaymentStatus.UNPAID)) {
                         invoiceRefs.add(invoice.getRef());
                     }
                 }
