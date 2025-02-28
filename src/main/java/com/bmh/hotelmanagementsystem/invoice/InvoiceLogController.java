@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -50,6 +51,11 @@ public class InvoiceLogController extends Controller {
         this.data = data;
         this.previousLocation = previousLocation;
     }
+
+    @FXML
+    private TextField searchField;
+    @FXML
+    private Button search;
 
     @FXML
     private Label paidCount;
@@ -89,7 +95,12 @@ public class InvoiceLogController extends Controller {
     @FXML
     private TableColumn<InvoiceRow, String> service_details_column;
     @FXML
-    private TableColumn<InvoiceRow, Double> amount_paid_column;
+    private TableColumn<InvoiceRow, String> amount_paid_column;
+
+    @FXML
+    private TableColumn<InvoiceRow, String> total_amount_column;
+    @FXML
+    private TableColumn<InvoiceRow, String> discount_amount_column;
 
     @FXML
     private TableColumn<InvoiceRow, Void> viewMore;
@@ -190,6 +201,7 @@ public class InvoiceLogController extends Controller {
 
         try {
             InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+            request.setQuery(searchField.getText());
             request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
             request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
             request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
@@ -246,6 +258,12 @@ public class InvoiceLogController extends Controller {
 
 
         apply.setOnAction(event -> apply());
+        search.setOnAction(event -> apply());
+        searchField.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                apply();
+            }
+        });
         create.setOnAction(event -> create());
     }
 
@@ -264,6 +282,7 @@ public class InvoiceLogController extends Controller {
                 request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setQuery(searchField.getText());
 
                 request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
                 request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
@@ -290,7 +309,9 @@ public class InvoiceLogController extends Controller {
                         payment_status_column.setCellValueFactory(cellData -> cellData.getValue().payment_status_columnProperty());
                         service_column.setCellValueFactory(cellData -> cellData.getValue().service_columnProperty());
                         service_details_column.setCellValueFactory(cellData -> cellData.getValue().service_details_columnProperty());
-                        amount_paid_column.setCellValueFactory(cellData -> cellData.getValue().amount_paid_columnProperty().asObject());
+                        total_amount_column.setCellValueFactory(cellData -> cellData.getValue().total_amount_columnProperty());
+                        amount_paid_column.setCellValueFactory(cellData -> cellData.getValue().amount_paid_columnProperty());
+                        discount_amount_column.setCellValueFactory(cellData -> cellData.getValue().discount_amount_columnProperty());
 
                         viewMore.setCellFactory(createViewMoreButtonCellFactory());
 
@@ -324,10 +345,12 @@ public class InvoiceLogController extends Controller {
                             if (invoice.getPaymentDate() != null) {
                                 paymentDate = invoice.getPaymentDate().format(dateTimeFormatter);
                             }
-                            Double amount_paid = invoice.getTotalAmount() != null ? invoice.getTotalAmount() : 0.0;
+                            String amount_paid = invoice.getAmountPaid() != null ? "₦" + priceFormatter.format(invoice.getAmountPaid()) : "";
+                            String total_amount = invoice.getTotalAmount() != null ? "₦" + priceFormatter.format(invoice.getTotalAmount()) : "";
+                            String discount_amount = invoice.getDiscountCode() != null ? "₦" + priceFormatter.format(invoice.getDiscountAmount()) : "";
                             InvoiceRow invoiceRow = new InvoiceRow(invoice.getRef(), issueDate,
                                     paymentDate, invoice.getPaymentMethod(), invoice.getPaymentStatus(),
-                                    invoice.getService(), invoice.getServiceDetails(), amount_paid, invoice);
+                                    invoice.getService(), invoice.getServiceDetails(), total_amount, amount_paid, discount_amount, invoice);
 
                             invoiceData.add(invoiceRow);
                         }
@@ -468,6 +491,7 @@ public class InvoiceLogController extends Controller {
 
             try {
                 InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+                request.setQuery(searchField.getText());
                 request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
@@ -500,10 +524,12 @@ public class InvoiceLogController extends Controller {
                                 if (invoice.getPaymentDate() != null) {
                                     paymentDate = invoice.getPaymentDate().format(dateTimeFormatter);
                                 }
-                                Double amount_paid = invoice.getTotalAmount() != null ? invoice.getTotalAmount() : 0.0;
+                                String amount_paid = invoice.getAmountPaid() != null ? "₦" + priceFormatter.format(invoice.getAmountPaid()) : "";
+                                String total_amount = invoice.getTotalAmount() != null ? "₦" + priceFormatter.format(invoice.getTotalAmount()) : "";
+                                String discount_amount = invoice.getDiscountCode() != null ? "₦" + priceFormatter.format(invoice.getDiscountAmount()) : "";
                                 InvoiceRow invoiceRow = new InvoiceRow(invoice.getRef(), issueDate,
                                         paymentDate, invoice.getPaymentMethod(), invoice.getPaymentStatus(),
-                                        invoice.getService(), invoice.getServiceDetails(), amount_paid, invoice);
+                                        invoice.getService(), invoice.getServiceDetails(), total_amount,amount_paid, discount_amount,invoice);
 
                                 invoiceData.add(invoiceRow);
                             }
@@ -535,6 +561,7 @@ public class InvoiceLogController extends Controller {
 
             try {
                 InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+                request.setQuery(searchField.getText());
                 request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
                 request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);

@@ -13,6 +13,7 @@ public class InvoiceLogFilterRequest {
     private PaymentStatus paymentStatus;
     private PaymentMethod paymentMethod;
     private ServiceType service;
+    private String query;
 
 
     public LocalDateTime getStartDate() {
@@ -53,5 +54,13 @@ public class InvoiceLogFilterRequest {
 
     public void setService(ServiceType service) {
         this.service = service;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public void setQuery(String query) {
+        this.query = query;
     }
 }

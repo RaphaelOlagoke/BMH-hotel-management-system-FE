@@ -5,7 +5,9 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogRoom;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.HouseKeeping.UpdateCleaningLogController;
 import com.bmh.hotelmanagementsystem.Utils;
+import com.bmh.hotelmanagementsystem.dto.HouseKeeping.CleaningRow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -51,6 +53,9 @@ public class SingleGuestLogController extends Controller {
 
     @FXML
     private Button room_service;
+
+    @FXML
+    private Button change_room;
 
     @FXML
     private Button back;
@@ -101,8 +106,8 @@ public class SingleGuestLogController extends Controller {
         String formattedOutstandingPrice = amountFormatter.format(guestLog.getTotalAmountDue());
         String formattedAmountPaid = amountFormatter.format(guestLog.getAmountPaid());
 
-        total_amount_due.setText("Outstanding Payments:   " + formattedOutstandingPrice);
-        total_amount_paid.setText("Amount Paid:   " + formattedAmountPaid);
+        total_amount_due.setText("Outstanding Payments:   ₦" + formattedOutstandingPrice);
+        total_amount_paid.setText("Amount Paid:   ₦" + formattedAmountPaid);
 
         if(this.guestLog.getStatus() == GuestLogStatus.COMPLETE){
             room_service.setDisable(true);
@@ -113,6 +118,7 @@ public class SingleGuestLogController extends Controller {
         back.setOnAction(event -> goBack());
         generate_invoice.setOnAction(event -> generateInvoice());
         room_service.setOnAction(event -> roomService());
+        change_room.setOnAction(event -> changeRoom());
     }
 
     public void generateInvoice(){
@@ -147,6 +153,32 @@ public class SingleGuestLogController extends Controller {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();
         }
+    }
+
+    public void changeRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/change_room.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            Controller controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+            controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            goBack();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+
     }
 
     public void goBack(){

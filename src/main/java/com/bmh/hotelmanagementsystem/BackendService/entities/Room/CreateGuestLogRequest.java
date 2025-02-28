@@ -9,6 +9,8 @@ public class CreateGuestLogRequest {
     private List<Integer> roomNumbers;
     private PaymentMethod paymentMethod;
 
+    private String discountCode;
+
     public String getGuestName() {
         return guestName;
     }
@@ -31,5 +33,13 @@ public class CreateGuestLogRequest {
 
     public void setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
 }

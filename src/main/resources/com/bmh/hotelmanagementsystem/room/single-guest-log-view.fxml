@@ -22,6 +22,7 @@
                         <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Guest Log" />
                      </children>
                   </HBox>
+                  <Button fx:id="change_room" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Change room" />
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="26.0" prefWidth="830.0" spacing="10.0">
                      <children>
                         <Label layoutX="782.0" layoutY="10.0" text="Status:">

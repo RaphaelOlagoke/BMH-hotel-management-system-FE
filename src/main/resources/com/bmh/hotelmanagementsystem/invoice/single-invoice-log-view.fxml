@@ -77,7 +77,22 @@
                         </VBox>
                      </children>
                   </HBox>
+                  <Label fx:id="discount_code" layoutX="60.0" layoutY="407.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="discount_amount" layoutX="60.0" layoutY="506.0">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
                   <Label fx:id="total_amount" text="Total Amount:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="amount_paid" layoutX="60.0" layoutY="493.0" text="Amount Paid:">
                      <font>
                         <Font size="18.0" />
                      </font>

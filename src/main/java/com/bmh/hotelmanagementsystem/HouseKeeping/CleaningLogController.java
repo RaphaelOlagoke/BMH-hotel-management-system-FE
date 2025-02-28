@@ -78,6 +78,9 @@ public class CleaningLogController extends Controller {
     private ComboBox<String> status_comboBox;
 
     @FXML
+    private ComboBox<Integer> needs_cleaning_comboBox;
+
+    @FXML
     private DatePicker start_datePicker;
     @FXML
     private DatePicker end_datePicker;
@@ -217,11 +220,18 @@ public class CleaningLogController extends Controller {
                         loadingStage.close();
                         ObservableList<Integer> roomNumber = FXCollections.observableArrayList();
 
+                        ObservableList<Integer> needsCleaning = FXCollections.observableArrayList();
+
                         roomNumber.add(null);
                         for (Room room : apiResponse.getData()) {
                             roomNumber.add(room.getRoomNumber());
                             allRooms.add(room);
+                            if (room.getNeedsCleaning()){
+                                needsCleaning.add(room.getRoomNumber());
+                            }
                         }
+
+                        needs_cleaning_comboBox.setItems(needsCleaning);
 
                         room_comboBox.setItems(roomNumber);
 

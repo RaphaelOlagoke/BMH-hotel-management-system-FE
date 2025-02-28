@@ -23,6 +23,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -99,13 +100,16 @@ public class InvoiceController extends Controller {
 
         for(Invoice invoice : guestLog.getInvoices()){
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/invoice/payment_item.fxml"));
-            AnchorPane anchorPane = fxmlLoader.load();
+            VBox anchorPane = fxmlLoader.load();
             PaymentItemController controller = fxmlLoader.getController();
 
             Label service = (Label) anchorPane.lookup("#service");
             Label status = (Label) anchorPane.lookup("#status");
             Label date = (Label) anchorPane.lookup("#date");
             Label total = (Label) anchorPane.lookup("#total_price");
+            Label subtotal = (Label) anchorPane.lookup("#subtotal_label");
+            Label tax = (Label) anchorPane.lookup("#tax_label");
+            Label discount = (Label) anchorPane.lookup("#discount_label");
 //            ScrollPane scroll_items = (ScrollPane) anchorPane.lookup("#scroll_items");
 //            FlowPane items = (FlowPane) scroll_items.lookup("#items");
             FlowPane itemsFlowPane = controller.getItems();
@@ -118,7 +122,6 @@ public class InvoiceController extends Controller {
             } else if (invoice.getPaymentStatus() == PaymentStatus.UNPAID) {
                 status.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
             }
-            double totalPrice = 0.0;
 
             for(Item item : invoice.getItems()){
                 FXMLLoader itemLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/components/item.fxml"));
@@ -129,7 +132,7 @@ public class InvoiceController extends Controller {
 
                 name.setText(item.getName());
                 quantity.setText(String.valueOf(item.getQuantity()));
-                totalPrice += item.getPrice() * item.getQuantity();
+//                totalPrice += item.getPrice() * item.getQuantity();
 //                DecimalFormat formatter = new DecimalFormat("#,###.00");
 
                 String formattedPrice = formatter.format(item.getPrice());
@@ -137,10 +140,20 @@ public class InvoiceController extends Controller {
 
                 itemsFlowPane.getChildren().add(itemAnchorPlane);
             }
-            if(invoice.getItems().isEmpty()){
-                totalPrice = invoice.getTotalAmount();
+            subtotal.setText("Subtotal:  ₦" + formatter.format(invoice.getTotalAmount()));
+            if(invoice.getDiscountCode() != null && !invoice.getDiscountCode().equals("")){
+                total.setText("Amount Paid:  ₦" + formatter.format(invoice.getAmountPaid()) );
+                discount.setText("Discount:  ₦" + invoice.getDiscountAmount());
             }
-            total.setText("Total:  " + String.valueOf(totalPrice));
+            else {
+                total.setText("Amount Paid:  ₦" + formatter.format(invoice.getAmountPaid()));
+                discount.setText("Discount:  ₦" + 0.0);
+            }
+
+//            if(invoice.getItems().isEmpty()){
+//                totalPrice = invoice.getTotalAmount();
+//            }
+//            total.setText("Total:  " + String.valueOf(totalPrice));
             outstanding_payments.getChildren().add(anchorPane);
         }
     }

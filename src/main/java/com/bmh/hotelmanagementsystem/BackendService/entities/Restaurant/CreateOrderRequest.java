@@ -13,6 +13,8 @@ public class CreateOrderRequest {
 
     private int roomNumber;
 
+    private String discountCode;
+
     public String getCustomerName() {
         return customerName;
     }
@@ -43,6 +45,14 @@ public class CreateOrderRequest {
 
     public void setRoomNumber(int roomNumber) {
         this.roomNumber = roomNumber;
+    }
+
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
     }
 }
 

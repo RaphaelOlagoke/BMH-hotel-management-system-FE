@@ -13,7 +13,7 @@
    <children>
       <ImageView fx:id="image" fitHeight="112.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/tmp/appetizers.jpg" />
+            <Image url="@../images/Menu.png" />
          </image>
       </ImageView>
       <VBox prefHeight="90.0" prefWidth="177.0" spacing="10.0">

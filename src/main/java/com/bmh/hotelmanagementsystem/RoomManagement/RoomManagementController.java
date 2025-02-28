@@ -522,6 +522,8 @@ public class RoomManagementController extends Controller {
             formStage.setScene(formScene);
             formStage.showAndWait();
 
+            apply();
+
         } catch (Exception e) {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();

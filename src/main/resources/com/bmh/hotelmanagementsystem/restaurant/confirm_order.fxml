@@ -82,10 +82,20 @@
             </Label>
          </children>
       </VBox>
-      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+      <HBox alignment="CENTER_LEFT">
          <children>
-            <Button fx:id="chargeToRoom" mnemonicParsing="false" prefHeight="49.0" prefWidth="137.0" styleClass="btn" stylesheets="@../css/styles.css" text="Charge to room" />
-            <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="827.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="20.0">
+               <children>
+                  <Label text="Discount Code:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="discount_code" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+               </children>
+            </HBox>
+<!--             <Button fx:id="chargeToRoom" mnemonicParsing="false" prefHeight="49.0" prefWidth="137.0" styleClass="btn" stylesheets="@../css/styles.css" text="Charge to room" /> -->
+            <HBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="700.0">
                <children>
                   <Button fx:id="confirmPayment" mnemonicParsing="false" prefHeight="49.0" prefWidth="137.0" styleClass="btn" stylesheets="@../css/styles.css" text="Confirm Payment" />
                </children>

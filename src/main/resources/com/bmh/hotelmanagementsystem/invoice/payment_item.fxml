@@ -3,30 +3,37 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.PaymentItemController">
+
+<VBox spacing="10.0" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.PaymentItemController">
    <children>
-      <Label fx:id="service" layoutX="78.0" layoutY="49.0" stylesheets="@../css/styles.css" text="Label">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-      <Line endX="329.17822265625" layoutX="232.0" layoutY="33.0" startX="-181.16891479492188" strokeWidth="3.0" />
-      <Label fx:id="date" layoutX="360.0" layoutY="89.0" text="Date">
-         <font>
-            <Font size="15.0" />
-         </font>
-      </Label>
+      <Line endX="329.17822265625" startX="-181.16891479492188" strokeWidth="3.0" />
+      <HBox spacing="300.0">
+         <children>
+            <Label fx:id="service" stylesheets="@../css/styles.css" text="Label">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="date" text="Date">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
       
-      <Label fx:id="status" layoutX="368.0" layoutY="49.0" stylesheets="@../css/styles.css" text="Label">
+                  <Label fx:id="status" stylesheets="@../css/styles.css" text="Label">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <ScrollPane fx:id="scroll_items" layoutX="8.0" layoutY="118.0">
+      <ScrollPane fx:id="scroll_items">
          <content>
             <FlowPane fx:id="items" />
          </content>
@@ -34,7 +41,31 @@
             <Insets bottom="50.0" />
          </padding>
       </ScrollPane>
-      <Label fx:id="total_price" layoutX="428.0" layoutY="124.0" prefHeight="60.0" stylesheets="@../css/styles.css" text="Total Price" AnchorPane.bottomAnchor="-16.0">
+      <Label fx:id="tax_label" layoutX="39.0" layoutY="215.0" prefHeight="60.0" stylesheets="@../css/styles.css" text="Tax:">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" top="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="discount_label" layoutX="39.0" layoutY="215.0" prefHeight="60.0" stylesheets="@../css/styles.css" text="Discount:">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" top="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="subtotal_label" layoutX="39.0" layoutY="375.0" prefHeight="60.0" stylesheets="@../css/styles.css" text="Subtotal:">
+         <font>
+            <Font size="20.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" top="20.0" />
+         </padding>
+      </Label>
+      <Label fx:id="total_price" prefHeight="60.0" stylesheets="@../css/styles.css" text="Total Price">
          <font>
             <Font size="20.0" />
          </font>
@@ -43,4 +74,7 @@
          </padding>
       </Label>
    </children>
-</AnchorPane>
+   <padding>
+      <Insets bottom="20.0" left="29.0" right="20.0" top="20.0" />
+   </padding>
+</VBox>

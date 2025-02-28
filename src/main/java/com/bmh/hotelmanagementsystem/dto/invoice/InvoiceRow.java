@@ -15,15 +15,17 @@ public class InvoiceRow {
     private final ObjectProperty<PaymentStatus> payment_status_column;
     private final ObjectProperty<ServiceType> service_column;
     private final StringProperty service_details_column;
-    private final DoubleProperty amount_paid_column;
+    private final StringProperty total_amount_column;
+    private final StringProperty amount_paid_column;
+    private final StringProperty discount_amount_column;
 
     private final Invoice invoice;
 
 
     public InvoiceRow(String ref_column, String issue_date_column, String payment_date_column,
                       PaymentMethod payment_method_column, PaymentStatus payment_status_column,
-                      ServiceType service_column, String service_details_column,
-                      Double amount_paid_column, Invoice invoice) {
+                      ServiceType service_column, String service_details_column,String total_amount_column,
+                      String amount_paid_column, String discount_amount_column, Invoice invoice) {
         this.ref_column = new SimpleStringProperty(ref_column);
         this.issue_date_column = new SimpleStringProperty(issue_date_column);
         this.payment_date_column = new SimpleStringProperty(payment_date_column);
@@ -31,7 +33,9 @@ public class InvoiceRow {
         this.payment_status_column = new SimpleObjectProperty<>(payment_status_column);
         this.service_column = new SimpleObjectProperty<>(service_column);
         this.service_details_column = new SimpleStringProperty(service_details_column);
-        this.amount_paid_column = new SimpleDoubleProperty(amount_paid_column);
+        this.total_amount_column = new SimpleStringProperty(total_amount_column);
+        this.amount_paid_column = new SimpleStringProperty(amount_paid_column);
+        this.discount_amount_column = new SimpleStringProperty(discount_amount_column);
         this.invoice = invoice;
     }
 
@@ -91,12 +95,28 @@ public class InvoiceRow {
         return service_details_column;
     }
 
-    public double getAmount_paid_column() {
+    public String getTotal_amount_column() {
+        return total_amount_column.get();
+    }
+
+    public StringProperty total_amount_columnProperty() {
+        return total_amount_column;
+    }
+
+    public String getAmount_paid_column() {
         return amount_paid_column.get();
     }
 
-    public DoubleProperty amount_paid_columnProperty() {
+    public StringProperty amount_paid_columnProperty() {
         return amount_paid_column;
+    }
+
+    public String getDiscount_amount_column() {
+        return discount_amount_column.get();
+    }
+
+    public StringProperty discount_amount_columnProperty() {
+        return discount_amount_column;
     }
 
     public Invoice getInvoice() {

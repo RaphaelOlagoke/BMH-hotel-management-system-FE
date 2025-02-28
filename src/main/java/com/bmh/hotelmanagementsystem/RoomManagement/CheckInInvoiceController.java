@@ -4,17 +4,20 @@ import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CheckIn;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CreateGuestLogRequest;
+import com.bmh.hotelmanagementsystem.BackendService.entities.discount.Discount;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -63,7 +66,10 @@ public class CheckInInvoiceController extends Controller {
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
         String formattedPrice = formatter.format(checkInData.getTotalPrice());
-        room_charge.setText("Room Charge:  " + formattedPrice);
+        room_charge.setText("Room Charge:  ₦" + formattedPrice);
+        subTotal = checkInData.getTotalPrice();
+        tax = 0.0;
+        total = checkInData.getTotalPrice();
     }
 
     public CheckIn getCheckInData() {
@@ -86,10 +92,21 @@ public class CheckInInvoiceController extends Controller {
     private Label room_charge;
 
     @FXML
+    private TextField discount_code;
+
+    @FXML
     private Button checkIn;
 
     @FXML
     private ComboBox<String> payment_method;
+
+    private Double discount = 0.0;
+
+    private Double subTotal = 0.0;
+    private Double tax = 0.0;
+    private Double total = 0.0;
+
+    DecimalFormat formatter = new DecimalFormat("#,###.00");
 
     @FXML
     public void initialize() throws IOException {
@@ -106,8 +123,60 @@ public class CheckInInvoiceController extends Controller {
 
         back.setOnAction(event -> goBack());
         checkIn.setOnAction(event -> checkIn());
+        discount_code.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                getDiscount();
+            }
+        });
 //        System.out.println(checkInData.getGuestName());
 
+    }
+
+    public void getDiscount(){
+        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+
+                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
+                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        total = checkInData.getTotalPrice();
+                        subTotal = checkInData.getTotalPrice();
+
+                        discount = total * apiResponse.getData().getPercentage()/100.0;
+                        total = (subTotal - discount) + tax;
+
+                        DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+                        String formattedPrice = formatter.format(total);
+                        room_charge.setText("Room Charge:  ₦" + formattedPrice);
+
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                    });
+
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    loadingStage.close();
+                    e.printStackTrace();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
     }
 
     public void goBack(){
@@ -156,6 +225,9 @@ public class CheckInInvoiceController extends Controller {
                     request.setGuestName(checkInData.getGuestName());
                     request.setRoomNumbers(roomNumbers);
                     request.setPaymentMethod(checkInData.getPaymentMethod());
+                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
+                        request.setDiscountCode(discount_code.getText());
+                    }
 
                     ObjectMapper objectMapper = new ObjectMapper();
 

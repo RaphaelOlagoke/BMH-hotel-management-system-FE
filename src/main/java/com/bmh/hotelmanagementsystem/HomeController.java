@@ -502,7 +502,11 @@ public class HomeController extends Controller {
                                             label.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
                                         } else if (item == GuestLogStatus.ACTIVE) {
                                             label.setStyle("-fx-text-fill: blue; -fx-background-color: #e0e0f7; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
-                                        } else {
+                                        }
+                                        else if (item == GuestLogStatus.OVERDUE) {
+                                            label.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px; -fx-background-radius: 5;");
+                                        }
+                                        else {
                                             label.setStyle("-fx-padding: 5px;");  // Default padding if not ACTIVE or COMPLETE
                                         }
 

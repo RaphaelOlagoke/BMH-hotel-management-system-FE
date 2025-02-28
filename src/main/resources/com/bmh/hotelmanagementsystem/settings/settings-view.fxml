@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.settings.SettingsController">
+   <content>
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+         <children>
+         <!--             Side Bar -->
+              <fx:include fx:id="side_bar" maxWidth="-Infinity" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
+         <!--             Side Bar -->
+
+            <VBox spacing="10.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Settings" />
+                        <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="52.0" prefWidth="1193.0" />
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                     </padding>
+                  </HBox>
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="335.0" prefWidth="579.0" spacing="15.0" styleClass="box" stylesheets="@../css/styles.css">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Standard Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="standard_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Deluxe Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="deluxe_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="64.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="Executive Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="executive_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="222.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="150.0" text="VIP Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="vip_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="TOP_RIGHT" spacing="50.0" stylesheets="@../css/styles.css">
+                           <children>
+                              <Button fx:id="update" mnemonicParsing="false" prefHeight="49.0" prefWidth="94.0" styleClass="btn" stylesheets="@../css/styles.css" text="Update" />
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="30.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

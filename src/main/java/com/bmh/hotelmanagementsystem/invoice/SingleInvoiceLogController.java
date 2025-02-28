@@ -57,6 +57,13 @@ public class SingleInvoiceLogController extends Controller {
             payment_date.setText("Payment Date:   " + this.data.getPaymentDate().format(dateTimeFormatter));
         }
         total_amount.setText("Total Amount:   ₦" + formatter.format(this.data.getTotalAmount()));
+        if(this.data.getDiscountAmount() != null && this.data.getDiscountAmount() != 0){
+            discount_amount.setText("Discount Amount:   ₦" + formatter.format(this.data.getDiscountAmount()));
+        }
+        amount_paid.setText("Amount Paid:   ₦" + formatter.format(this.data.getAmountPaid()));
+        if(this.data.getDiscountCode() != null && !this.data.getDiscountCode().equals("")){
+            discount_code.setText("Discount code:   " + this.data.getDiscountCode());
+        }
         double totalPrice = 0.0;
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
@@ -104,6 +111,16 @@ public class SingleInvoiceLogController extends Controller {
     private Label service_type;
     @FXML
     private Label total_amount;
+
+    @FXML
+    private Label discount_code;
+//    @FXML
+//    private Label discount_percentage;
+    @FXML
+    private Label discount_amount;
+
+    @FXML
+    private Label amount_paid;
 
     @FXML
     private FlowPane payments;

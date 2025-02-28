@@ -90,7 +90,15 @@ public class SingleOrderLogController extends Controller {
         else if (this.data.getStatus() == RestaurantOrderStatus.CANCELED) {
             status.setStyle("-fx-text-fill: red; -fx-background-color: #f7e0e0; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
         }
-        amountPaid.setText("Amount Paid:  " + formatter.format(this.data.getInvoice().getTotalAmount()) );
+        subtotal.setText("Subtotal:  ₦" + this.data.getInvoice().getTotalAmount());
+        if(this.data.getInvoice().getDiscountCode() != null && !this.data.getInvoice().getDiscountCode().equals("")){
+            amountPaid.setText("Amount Paid:  ₦" + formatter.format(this.data.getInvoice().getAmountPaid()) );
+            discount.setText("Discount:  ₦" + this.data.getInvoice().getDiscountAmount());
+        }
+        else {
+            amountPaid.setText("Amount Paid:  ₦" + formatter.format(this.data.getInvoice().getAmountPaid()));
+            discount.setText("Discount:  ₦" + 0.0);
+        }
 
         double totalPrice = 0.0;
 

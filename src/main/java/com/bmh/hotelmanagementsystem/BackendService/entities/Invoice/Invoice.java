@@ -19,6 +19,12 @@ public class Invoice {
     private PaymentMethod paymentMethod;
     private ServiceType service;
     private String serviceDetails;
+
+    private String discountCode;
+    private int discountPercentage;
+    private Double discountAmount;
+
+    private Double amountPaid;
     private List<Item> items;
 
 
@@ -86,6 +92,37 @@ public class Invoice {
         this.serviceDetails = serviceDetails;
     }
 
+    public String getDiscountCode() {
+        return discountCode;
+    }
+
+    public void setDiscountCode(String discountCode) {
+        this.discountCode = discountCode;
+    }
+
+    public int getDiscountPercentage() {
+        return discountPercentage;
+    }
+
+    public void setDiscountPercentage(int discountPercentage) {
+        this.discountPercentage = discountPercentage;
+    }
+
+    public Double getDiscountAmount() {
+        return discountAmount;
+    }
+
+    public void setDiscountAmount(Double discountAmount) {
+        this.discountAmount = discountAmount;
+    }
+
+    public Double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(Double amountPaid) {
+        this.amountPaid = amountPaid;
+    }
 
     public List<Item> getItems() {
         return items;

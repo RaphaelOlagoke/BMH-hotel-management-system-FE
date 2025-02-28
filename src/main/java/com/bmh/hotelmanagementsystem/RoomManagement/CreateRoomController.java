@@ -31,8 +31,8 @@ public class CreateRoomController extends Controller {
 
     @FXML
     private ComboBox<String> room_type;
-    @FXML
-    private ComboBox<String> room_status;
+//    @FXML
+//    private ComboBox<String> room_status;
     @FXML
     private TextField room_number;
 
@@ -49,14 +49,14 @@ public class CreateRoomController extends Controller {
     }
 
     public void initialize() {
-        ObservableList<String> roomStatus = FXCollections.observableArrayList();
-
-        roomStatus.add(null);
-        for (RoomStatus status : RoomStatus.values()) {
-            roomStatus.add(status.toJson());
-        }
-
-        room_status.setItems(roomStatus);
+//        ObservableList<String> roomStatus = FXCollections.observableArrayList();
+//
+//        roomStatus.add(null);
+//        for (RoomStatus status : RoomStatus.values()) {
+//            roomStatus.add(status.toJson());
+//        }
+//
+//        room_status.setItems(roomStatus);
 
         ObservableList<String> roomType = FXCollections.observableArrayList();
 
@@ -106,16 +106,17 @@ public class CreateRoomController extends Controller {
                         });
                         return;
                     }
-                    if(room_status.getSelectionModel().getSelectedItem() != null){
-                        request.setRoomStatus(RoomStatus.valueOf(room_status.getSelectionModel().getSelectedItem()));
-                    }
-                    else{
-                        Platform.runLater(() -> {
-                            loadingStage.close();
-                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid request", "Room status cannot be null");
-                        });
-                        return;
-                    }
+//                    if(room_status.getSelectionModel().getSelectedItem() != null){
+//                        request.setRoomStatus(RoomStatus.valueOf(room_status.getSelectionModel().getSelectedItem()));
+//                    }
+//                    else{
+//                        Platform.runLater(() -> {
+//                            loadingStage.close();
+//                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid request", "Room status cannot be null");
+//                        });
+//                        return;
+//                    }
+                    request.setRoomStatus(RoomStatus.AVAILABLE);
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.registerModule(new JavaTimeModule());

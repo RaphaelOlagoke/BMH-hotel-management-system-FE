@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.discount.Discount;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderDetails;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderItem;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
@@ -15,6 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -52,6 +54,9 @@ public class CreateOrderController extends Controller {
     private TableColumn<OrderItem, String> nameColumn;
     @FXML
     private TableColumn<OrderItem, Double> priceColumn;
+
+    @FXML
+    private TextField discount_code;
 
     private ObservableList<OrderItem> tableData = FXCollections.observableArrayList();
 
@@ -100,10 +105,10 @@ public class CreateOrderController extends Controller {
         }
 
         itemsTable.setItems(tableData);
-        total = (subTotal - discount) + tax;
+        total = (subTotal) + tax;
 
-        subTotalLabel.setText("Subtotal:  " + formatter.format(subTotal));
-        totalLabel.setText("Total:  " + formatter.format(total));
+        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
+        totalLabel.setText("Total:  ₦" + formatter.format(total));
 
 
         for (TableColumn<OrderItem, ?> column : itemsTable.getColumns()) {
@@ -114,7 +119,67 @@ public class CreateOrderController extends Controller {
 
     @FXML
     public void initialize() throws IOException {
+        discount_code.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                getDiscount();
+            }
+        });
         confirmPayment.setOnAction(event -> createOrder());
+    }
+
+    public void getDiscount(){
+        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+
+                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
+                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        subTotal = 0.0;
+                        discount = 0.0;
+                        total = 0.0;
+                        for (BillItem billItem : this.data.getBillItems()) {
+
+
+                            double itemTotal = billItem.getPrice() * billItem.getQuantity();
+                            subTotal += itemTotal;
+                        }
+
+                        total = (subTotal) + tax;
+
+                        discount = total * apiResponse.getData().getPercentage()/100.0;
+                        total = (subTotal - discount) + tax;
+
+                        discountLabel.setText("Discount:  ₦" + formatter.format(discount));
+                        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
+                        totalLabel.setText("Total:  ₦" + formatter.format(total));
+
+                    });
+                } else {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                    });
+
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    loadingStage.close();
+                    e.printStackTrace();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
     }
 
     public void createOrder(){
@@ -136,6 +201,9 @@ public class CreateOrderController extends Controller {
                     request.setCustomerName(customerName.getText());
                     request.setItems(data.getBillItems());
                     request.setPaymentMethod(data.getPaymentMethod());
+                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
+                        request.setDiscountCode(discount_code.getText());
+                    }
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.registerModule(new JavaTimeModule());
