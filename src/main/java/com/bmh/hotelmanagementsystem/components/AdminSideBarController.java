@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.components;
 
 import com.bmh.hotelmanagementsystem.BMHApplication;
+import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.HomeController;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -133,6 +134,19 @@ public class AdminSideBarController {
     }
 
     @FXML
+    protected void employee() throws IOException {
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/employee/employee-log-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
+    @FXML
     protected void settings() throws IOException {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
@@ -150,6 +164,20 @@ public class AdminSideBarController {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/inventory/inventory-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
+    @FXML
+    protected void logout() throws IOException {
+        AuthFileCache.clear();
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
         primaryStage.setScene(scene);

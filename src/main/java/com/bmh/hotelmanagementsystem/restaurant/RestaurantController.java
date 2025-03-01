@@ -2,6 +2,7 @@ package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
+import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderDetails;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.BillItem;
@@ -30,8 +31,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class RestaurantController extends Controller {
 
@@ -50,6 +54,8 @@ public class RestaurantController extends Controller {
         this.previousLocation = previousLocation;
     }
 
+    @FXML
+    private Label user;
 
     @FXML
     private FlowPane menu_flowPane;
@@ -160,6 +166,9 @@ public class RestaurantController extends Controller {
     DecimalFormat formatter = new DecimalFormat("#,###.00");
     @FXML
     public void initialize() throws IOException {
+        String username = AuthFileCache.getUsername();
+        user.setText("Hello " + username);
+
         appetizerCategory.setOnAction(event -> onCategorySelected(appetizerVBox, appetizerLabel, MenuItemType.APPETIZER.toJson()));
         mainCategory.setOnAction(event -> onCategorySelected(mainVBox, mainLabel, MenuItemType.MAINS.toJson()));
         dessertCategory.setOnAction(event -> onCategorySelected(dessertVBox, dessertLabel, MenuItemType.DESSERT.toJson()));

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox fx:id="login_background" fx:controller="com.bmh.hotelmanagementsystem.LoginController" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1">
+<HBox fx:id="login_background" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="1000.0" stylesheets="@css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.LoginController">
    <children>
       <VBox fx:id="login_vbox" alignment="CENTER" fillWidth="false" maxHeight="450.0" prefHeight="200.0" prefWidth="400.0" spacing="30.0" stylesheets="@css/styles.css">
          <children>
@@ -18,7 +18,7 @@
                   <Image url="@images/Logo.png" />
                </image>
             </ImageView>
-            <TextField fx:id="username" prefHeight="35.0" prefWidth="221.0" promptText="Username" styleClass="text-field" stylesheets="@css/styles.css" />
+            <TextField fx:id="username" prefHeight="35.0" prefWidth="221.0" promptText="Email" styleClass="text-field" stylesheets="@css/styles.css" />
             <TextField fx:id="password" prefHeight="35.0" prefWidth="221.0" promptText="Password" styleClass="text-field" stylesheets="@css/styles.css" />
             <AnchorPane prefHeight="41.0" prefWidth="266.0">
                <children>

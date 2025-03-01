@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.employee.CreateEmployeeController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="51.0" prefWidth="600.0">
+         <children>
+            <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Create User" />
+         </children>
+      </HBox>
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="20.0">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="15.0">
+               <children>
+                  <Label prefHeight="19.0" prefWidth="84.0" text="Email:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="email" prefHeight="49.0" prefWidth="298.0" promptText="user@email.com" styleClass="box" stylesheets="@../css/styles.css" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="15.0">
+               <children>
+                  <Label prefWidth="84.0" text="Username:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="username" prefHeight="49.0" prefWidth="298.0" promptText="username" styleClass="box" stylesheets="@../css/styles.css" />
+               </children>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="67.0" spacing="15.0">
+               <children>
+                  <Label prefWidth="84.0" text="Password:">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="password" prefHeight="49.0" prefWidth="298.0" promptText="username" styleClass="box" stylesheets="@../css/styles.css" />
+               </children>
+               <padding>
+                  <Insets left="15.0" right="15.0" />
+               </padding>
+            </HBox>
+            <HBox spacing="20.0">
+               <children>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="145.0" spacing="10.0">
+                     <children>
+                        <Label text="Role:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="role_comboBox" prefWidth="150.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                           <effect>
+                              <DropShadow height="12.16" radius="4.8425" width="9.21">
+                                 <color>
+                                    <Color opacity="0.2925430238246918" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </ComboBox>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="145.0" spacing="10.0">
+                     <children>
+                        <Label text="Access:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="access_comboBox" prefWidth="150.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                           <effect>
+                              <DropShadow height="12.16" radius="4.8425" width="9.21">
+                                 <color>
+                                    <Color opacity="0.2925430238246918" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </ComboBox>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="145.0" spacing="10.0">
+                     <children>
+                        <Label text="Is Active">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <ComboBox fx:id="enabled_comboBox" prefWidth="150.0" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                           <effect>
+                              <DropShadow height="12.16" radius="4.8425" width="9.21">
+                                 <color>
+                                    <Color opacity="0.2925430238246918" />
+                                 </color>
+                              </DropShadow>
+                           </effect>
+                        </ComboBox>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" right="10.0" />
+                     </padding>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="create" mnemonicParsing="false" prefHeight="44.0" prefWidth="115.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+         </children>
+         <padding>
+            <Insets right="20.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

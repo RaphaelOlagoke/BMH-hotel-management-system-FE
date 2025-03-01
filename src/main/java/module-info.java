@@ -8,6 +8,8 @@ module com.example.bmhhotelmanagementsystem {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
     requires com.fasterxml.jackson.datatype.jsr310;
+    requires java.prefs;
+    requires org.json;
 
     opens com.bmh.hotelmanagementsystem to javafx.fxml;
     exports com.bmh.hotelmanagementsystem;
@@ -40,11 +42,13 @@ module com.example.bmhhotelmanagementsystem {
     opens com.bmh.hotelmanagementsystem.refund to javafx.fxml;
     opens com.bmh.hotelmanagementsystem.discount to javafx.fxml;
     opens com.bmh.hotelmanagementsystem.settings to javafx.fxml;
+    opens com.bmh.hotelmanagementsystem.employee to javafx.fxml;
     exports com.bmh.hotelmanagementsystem.invoice;
     exports com.bmh.hotelmanagementsystem.inventory;
     exports com.bmh.hotelmanagementsystem.HouseKeeping;
     exports com.bmh.hotelmanagementsystem.refund;
     exports com.bmh.hotelmanagementsystem.discount;
     exports com.bmh.hotelmanagementsystem.settings;
+    exports com.bmh.hotelmanagementsystem.employee;
     opens com.bmh.hotelmanagementsystem.HouseKeeping to javafx.fxml;
 }

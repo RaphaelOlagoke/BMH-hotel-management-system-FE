@@ -47,9 +47,9 @@
                            <children>
                               <Button fx:id="inventory" mnemonicParsing="false" prefHeight="49.0" prefWidth="188.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
                                  <graphic>
-                                    <ImageView fitHeight="45.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="39.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/Store.png" />
+                                          <Image url="@../images/Box.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -147,7 +147,7 @@
                                     <DatePicker fx:id="end_datePicker" />
                                  </children>
                               </VBox>
-                              <Button fx:id="apply" mnemonicParsing="false" prefHeight="55.0" prefWidth="127.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
+                              <Button fx:id="apply" mnemonicParsing="false" prefHeight="36.0" prefWidth="104.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
                            </children>
                         </HBox>
                         <VBox maxHeight="-Infinity" prefHeight="600.0" VBox.vgrow="ALWAYS">

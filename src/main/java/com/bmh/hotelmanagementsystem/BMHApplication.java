@@ -10,6 +10,8 @@ import java.io.IOException;
 public class BMHApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        SceneManager.setPrimaryStage(stage);
+
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());

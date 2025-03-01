@@ -9,7 +9,6 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
@@ -30,12 +29,12 @@
                      <children>
                         <VBox prefHeight="74.0" prefWidth="708.0" spacing="15.0">
                            <children>
-                              <Label prefHeight="39.0" prefWidth="380.0" text="Hello User">
+                              <Label fx:id="user" prefHeight="39.0" prefWidth="380.0" text="Hello User">
                                  <font>
                                     <Font name="System Bold" size="32.0" />
                                  </font>
                               </Label>
-                              <Label text="20, December, 2024">
+                              <Label fx:id="todayDate" text="20, December, 2024">
                                  <font>
                                     <Font size="16.0" />
                                  </font>

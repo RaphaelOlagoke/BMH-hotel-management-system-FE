@@ -22,7 +22,7 @@
                 <fx:include fx:id="side_bar" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
             <!--             Side Bar -->
             
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="30.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+            <VBox maxHeight="1.7976931348623157E308" spacing="30.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
                <children>
                   <HBox alignment="CENTER_RIGHT" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
                      <children>
@@ -30,7 +30,7 @@
                            <graphic>
                               <ImageView fitHeight="40.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../images/Store.png" />
+                                    <Image url="@../images/Box.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -132,7 +132,7 @@
                               <ComboBox fx:id="archive_comboBox" prefWidth="150.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
                            </children>
                         </VBox>
-                        <Button fx:id="apply" mnemonicParsing="false" prefHeight="63.0" prefWidth="114.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
+                        <Button fx:id="apply" mnemonicParsing="false" prefHeight="44.0" prefWidth="97.0" styleClass="btn" stylesheets="@../css/styles.css" text="Apply" />
                      </children>
                   </HBox>
                   <VBox maxHeight="-Infinity" prefHeight="600.0" stylesheets="@../css/styles.css" VBox.vgrow="ALWAYS">

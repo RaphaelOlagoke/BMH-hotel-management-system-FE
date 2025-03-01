@@ -44,16 +44,11 @@
                         </HBox>
                         <HBox prefHeight="105.0" prefWidth="360.0" spacing="20.0">
                            <children>
-                              <ImageView fitHeight="105.0" fitWidth="118.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/profile.png" />
-                                 </image>
-                              </ImageView>
                               <VBox prefHeight="105.0" prefWidth="218.0">
                                  <children>
-                                    <Label prefHeight="19.0" prefWidth="200.0" text="User" wrapText="true">
+                                    <Label fx:id="user" prefHeight="19.0" prefWidth="200.0" styleClass="title_text" stylesheets="@../css/styles.css" text="User" wrapText="true">
                                        <font>
-                                          <Font name="System Bold" size="15.0" />
+                                          <Font name="System Bold" size="18.0" />
                                        </font>
                                     </Label>
                                  </children>

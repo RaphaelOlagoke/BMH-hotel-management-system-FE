@@ -6,6 +6,7 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleDa
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.*;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
+import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.dto.room.GuestReservation;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -29,12 +30,19 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.bmh.hotelmanagementsystem.Utils.showLoadingScreen;
 
 public class HomeController extends Controller {
 
     private Stage primaryStage;
+
+    @FXML
+    private Label user;
+
+    @FXML
+    private Label todayDate;
 
     @FXML
     private Label availableRoomsCount;
@@ -100,6 +108,13 @@ public class HomeController extends Controller {
     public void initialize()  {
         guestLogTable.setPrefWidth(510);
         pagination.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+
+        String username = AuthFileCache.getUsername();
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d, MMMM, yyyy", Locale.ENGLISH);
+        String formattedDate = currentDate.format(dateTimeFormatter);
+        user.setText("Hello " + username);
+        todayDate.setText(formattedDate);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 

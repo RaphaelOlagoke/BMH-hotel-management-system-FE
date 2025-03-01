@@ -111,6 +111,7 @@ public class SingleGuestLogController extends Controller {
 
         if(this.guestLog.getStatus() == GuestLogStatus.COMPLETE){
             room_service.setDisable(true);
+            change_room.setDisable(true);
         }
     }
 

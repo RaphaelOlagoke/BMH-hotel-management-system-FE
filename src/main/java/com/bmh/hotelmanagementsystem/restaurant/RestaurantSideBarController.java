@@ -2,6 +2,7 @@ package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
+import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
@@ -69,5 +70,19 @@ public class RestaurantSideBarController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    protected void logout() throws IOException {
+        AuthFileCache.clear();
+        Stage primaryStage = (Stage) side_bar_orders.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("login-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
     }
 }
