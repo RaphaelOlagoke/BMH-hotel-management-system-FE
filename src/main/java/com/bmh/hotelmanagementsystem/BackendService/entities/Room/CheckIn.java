@@ -21,6 +21,8 @@ public class CheckIn {
 
     private Double totalPrice;
 
+    private int noOfDays;
+
     public String getGuestName() {
         return guestName;
     }
@@ -85,5 +87,13 @@ public class CheckIn {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getNoOfDays() {
+        return noOfDays;
+    }
+
+    public void setNoOfDays(int noOfDays) {
+        this.noOfDays = noOfDays;
     }
 }

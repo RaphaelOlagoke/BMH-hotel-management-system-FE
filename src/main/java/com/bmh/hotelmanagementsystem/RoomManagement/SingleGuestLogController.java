@@ -55,6 +55,9 @@ public class SingleGuestLogController extends Controller {
     private Button room_service;
 
     @FXML
+    private Button extend;
+
+    @FXML
     private Button change_room;
 
     @FXML
@@ -70,7 +73,7 @@ public class SingleGuestLogController extends Controller {
         int index = 0;
 
         for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
-            room.append(guestLogRoom.getRoom().getRoomNumber());
+            room.append(guestLogRoom.getRoom().getRoomNumber() + "(" + guestLogRoom.getGuestLogStatus() +")");
             types.append(guestLogRoom.getRoom().getRoomType());
 
             if (index < size - 1) {
@@ -112,6 +115,7 @@ public class SingleGuestLogController extends Controller {
         if(this.guestLog.getStatus() == GuestLogStatus.COMPLETE){
             room_service.setDisable(true);
             change_room.setDisable(true);
+            extend.setDisable(true);
         }
     }
 
@@ -120,6 +124,7 @@ public class SingleGuestLogController extends Controller {
         generate_invoice.setOnAction(event -> generateInvoice());
         room_service.setOnAction(event -> roomService());
         change_room.setOnAction(event -> changeRoom());
+        extend.setOnAction(event -> extend());
     }
 
     public void generateInvoice(){
@@ -180,6 +185,31 @@ public class SingleGuestLogController extends Controller {
             Utils.showGeneralErrorDialog();
         }
 
+    }
+
+    public void extend(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/extend_guest_log.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            Controller controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+            controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            goBack();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
     }
 
     public void goBack(){

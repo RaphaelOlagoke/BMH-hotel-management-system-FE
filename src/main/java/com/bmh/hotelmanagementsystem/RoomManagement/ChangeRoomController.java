@@ -4,6 +4,7 @@ import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -56,7 +57,9 @@ public class ChangeRoomController extends Controller {
 
         ObservableList<Integer> listOfGuestLogRooms = FXCollections.observableArrayList();
         for (GuestLogRoom guestLogRoom : this.data.getGuestLogRooms()){
-            listOfGuestLogRooms.add(guestLogRoom.getRoom().getRoomNumber());
+            if (guestLogRoom.getGuestLogStatus() == GuestLogStatus.ACTIVE) {
+                listOfGuestLogRooms.add(guestLogRoom.getRoom().getRoomNumber());
+            }
         }
 
         old_room_comboBox.setItems(listOfGuestLogRooms);

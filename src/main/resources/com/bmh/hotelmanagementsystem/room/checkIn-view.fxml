@@ -86,6 +86,20 @@
                         <FlowPane fx:id="rooms_flowPane" maxHeight="1.7976931348623157E308" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
                      </content>
                   </ScrollPane>
+                  <HBox alignment="CENTER_LEFT" layoutX="40.0" layoutY="314.0" spacing="100.0">
+                     <children>
+                        <VBox spacing="25.0">
+                           <children>
+                              <Label text="No of days:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="no_of_days" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_LEFT" spacing="100.0">
                      <children>
                         <VBox spacing="25.0">

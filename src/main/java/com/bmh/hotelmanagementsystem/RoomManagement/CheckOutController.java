@@ -91,6 +91,7 @@ public class CheckOutController extends Controller {
             @Override
             public void changed(ObservableValue<? extends Integer> observableValue, Integer oldValue, Integer newValue) {
                 try {
+                    rooms.getSelectionModel().clearSelection();
                     String response = RestClient.get("/guestLog/find?roomNumber=" +newValue);
 
                     ObjectMapper objectMapper = new ObjectMapper();
@@ -139,6 +140,13 @@ public class CheckOutController extends Controller {
 
                     List<GuestLogRoom> activeGuestLogRooms = new ArrayList<>();
 
+                    for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
+                        if(guestLogRoom.getGuestLogStatus() == GuestLogStatus.ACTIVE) {
+                            activeGuestLogRooms.add(guestLogRoom);
+
+                        }
+                    }
+
 
                     for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
 
@@ -148,8 +156,6 @@ public class CheckOutController extends Controller {
                             HBox hBox = hboxLoader.load();
                             Label roomNumberLabel = (Label) hBox.lookup("#roomNumber");
                             Button cancelButton = (Button) hBox.lookup("#cancel");
-
-                            activeGuestLogRooms.add(guestLogRoom);
 
                             roomNumberLabel.setText(String.valueOf(guestLogRoom.getRoom().getRoomNumber()));
                             if (activeGuestLogRooms.size() > 1) {

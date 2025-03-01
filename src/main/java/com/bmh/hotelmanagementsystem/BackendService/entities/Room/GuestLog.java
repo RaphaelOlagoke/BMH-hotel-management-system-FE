@@ -12,6 +12,7 @@ public class GuestLog {
     private List<GuestLogRoom> guestLogRooms;
     private LocalDateTime checkInDate;
     private LocalDateTime checkOutDate;
+    private LocalDateTime expectedCheckOutDate;
     private PaymentStatus paymentStatus;
     private Double totalAmountDue;
     private Double amountPaid;
@@ -49,6 +50,14 @@ public class GuestLog {
 
     public void setCheckOutDate(LocalDateTime checkOutDate) {
         this.checkOutDate = checkOutDate;
+    }
+
+    public LocalDateTime getExpectedCheckOutDate() {
+        return expectedCheckOutDate;
+    }
+
+    public void setExpectedCheckOutDate(LocalDateTime expectedCheckOutDate) {
+        this.expectedCheckOutDate = expectedCheckOutDate;
     }
 
     public PaymentStatus getPaymentStatus() {

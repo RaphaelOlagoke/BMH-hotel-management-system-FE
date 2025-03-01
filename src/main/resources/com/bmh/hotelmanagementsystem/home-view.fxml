@@ -228,9 +228,10 @@
                                     <TableColumn fx:id="rooms" prefWidth="75.0" text="Rooms" />
                                     <TableColumn fx:id="checkInDate" prefWidth="75.0" text="Check-in date" />
                                     <TableColumn fx:id="checkOutDate" prefWidth="75.0" text="Check-out date" />
+                                    <TableColumn fx:id="expectedCheckOutDate" prefWidth="105.0" text="Expected Check-out date" />
                                     <TableColumn fx:id="status" prefWidth="75.0" text="Status" />
                                     <TableColumn fx:id="paymentStatus" prefWidth="75.0" text="Payment Status" />
-                                    <TableColumn fx:id="viewMore" prefWidth="75.0" />
+                                    <TableColumn fx:id="viewMore" prefWidth="45.0" />
                                 </columns>
                                  <columnResizePolicy>
                                     <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -57,6 +58,9 @@ public class CheckInController extends Controller {
     private Label rooms_message;
 
     @FXML
+    private TextField no_of_days;
+
+    @FXML
     private FlowPane rooms_flowPane;
 
     CheckIn checkInData = new CheckIn();
@@ -70,6 +74,12 @@ public class CheckInController extends Controller {
 
     @FXML
     public void initialize() throws IOException {
+
+        no_of_days.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                updatePrice();
+            }
+        });
 
         ObservableList<String> roomTypes = FXCollections.observableArrayList();
 
@@ -183,15 +193,37 @@ public class CheckInController extends Controller {
                         String formattedPrice = formatter.format(total);
                         total_price.setText("₦"+formattedPrice);
 
+                        updatePrice();
+
                     }
 
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    Utils.showGeneralErrorDialog();
                 }
             }
         });
 
 
+    }
+
+    public void updatePrice(){
+        int noOfDays = 0;
+        try{
+            noOfDays = Integer.parseInt(no_of_days.getText());
+            Double total = 0.0;
+            for (SelectedRoom item : selectedRoomList){
+                total += item.getRoomPrice();
+            }
+            total = total * noOfDays;
+
+            DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+            String formattedPrice = formatter.format(total);
+            total_price.setText("₦"+formattedPrice);
+        }
+        catch (Exception e){
+            Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-15");
+        }
     }
 
     public void removeRoom(Integer roomNumber,HBox hBox, SelectedRoom selectedRoom){
@@ -214,6 +246,17 @@ public class CheckInController extends Controller {
 
     public void checkIn(){
         try {
+            try{
+                checkInData.setNoOfDays(Integer.parseInt(no_of_days.getText()));
+                if (checkInData.getNoOfDays() > 15 || checkInData.getNoOfDays() < 1){
+                    Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-15");
+                    return;
+                }
+            }
+            catch (Exception e){
+                Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "Invalid number of days");
+                return;
+            }
             checkInData.setGuestName(guest_name.getText());
             checkInData.setSelectedRooms(selectedRoomList != null && !selectedRoomList.isEmpty() ? selectedRoomList : null);
             checkInData.setTotalPrice(total);

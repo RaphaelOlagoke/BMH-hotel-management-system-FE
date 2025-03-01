@@ -22,7 +22,12 @@
                         <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Guest Log" />
                      </children>
                   </HBox>
-                  <Button fx:id="change_room" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Change room" />
+                  <HBox spacing="50.0">
+                     <children>
+                        <Button fx:id="change_room" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Change room" />
+                        <Button fx:id="extend" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Extend Stay" />
+                     </children>
+                  </HBox>
                   <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="26.0" prefWidth="830.0" spacing="10.0">
                      <children>
                         <Label layoutX="782.0" layoutY="10.0" text="Status:">
@@ -76,14 +81,14 @@
                               <Insets left="30.0" right="30.0" />
                            </padding>
                         </VBox>
-                        <VBox prefHeight="259.0" spacing="15.0">
+                        <VBox maxWidth="500.0" prefHeight="259.0" spacing="15.0">
                            <children>
                               <Label text="Room Details:">
                                  <font>
                                     <Font size="24.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="rooms" text="Room(s)">
+                              <Label fx:id="rooms" text="Room(s)" wrapText="true">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

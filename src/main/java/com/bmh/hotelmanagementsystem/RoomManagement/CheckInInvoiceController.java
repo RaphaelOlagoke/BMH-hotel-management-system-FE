@@ -65,7 +65,7 @@ public class CheckInInvoiceController extends Controller {
         room_type.setText("Room Type(s):  " + types);
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-        String formattedPrice = formatter.format(checkInData.getTotalPrice());
+        String formattedPrice = formatter.format(checkInData.getTotalPrice() * checkInData.getNoOfDays());
         room_charge.setText("Room Charge:  ₦" + formattedPrice);
         subTotal = checkInData.getTotalPrice();
         tax = 0.0;
@@ -225,6 +225,7 @@ public class CheckInInvoiceController extends Controller {
                     request.setGuestName(checkInData.getGuestName());
                     request.setRoomNumbers(roomNumbers);
                     request.setPaymentMethod(checkInData.getPaymentMethod());
+                    request.setNoOfDays(checkInData.getNoOfDays());
                     if(discount_code.getText() != null || !discount_code.getText().equals("")){
                         request.setDiscountCode(discount_code.getText());
                     }

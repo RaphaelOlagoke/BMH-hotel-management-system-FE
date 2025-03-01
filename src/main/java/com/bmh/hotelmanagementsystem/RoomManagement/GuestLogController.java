@@ -54,6 +54,9 @@ public class GuestLogController extends Controller {
     private TableColumn<GuestReservation, String> checkInDate;
     @FXML
     private TableColumn<GuestReservation, String> checkOutDate;
+
+//    @FXML
+//    private TableColumn<GuestReservation, String> expectedCheckOutDate;
     @FXML
     private TableColumn<GuestReservation, PaymentStatus> paymentStatus;
     @FXML
@@ -189,6 +192,7 @@ public class GuestLogController extends Controller {
                         rooms.setCellValueFactory(cellData -> cellData.getValue().roomsProperty());
                         checkInDate.setCellValueFactory(cellData -> cellData.getValue().checkInDateProperty());
                         checkOutDate.setCellValueFactory(cellData -> cellData.getValue().checkOutDateProperty());
+//                        expectedCheckOutDate.setCellValueFactory(cellData -> cellData.getValue().expectedCheckOutDateProperty());
                         paymentStatus.setCellValueFactory(cellData -> cellData.getValue().paymentStatusProperty());
                         status.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
@@ -255,11 +259,15 @@ public class GuestLogController extends Controller {
                             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                             String checkInDate = guestLog.getCheckInDate().format(dateTimeFormatter);
                             String checkOutDate = "";
+                            String expectedCheckOutDate = "";
                             if (guestLog.getCheckOutDate() != null) {
                                 checkOutDate = guestLog.getCheckOutDate().format(dateTimeFormatter);
                             }
+                            if (guestLog.getExpectedCheckOutDate() != null) {
+                                expectedCheckOutDate = guestLog.getExpectedCheckOutDate().format(dateTimeFormatter);
+                            }
                             GuestReservation guestReservation = new GuestReservation(guestLog.getGuestName(), room.toString(), checkInDate,
-                                    checkOutDate, guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
+                                    checkOutDate, expectedCheckOutDate,guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
 
                             data.add(guestReservation);
                         }
@@ -445,11 +453,15 @@ public class GuestLogController extends Controller {
                                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                                 String checkInDate = guestLog.getCheckInDate().format(dateTimeFormatter);
                                 String checkOutDate = "";
+                                String expectedCheckOutDate = "";
                                 if (guestLog.getCheckOutDate() != null) {
                                     checkOutDate = guestLog.getCheckOutDate().format(dateTimeFormatter);
                                 }
+                                if (guestLog.getExpectedCheckOutDate() != null) {
+                                    expectedCheckOutDate = guestLog.getExpectedCheckOutDate().format(dateTimeFormatter);
+                                }
                                 GuestReservation guestReservation = new GuestReservation(guestLog.getGuestName(), room.toString(), checkInDate,
-                                        checkOutDate, guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
+                                        checkOutDate, expectedCheckOutDate,guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
 
                                 data.add(guestReservation);
                             }

@@ -20,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -65,6 +66,9 @@ public class HomeController extends Controller {
     private TableColumn<GuestReservation, String> checkInDate;
     @FXML
     private TableColumn<GuestReservation, String> checkOutDate;
+
+    @FXML
+    private TableColumn<GuestReservation, String> expectedCheckOutDate;
     @FXML
     private TableColumn<GuestReservation, PaymentStatus> paymentStatus;
     @FXML
@@ -255,10 +259,15 @@ public class HomeController extends Controller {
                         rooms.setCellValueFactory(cellData -> cellData.getValue().roomsProperty());
                         checkInDate.setCellValueFactory(cellData -> cellData.getValue().checkInDateProperty());
                         checkOutDate.setCellValueFactory(cellData -> cellData.getValue().checkOutDateProperty());
+                        expectedCheckOutDate.setCellValueFactory(cellData -> cellData.getValue().expectedCheckOutDateProperty());
                         paymentStatus.setCellValueFactory(cellData -> cellData.getValue().paymentStatusProperty());
                         status.setCellValueFactory(cellData -> cellData.getValue().statusProperty());
 
                         viewMore.setCellFactory(createViewMoreButtonCellFactory());
+
+                        setWrapCellFactory(checkOutDate);
+                        setWrapCellFactory(expectedCheckOutDate);
+                        setWrapCellFactory(checkInDate);
 
 //                        guestLogTable.setRowFactory(tableView -> {
 //                            TableRow<GuestReservation> row = new TableRow<>();
@@ -467,22 +476,38 @@ public class HomeController extends Controller {
                             int index = 0;
 
                             for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
-                                room.append(guestLogRoom.getRoom().getRoomNumber());
+                                if(guestLog.getStatus() == GuestLogStatus.COMPLETE){
+                                    room.append(guestLogRoom.getRoom().getRoomNumber());
 
-                                if (index < count - 1) {
-                                    room.append(", ");
+                                    if (index < count - 1) {
+                                        room.append(", ");
+                                    }
                                 }
+                                else{
+                                    if(guestLogRoom.getGuestLogStatus() == GuestLogStatus.ACTIVE){
+                                        room.append(guestLogRoom.getRoom().getRoomNumber());
+
+                                        if (index < count - 1) {
+                                            room.append(", ");
+                                        }
+                                    }
+                                }
+
                                 index++;
                             }
 
                             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                             String checkInDate = guestLog.getCheckInDate().format(dateTimeFormatter);
                             String checkOutDate = "";
+                            String expectedCheckOutDate = "";
                             if (guestLog.getCheckOutDate() != null) {
                                 checkOutDate = guestLog.getCheckOutDate().format(dateTimeFormatter);
                             }
+                            if (guestLog.getExpectedCheckOutDate() != null) {
+                                expectedCheckOutDate = guestLog.getExpectedCheckOutDate().format(dateTimeFormatter);
+                            }
                             GuestReservation guestReservation = new GuestReservation(guestLog.getGuestName(), room.toString(), checkInDate,
-                                    checkOutDate, guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
+                                    checkOutDate, expectedCheckOutDate,guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
 
                             data.add(guestReservation);
                         }
@@ -581,6 +606,24 @@ public class HomeController extends Controller {
     private Node createPage(int pageIndex) {
         loadPage(pageIndex, pageSize);
         return guestLogTable;
+    }
+
+    private <T> void setWrapCellFactory(TableColumn<T, String> column) {
+        column.setCellFactory(c -> {
+            return new javafx.scene.control.TableCell<T, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        Text text = new Text(item);
+                        text.setWrappingWidth(100); // Set the wrapping width of the text (adjust as needed)
+                        setGraphic(text);
+                    }
+                }
+            };
+        });
     }
 
     private Callback<TableColumn<GuestReservation, Void>, TableCell<GuestReservation, Void>> createViewMoreButtonCellFactory() {
@@ -693,22 +736,38 @@ public class HomeController extends Controller {
                                 int index = 0;
 
                                 for (GuestLogRoom guestLogRoom : guestLog.getGuestLogRooms()) {
-                                    room.append(guestLogRoom.getRoom().getRoomNumber());
+                                    if(guestLog.getStatus() == GuestLogStatus.COMPLETE){
+                                        room.append(guestLogRoom.getRoom().getRoomNumber());
 
-                                    if (index < size - 1) {
-                                        room.append(", ");
+                                        if (index < size - 1) {
+                                            room.append(", ");
+                                        }
                                     }
+                                    else{
+                                        if(guestLogRoom.getGuestLogStatus() == GuestLogStatus.ACTIVE){
+                                            room.append(guestLogRoom.getRoom().getRoomNumber());
+
+                                            if (index < size - 1) {
+                                                room.append(", ");
+                                            }
+                                        }
+                                    }
+
                                     index++;
                                 }
 
                                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                                 String checkInDate = guestLog.getCheckInDate().format(dateTimeFormatter);
                                 String checkOutDate = "";
+                                String expectedCheckOutDate = "";
                                 if (guestLog.getCheckOutDate() != null) {
                                     checkOutDate = guestLog.getCheckOutDate().format(dateTimeFormatter);
                                 }
+                                if (guestLog.getExpectedCheckOutDate() != null) {
+                                    expectedCheckOutDate = guestLog.getExpectedCheckOutDate().format(dateTimeFormatter);
+                                }
                                 GuestReservation guestReservation = new GuestReservation(guestLog.getGuestName(), room.toString(), checkInDate,
-                                        checkOutDate, guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
+                                        checkOutDate, expectedCheckOutDate,guestLog.getPaymentStatus(), guestLog.getStatus(), guestLog);
 
                                 data.add(guestReservation);
                             }

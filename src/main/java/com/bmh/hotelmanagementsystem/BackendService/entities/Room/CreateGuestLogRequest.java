@@ -11,6 +11,8 @@ public class CreateGuestLogRequest {
 
     private String discountCode;
 
+    private int noOfDays;
+
     public String getGuestName() {
         return guestName;
     }
@@ -41,5 +43,13 @@ public class CreateGuestLogRequest {
 
     public void setDiscountCode(String discountCode) {
         this.discountCode = discountCode;
+    }
+
+    public int getNoOfDays() {
+        return noOfDays;
+    }
+
+    public void setNoOfDays(int noOfDays) {
+        this.noOfDays = noOfDays;
     }
 }

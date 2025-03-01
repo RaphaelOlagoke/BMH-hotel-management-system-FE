@@ -14,6 +14,7 @@ public class GuestReservation {
     private final StringProperty rooms;
     private final StringProperty checkInDate;
     private final StringProperty checkOutDate;
+    private final StringProperty expectedCheckOutDate;
     private final ObjectProperty<PaymentStatus> paymentStatus;
     private final ObjectProperty<GuestLogStatus> status;
 
@@ -21,12 +22,13 @@ public class GuestReservation {
 
     // Constructor
     public GuestReservation(String guestName, String rooms, String checkInDate,
-                            String checkOutDate, PaymentStatus paymentStatus,
+                            String checkOutDate, String expectedCheckOutDate, PaymentStatus paymentStatus,
                             GuestLogStatus status, GuestLog guestLog) {
         this.guestName = new SimpleStringProperty(guestName);
         this.rooms = new SimpleStringProperty(rooms);
         this.checkInDate = new SimpleStringProperty(checkInDate);
         this.checkOutDate = new SimpleStringProperty(checkOutDate);
+        this.expectedCheckOutDate = new SimpleStringProperty(expectedCheckOutDate);
         this.paymentStatus = new SimpleObjectProperty<>(paymentStatus);
         this.status = new SimpleObjectProperty<>(status);
         this.guestLog = guestLog;
@@ -75,6 +77,18 @@ public class GuestReservation {
 
     public void setCheckOutDate(String checkOutDate) {
         this.checkOutDate.set(checkOutDate);
+    }
+
+    public String getExpectedCheckOutDate() {
+        return expectedCheckOutDate.get();
+    }
+
+    public StringProperty expectedCheckOutDateProperty() {
+        return expectedCheckOutDate;
+    }
+
+    public void setExpectedCheckOutDate(String expectedCheckOutDate) {
+        this.expectedCheckOutDate.set(expectedCheckOutDate);
     }
 
     public StringProperty checkOutDateProperty() {
