@@ -10,6 +10,8 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogRoom;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.PDFDownloader;
+import com.bmh.hotelmanagementsystem.PDFPrinter;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,6 +29,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -110,6 +113,8 @@ public class InvoiceController extends Controller {
             Label subtotal = (Label) anchorPane.lookup("#subtotal_label");
             Label tax = (Label) anchorPane.lookup("#tax_label");
             Label discount = (Label) anchorPane.lookup("#discount_label");
+            Button print = (Button) anchorPane.lookup("#print");
+            print.setOnAction(event -> print(invoice));
 //            ScrollPane scroll_items = (ScrollPane) anchorPane.lookup("#scroll_items");
 //            FlowPane items = (FlowPane) scroll_items.lookup("#items");
             FlowPane itemsFlowPane = controller.getItems();
@@ -291,6 +296,23 @@ public class InvoiceController extends Controller {
         }
         else {
             confirmationAlert.close();
+        }
+    }
+
+    public void print(Invoice invoice){
+        try {
+            File pdfFile = PDFDownloader.downloadPDF("/invoice/download?ref=" + invoice.getRef());
+            boolean hasPrinted = PDFPrinter.printPDF(pdfFile);
+            if(hasPrinted) {
+                System.out.println("Invoice with ref" +invoice.getRef()+" printed successfully!");
+//                Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Printer", "Invoice printed successfully!");
+            }
+            else {
+                Utils.showAlertDialog(Alert.AlertType.ERROR, "Printer", "No printer found!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
         }
     }
 }

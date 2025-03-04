@@ -113,7 +113,13 @@ public class HomeController extends Controller {
         guestLogTable.setPrefWidth(510);
         pagination.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
 
-        String username = AuthFileCache.getUsername();
+//        String username = AuthFileCache.getUsername();
+        String[] credentials = TokenStorage.loadCredentials();
+        String username = "";
+        if (credentials != null) {
+           username = credentials[0];
+        }
+
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d, MMMM, yyyy", Locale.ENGLISH);
         String formattedDate = currentDate.format(dateTimeFormatter);

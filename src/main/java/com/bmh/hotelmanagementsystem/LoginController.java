@@ -74,7 +74,8 @@ public class LoginController extends Controller{
                         if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
                             loadingStage.close();
 
-                            AuthFileCache.saveCredentials(apiResponse.getData().getToken(),apiResponse.getData().getUser().getUsername());
+//                            AuthFileCache.saveCredentials(apiResponse.getData().getToken(),apiResponse.getData().getUser().getUsername());
+                            TokenStorage.saveCredentials(apiResponse.getData().getUser().getUsername(),apiResponse.getData().getToken());
 
                             FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("home-view.fxml"));
 

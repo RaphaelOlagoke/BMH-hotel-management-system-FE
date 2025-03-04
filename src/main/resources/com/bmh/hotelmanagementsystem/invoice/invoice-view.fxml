@@ -71,12 +71,7 @@
                   </ScrollPane>
                   <HBox>
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print">
-                           <font>
-                              <Font size="15.0" />
-                           </font>
-                        </Button>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="766.0">
+                        <HBox alignment="CENTER_RIGHT" prefHeight="76.0" prefWidth="949.0">
                            <children>
                               <Button fx:id="complete" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" styleClass="btn" stylesheets="@../css/styles.css" text="Mark As Paid">
                                  <font>

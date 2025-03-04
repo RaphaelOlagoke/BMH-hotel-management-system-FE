@@ -3,15 +3,20 @@ package com.bmh.hotelmanagementsystem.restaurant;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.BillItem;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.Order;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.PDFDownloader;
+import com.bmh.hotelmanagementsystem.PDFPrinter;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 
@@ -46,6 +51,10 @@ public class OrderReceiptController extends Controller {
     DecimalFormat formatter = new DecimalFormat("#,###.00");
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
+    }
+
+    public void initialize() throws IOException {
+        print.setOnAction(event -> print());
     }
 
     public void setData(Object data, String previousLocation){
@@ -90,6 +99,23 @@ public class OrderReceiptController extends Controller {
             }
         }
         catch (Exception e){
+            Utils.showGeneralErrorDialog();
+        }
+    }
+
+    public void print(){
+        try {
+            File pdfFile = PDFDownloader.downloadPDF("/invoice/download?ref=" + this.data.getInvoice().getRef());
+            boolean hasPrinted = PDFPrinter.printPDF(pdfFile);
+            if(hasPrinted) {
+                System.out.println("Invoice with ref" +this.data.getInvoice().getRef()+" printed successfully!");
+//                Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Printer", "Invoice printed successfully!");
+            }
+            else {
+                Utils.showAlertDialog(Alert.AlertType.ERROR, "Printer", "No printer found!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
             Utils.showGeneralErrorDialog();
         }
     }

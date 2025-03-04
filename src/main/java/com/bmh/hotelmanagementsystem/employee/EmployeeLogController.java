@@ -11,6 +11,7 @@ import com.bmh.hotelmanagementsystem.BackendService.enums.UserRoles;
 import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.RoomManagement.CreateRoomController;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.bmh.hotelmanagementsystem.dto.UserRow;
 import com.bmh.hotelmanagementsystem.dto.room.GuestReservation;
@@ -113,7 +114,11 @@ public class EmployeeLogController extends Controller {
     @FXML
     public void initialize()  {
 
-        String username = AuthFileCache.getUsername();
+        String[] credentials = TokenStorage.loadCredentials();
+        String username = "";
+        if (credentials != null) {
+            username = credentials[0];
+        }
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("d, MMMM, yyyy", Locale.ENGLISH);
         String formattedDate = currentDate.format(dateTimeFormatter);

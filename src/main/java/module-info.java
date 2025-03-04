@@ -10,6 +10,7 @@ module com.example.bmhhotelmanagementsystem {
     requires com.fasterxml.jackson.datatype.jsr310;
     requires java.prefs;
     requires org.json;
+    requires java.desktop;
 
     opens com.bmh.hotelmanagementsystem to javafx.fxml;
     exports com.bmh.hotelmanagementsystem;

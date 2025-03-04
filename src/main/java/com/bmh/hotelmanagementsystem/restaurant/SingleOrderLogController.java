@@ -7,6 +7,8 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.Order;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RestaurantOrderStatus;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.PDFDownloader;
+import com.bmh.hotelmanagementsystem.PDFPrinter;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,6 +23,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -146,6 +149,7 @@ public class SingleOrderLogController extends Controller {
 
     public void initialize() throws IOException {
         back.setOnAction(event -> goBack());
+        printReceipt.setOnAction(event -> print());
     }
 
     public void markAsReady(String ref){
@@ -257,6 +261,23 @@ public class SingleOrderLogController extends Controller {
             utils.switchScreen(previousLocation, primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void print(){
+        try {
+            File pdfFile = PDFDownloader.downloadPDF("/invoice/download?ref=" + this.data.getInvoice().getRef());
+            boolean hasPrinted = PDFPrinter.printPDF(pdfFile);
+            if(hasPrinted) {
+                System.out.println("Invoice with ref" +this.data.getInvoice().getRef()+" printed successfully!");
+//                Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Printer", "Invoice printed successfully!");
+            }
+            else {
+                Utils.showAlertDialog(Alert.AlertType.ERROR, "Printer", "No printer found!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
         }
     }
 }

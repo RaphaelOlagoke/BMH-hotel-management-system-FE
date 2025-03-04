@@ -3,6 +3,7 @@ package com.bmh.hotelmanagementsystem.restaurant;
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.dto.restaurant.OrderDetails;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.BillItem;
@@ -166,7 +167,11 @@ public class RestaurantController extends Controller {
     DecimalFormat formatter = new DecimalFormat("#,###.00");
     @FXML
     public void initialize() throws IOException {
-        String username = AuthFileCache.getUsername();
+        String[] credentials = TokenStorage.loadCredentials();
+        String username = "";
+        if (credentials != null) {
+            username = credentials[0];
+        }
         user.setText("Hello " + username);
 
         appetizerCategory.setOnAction(event -> onCategorySelected(appetizerVBox, appetizerLabel, MenuItemType.APPETIZER.toJson()));

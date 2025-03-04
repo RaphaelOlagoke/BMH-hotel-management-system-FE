@@ -28,7 +28,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="106.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
+                        <Button fx:id="print" mnemonicParsing="false" prefHeight="37.0" prefWidth="106.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
                      </children>
                   </HBox>
                   <HBox spacing="300.0">

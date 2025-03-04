@@ -4,9 +4,12 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.Invoice;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Invoice.Item;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.PDFDownloader;
+import com.bmh.hotelmanagementsystem.PDFPrinter;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -14,6 +17,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
@@ -130,8 +134,13 @@ public class SingleInvoiceLogController extends Controller {
     @FXML
     private Button back;
 
+    @FXML
+    private Button print;
+
+
     public void initialize() throws IOException {
         back.setOnAction(event -> goBack());
+        print.setOnAction(event -> print());
     }
 
     public void goBack(){
@@ -140,6 +149,23 @@ public class SingleInvoiceLogController extends Controller {
             utils.switchScreen(previousLocation, primaryStage);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void print(){
+        try {
+            File pdfFile = PDFDownloader.downloadPDF("/invoice/download?ref=" + this.data.getRef());
+            boolean hasPrinted = PDFPrinter.printPDF(pdfFile);
+            if(hasPrinted) {
+                System.out.println("Invoice with ref" +this.data.getRef()+" printed successfully!");
+                Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Printer", "Invoice printed successfully!");
+            }
+            else {
+                Utils.showAlertDialog(Alert.AlertType.ERROR, "Printer", "No printer found!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
         }
     }
 

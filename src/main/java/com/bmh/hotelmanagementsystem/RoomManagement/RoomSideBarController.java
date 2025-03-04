@@ -3,6 +3,7 @@ package com.bmh.hotelmanagementsystem.RoomManagement;
 import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.HomeController;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -69,7 +70,7 @@ public class RoomSideBarController {
 
     @FXML
     protected void logout() throws IOException {
-        AuthFileCache.clear();
+        TokenStorage.clearCredentials();
         Stage primaryStage = (Stage) side_bar_home.getScene().getWindow() ;
 
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("login-view.fxml"));
