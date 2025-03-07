@@ -137,10 +137,14 @@ public class SingleInvoiceLogController extends Controller {
     @FXML
     private Button print;
 
+    @FXML
+    private Button download;
+
 
     public void initialize() throws IOException {
         back.setOnAction(event -> goBack());
         print.setOnAction(event -> print());
+        download.setOnAction(event -> downloadInvoicePdf());
     }
 
     public void goBack(){
@@ -167,6 +171,10 @@ public class SingleInvoiceLogController extends Controller {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();
         }
+    }
+
+    public void downloadInvoicePdf(){
+        Utils.downloadPDF(this.data.getRef());
     }
 
 }

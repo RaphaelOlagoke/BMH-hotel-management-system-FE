@@ -26,8 +26,9 @@
                         <Label fx:id="invoice_ref" styleClass="title_text" stylesheets="@../css/styles.css" text="Invoice" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT">
+                  <HBox alignment="CENTER_RIGHT" spacing="15.0">
                      <children>
+                        <Button fx:id="download" layoutX="681.0" layoutY="10.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="106.0" styleClass="btn" stylesheets="@../css/styles.css" text="Download" />
                         <Button fx:id="print" mnemonicParsing="false" prefHeight="37.0" prefWidth="106.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
                      </children>
                   </HBox>

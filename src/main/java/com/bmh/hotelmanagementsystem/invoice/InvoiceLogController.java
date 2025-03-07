@@ -339,7 +339,7 @@ public class InvoiceLogController extends Controller {
 
                         for (Invoice invoice : apiResponse.getData()) {
 
-                            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
                             String issueDate = invoice.getIssueDate().format(dateTimeFormatter);
                             String paymentDate = "";
                             if (invoice.getPaymentDate() != null) {
@@ -518,7 +518,7 @@ public class InvoiceLogController extends Controller {
                             invoiceData.clear();
                             for (Invoice invoice : apiResponse.getData()){
 
-                                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
                                 String issueDate = invoice.getIssueDate().format(dateTimeFormatter);
                                 String paymentDate = "";
                                 if (invoice.getPaymentDate() != null) {

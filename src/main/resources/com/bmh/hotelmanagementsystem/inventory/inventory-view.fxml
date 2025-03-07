@@ -49,7 +49,7 @@
                            <children>
                               <VBox prefHeight="105.0" prefWidth="218.0">
                                  <children>
-                                    <Label prefHeight="19.0" prefWidth="200.0" text="Hello User" wrapText="true">
+                                    <Label fx:id="user" prefHeight="19.0" prefWidth="200.0" text="Hello User" wrapText="true">
                                        <font>
                                           <Font name="System Bold" size="20.0" />
                                        </font>

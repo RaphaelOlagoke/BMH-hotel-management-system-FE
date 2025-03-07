@@ -11,10 +11,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 public class Utils {
 
@@ -108,6 +112,30 @@ public class Utils {
         errorAlert.setTitle("Error");
         errorAlert.setContentText("Something went wrong. Please try again.");
         errorAlert.showAndWait();
+    }
+
+    public static void downloadPDF(String invoiceRef) {
+        try {
+            // Fetch the PDF file from the API
+            File tempFile = PDFDownloader.downloadPDF("/invoice/download?ref=" + invoiceRef);
+
+            // Open a file chooser for the user to select where to save the file
+            FileChooser fileChooser = new FileChooser();
+            fileChooser.setTitle("Save Invoice PDF");
+            fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+            fileChooser.setInitialFileName("invoice.pdf");
+
+            File saveFile = fileChooser.showSaveDialog(null);
+            if (saveFile != null) {
+                Files.copy(tempFile.toPath(), saveFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                showAlertDialog(Alert.AlertType.INFORMATION, "Download Successful", "PDF saved successfully at: " + saveFile.getAbsolutePath());
+                System.out.println("PDF saved successfully at: " + saveFile.getAbsolutePath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlertDialog(Alert.AlertType.INFORMATION, "Download Failed", "Failed to download PDF.");
+            System.out.println("Failed to download PDF.");
+        }
     }
 
 

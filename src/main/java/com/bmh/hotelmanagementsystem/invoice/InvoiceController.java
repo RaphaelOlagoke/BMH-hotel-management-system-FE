@@ -70,7 +70,7 @@ public class InvoiceController extends Controller {
         this.primaryStage = primaryStage;
     }
 
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy hh:mm a");
 
     public void setGuestLog(GuestLog guestLog, String previousLocation) throws IOException {
         this.previousLocation = previousLocation;
@@ -114,7 +114,9 @@ public class InvoiceController extends Controller {
             Label tax = (Label) anchorPane.lookup("#tax_label");
             Label discount = (Label) anchorPane.lookup("#discount_label");
             Button print = (Button) anchorPane.lookup("#print");
+            Button download = (Button) anchorPane.lookup("#download");
             print.setOnAction(event -> print(invoice));
+            download.setOnAction(event -> downloadInvoicePdf(invoice));
 //            ScrollPane scroll_items = (ScrollPane) anchorPane.lookup("#scroll_items");
 //            FlowPane items = (FlowPane) scroll_items.lookup("#items");
             FlowPane itemsFlowPane = controller.getItems();
@@ -314,5 +316,9 @@ public class InvoiceController extends Controller {
             e.printStackTrace();
             Utils.showGeneralErrorDialog();
         }
+    }
+
+    public void downloadInvoicePdf(Invoice invoice){
+        Utils.downloadPDF(invoice.getRef());
     }
 }

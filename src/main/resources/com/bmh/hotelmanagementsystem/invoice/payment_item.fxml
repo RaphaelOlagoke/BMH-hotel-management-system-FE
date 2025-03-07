@@ -73,8 +73,9 @@
             <Insets bottom="10.0" top="20.0" />
          </padding>
       </Label>
-      <HBox alignment="TOP_RIGHT">
+      <HBox alignment="TOP_RIGHT" spacing="15.0">
          <children>
+            <Button fx:id="download" layoutX="444.0" layoutY="10.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="80.0" styleClass="btn" stylesheets="@../css/styles.css" text="Download" />
             <Button fx:id="print" mnemonicParsing="false" prefHeight="34.0" prefWidth="80.0" styleClass="btn" stylesheets="@../css/styles.css" text="Print" />
          </children>
       </HBox>

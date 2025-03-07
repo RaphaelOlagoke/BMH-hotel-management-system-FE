@@ -6,6 +6,7 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.StockItem
 import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.StockItemFilterRequest;
 import com.bmh.hotelmanagementsystem.BackendService.enums.*;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.bmh.hotelmanagementsystem.dto.inventory.RefreshInventoryPageData;
 import com.bmh.hotelmanagementsystem.dto.inventory.StockRow;
@@ -56,6 +57,9 @@ public class InventoryController extends Controller {
         }
         this.previousLocation = previousLocation;
     }
+
+    @FXML
+    private Label user;
 
 
     @FXML
@@ -150,6 +154,13 @@ public class InventoryController extends Controller {
 
     @FXML
     public void initialize() throws IOException {
+        String[] credentials = TokenStorage.loadCredentials();
+        String username = "";
+        if (credentials != null) {
+            username = credentials[0];
+        }
+        user.setText("Hello " + username);
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         start_datePicker.setConverter(new javafx.util.StringConverter<LocalDate>() {
