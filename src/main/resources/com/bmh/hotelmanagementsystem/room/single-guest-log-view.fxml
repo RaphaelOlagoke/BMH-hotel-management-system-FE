@@ -42,7 +42,7 @@
                         </Label>
                      </children>
                   </HBox>
-                  <HBox alignment="BASELINE_LEFT" spacing="300.0">
+                  <HBox alignment="BASELINE_LEFT" spacing="200.0">
                      <children>
                         <VBox prefHeight="259.0" spacing="15.0">
                            <children>
