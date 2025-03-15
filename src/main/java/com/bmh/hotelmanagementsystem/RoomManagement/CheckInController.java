@@ -5,6 +5,7 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CheckIn;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.RoomPrices;
+import com.bmh.hotelmanagementsystem.BackendService.enums.ID_TYPE;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.Utils;
@@ -53,6 +54,9 @@ public class CheckInController extends Controller {
     private ComboBox<Integer> room;
 
     @FXML
+    private ComboBox<String> id_type;
+
+    @FXML
     private Label price;
     @FXML
     private Label total_price;
@@ -62,6 +66,18 @@ public class CheckInController extends Controller {
 
     @FXML
     private TextField no_of_days;
+
+    @FXML
+    private TextField id_ref;
+
+    @FXML
+    private TextField phone_number;
+
+    @FXML
+    private TextField next_of_kin_name;
+
+    @FXML
+    private TextField next_of_kin_number;
 
     @FXML
     private FlowPane rooms_flowPane;
@@ -93,6 +109,14 @@ public class CheckInController extends Controller {
         ObservableList<Integer> roomsData = FXCollections.observableArrayList();
 
         room_type.setItems(roomTypes);
+
+        ObservableList<String> idTypes = FXCollections.observableArrayList();
+
+        for (ID_TYPE idType : ID_TYPE.values()) {
+            idTypes.add(idType.toJson());
+        }
+
+        id_type.setItems(idTypes);
 
         room_type.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -280,6 +304,11 @@ public class CheckInController extends Controller {
             checkInData.setGuestName(guest_name.getText());
             checkInData.setSelectedRooms(selectedRoomList != null && !selectedRoomList.isEmpty() ? selectedRoomList : null);
             checkInData.setTotalPrice(total);
+            checkInData.setIdType(id_type.getSelectionModel().getSelectedItem() != null ? ID_TYPE.valueOf(id_type.getSelectionModel().getSelectedItem()) : null);
+            checkInData.setIdRef(id_ref.getText());
+            checkInData.setPhoneNumber(phone_number.getText());
+            checkInData.setNextOfKinName(next_of_kin_name.getText());
+            checkInData.setNextOfKinNumber(next_of_kin_number.getText());
 //            checkInData.setRoomNumber(room.getSelectionModel().getSelectedItem() != null? room.getSelectionModel().getSelectedItem() : 0);
 //            checkInData.setRoomNumbers(selectedRooms != null && !selectedRooms.isEmpty()? selectedRooms : null);
             if (checkInData.getGuestName() == null || checkInData.getSelectedRooms() == null){

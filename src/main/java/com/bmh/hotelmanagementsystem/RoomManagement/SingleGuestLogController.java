@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,6 +48,21 @@ public class SingleGuestLogController extends Controller {
     private Label total_amount_due;
     @FXML
     private Label status;
+
+    @FXML
+    private Label id_ref;
+
+    @FXML
+    private Label id_type;
+
+    @FXML
+    private Label phone_number;
+
+    @FXML
+    private Label next_of_kin_name;
+
+    @FXML
+    private Label next_of_kin_number;
 
     @FXML
     private Button generate_invoice;
@@ -86,6 +102,12 @@ public class SingleGuestLogController extends Controller {
         guest_name.setText("Guest Name:   " + guestLog.getGuestName());
         rooms.setText("Room(s):   " + room);
         room_types.setText("Room type(s):   " + types);
+
+        id_ref.setText("Guest Name:   " + guestLog.getGuestName());
+        id_type.setText("ID Type:   " + guestLog.getId_type());
+        phone_number.setText("Phone Number:   " + guestLog.getPhoneNumber());
+        next_of_kin_name.setText("Next of kin:   " + guestLog.getNextOfKinName());
+        next_of_kin_number.setText("Next of kin Number:   " + guestLog.getNextOfKinNumber());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         check_in_date.setText("Check-in date:   " + guestLog.getCheckInDate().format(formatter));

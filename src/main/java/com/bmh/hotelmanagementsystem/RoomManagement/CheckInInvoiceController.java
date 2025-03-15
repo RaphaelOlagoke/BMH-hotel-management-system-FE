@@ -226,6 +226,11 @@ public class CheckInInvoiceController extends Controller {
                     request.setRoomNumbers(roomNumbers);
                     request.setPaymentMethod(checkInData.getPaymentMethod());
                     request.setNoOfDays(checkInData.getNoOfDays());
+                    request.setIdType(checkInData.getIdType());
+                    request.setIdRef(checkInData.getIdRef());
+                    request.setPhoneNumber(checkInData.getPhoneNumber());
+                    request.setNextOfKinName(checkInData.getNextOfKinName());
+                    request.setNextOfKinNumber(checkInData.getNextOfKinNumber());
                     if(discount_code.getText() != null || !discount_code.getText().equals("")){
                         request.setDiscountCode(discount_code.getText());
                     }

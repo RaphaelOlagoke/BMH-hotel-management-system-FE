@@ -270,7 +270,7 @@ public class RestaurantController extends Controller {
                             menu_flowPane.getChildren().clear();
 
                             for (MenuItemDto menuItem : apiResponse.getData()){
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/Restaurant/menu_item.fxml"));
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/restaurant/menu_item.fxml"));
                                 VBox vBox = fxmlLoader.load();
 
                                 Button viewMore = (Button) vBox.lookup("#viewMore");
@@ -417,7 +417,7 @@ public class RestaurantController extends Controller {
     }
 
     public void addToBill(MenuItemDto menuItem) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/Restaurant/bill_item.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/restaurant/bill_item.fxml"));
         HBox hBox = fxmlLoader.load();
 
         Label name = (Label) hBox.lookup("#name");
