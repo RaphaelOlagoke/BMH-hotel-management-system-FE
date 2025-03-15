@@ -91,7 +91,7 @@ public class CheckOutController extends Controller {
             @Override
             public void changed(ObservableValue<? extends Integer> observableValue, Integer oldValue, Integer newValue) {
                 try {
-                    rooms.getSelectionModel().clearSelection();
+//                    rooms.getSelectionModel().clearSelection();
                     String response = RestClient.get("/guestLog/find?roomNumber=" +newValue);
 
                     ObjectMapper objectMapper = new ObjectMapper();
