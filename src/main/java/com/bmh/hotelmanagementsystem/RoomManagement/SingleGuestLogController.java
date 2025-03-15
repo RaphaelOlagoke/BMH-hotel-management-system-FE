@@ -104,7 +104,7 @@ public class SingleGuestLogController extends Controller {
         room_types.setText("Room type(s):   " + types);
 
         id_ref.setText("Guest Name:   " + guestLog.getGuestName());
-        id_type.setText("ID Type:   " + guestLog.getId_type());
+        id_type.setText("ID Type:   " + guestLog.getIdType());
         phone_number.setText("Phone Number:   " + guestLog.getPhoneNumber());
         next_of_kin_name.setText("Next of kin:   " + guestLog.getNextOfKinName());
         next_of_kin_number.setText("Next of kin Number:   " + guestLog.getNextOfKinNumber());

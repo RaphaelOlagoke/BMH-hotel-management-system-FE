@@ -22,7 +22,7 @@ public class GuestLog {
     private List<Invoice> invoices;
 
 
-    private ID_TYPE id_type;
+    private ID_TYPE idType;
     private String idRef;
     private String nextOfKinName;
     private String nextOfKinNumber;
@@ -117,12 +117,12 @@ public class GuestLog {
     }
 
 
-    public ID_TYPE getId_type() {
-        return id_type;
+    public ID_TYPE getIdType() {
+        return idType;
     }
 
-    public void setId_type(ID_TYPE id_type) {
-        this.id_type = id_type;
+    public void setIdType(ID_TYPE id_type) {
+        this.idType = id_type;
     }
 
     public String getIdRef() {
