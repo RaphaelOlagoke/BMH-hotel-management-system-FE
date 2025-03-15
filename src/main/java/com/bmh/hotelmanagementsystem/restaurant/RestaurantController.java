@@ -388,7 +388,7 @@ public class RestaurantController extends Controller {
                                 });
 
                                 name.setText(menuItem.getName());
-                                price.setText("$" + formatter.format(menuItem.getPrice()));
+                                price.setText("₦" + formatter.format(menuItem.getPrice()));
 
                                 menu_flowPane.getChildren().add(vBox);
                             }

@@ -11,6 +11,7 @@ import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -27,6 +28,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.bmh.hotelmanagementsystem.Utils.showLoadingScreen;
 
 public class CheckInController extends Controller {
 
@@ -95,68 +98,85 @@ public class CheckInController extends Controller {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-                List<Room> rooms;
-                rooms = new ArrayList<>();
-                try {
-                    String response = RestClient.get("/room/typeAndStatus?roomType=" +newValue+ "&roomStatus=Available");
+                Stage loadingStage = showLoadingScreen(primaryStage);
 
-                    ObjectMapper objectMapper = new ObjectMapper();
-                    objectMapper.registerModule(new JavaTimeModule());
+                Platform.runLater(() -> loadingStage.show());
 
-                    // Convert JSON string to ApiResponse
-                    ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {
-                    });
+                new Thread(() -> {
+                    try {
+                        String response = RestClient.get("/room/typeAndStatus?roomType=" + newValue + "&roomStatus=Available");
 
-                    roomsData.clear();
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        objectMapper.registerModule(new JavaTimeModule());
 
-                    // Extract the list of rooms
-                    rooms = apiResponse.getData();
+                        // Convert JSON string to ApiResponse
+                        ApiResponse<Room> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponse<Room>>() {
+                        });
+
+                        Platform.runLater(() -> {
+                            List<Room> rooms;
+                            rooms = new ArrayList<>();
+
+                            roomsData.clear();
+
+                            // Extract the list of rooms
+                            rooms = apiResponse.getData();
 //                    checkInData.setRoomType(RoomType.valueOf(newValue));
-                    if (rooms != null){
-                        for (Room room : rooms) {
-                            roomsData.add(room.getRoomNumber());
-                        }
-                        rooms_message.setText("");
+                            if (rooms != null) {
+                                for (Room room : rooms) {
+                                    roomsData.add(room.getRoomNumber());
+                                }
+                                rooms_message.setText("");
+                            } else {
+                                rooms_message.setText("No rooms available");
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            System.out.println(e);
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                            errorAlert.setTitle("Sever Error");
+                            errorAlert.setContentText("Something went wrong");
+                            errorAlert.showAndWait();
+//                            rooms = new ArrayList<>();
+                        });
                     }
-                    else{
-                        rooms_message.setText("No rooms available");
-                    }
+                    try {
+                        String response = RestClient.get("/roomPrices/?roomType=" + newValue);
 
-                } catch (Exception e) {
-                    System.out.println(e);
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Sever Error");
-                    errorAlert.setContentText("Something went wrong");
-                    errorAlert.showAndWait();
-                    rooms = new ArrayList<>();
-                }
-                try {
-                    RoomPrices roomPrice;
-                    String response = RestClient.get("/roomPrices/?roomType=" + newValue);
+                        ObjectMapper objectMapper = new ObjectMapper();
 
-                    ObjectMapper objectMapper = new ObjectMapper();
+                        // Convert JSON string to ApiResponse
+                        ApiResponseSingleData<RoomPrices> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<RoomPrices>>() {
+                        });
 
-                    // Convert JSON string to ApiResponse
-                    ApiResponseSingleData<RoomPrices> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<RoomPrices>>() {
-                    });
-
-                    roomPrice = apiResponse.getData();
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            RoomPrices roomPrice;
+                            roomPrice = apiResponse.getData();
 //                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
-                    DecimalFormat formatter = new DecimalFormat("#,###.00");
+                            DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-                    String formattedPrice = formatter.format(roomPrice.getRoomPrice());
-                    price.setText("₦"+formattedPrice);
+                            String formattedPrice = formatter.format(roomPrice.getRoomPrice());
+                            price.setText("₦" + formattedPrice);
 
-                    currentPrice = roomPrice.getRoomPrice();
+                            currentPrice = roomPrice.getRoomPrice();
+                        });
 
 
-                } catch (Exception e) {
-                    System.out.println(e);
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setTitle("Sever Error");
-                    errorAlert.setContentText("Something went wrong");
-                    errorAlert.showAndWait();
-                }
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            System.out.println(e);
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                            errorAlert.setTitle("Sever Error");
+                            errorAlert.setContentText("Something went wrong");
+                            errorAlert.showAndWait();
+                        });
+                    }
+                }).start();
             }
         });
 
