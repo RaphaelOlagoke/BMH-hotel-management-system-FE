@@ -2,17 +2,50 @@ package com.bmh.hotelmanagementsystem.BackendService.entities.Room;
 
 public class RoomPricesSummary {
     
-    Double standardPrice;
-    Double deluxePrice;
-    Double executivePrice;
-    Double vipPrice;
+//    Double standardPrice;
+//    Double deluxePrice;
+//    Double executivePrice;
+//    Double vipPrice;
 
-    public Double getStandardPrice() {
-        return standardPrice;
+
+    Double executiveSuitePrice;
+    Double businessSuiteAPrice;
+    Double businessSuiteBPrice;
+    Double executiveDeluxePrice;
+    Double deluxePrice;
+    Double classicPrice;
+
+
+    public Double getExecutiveSuitePrice() {
+        return executiveSuitePrice;
     }
 
-    public void setStandardPrice(Double standardPrice) {
-        this.standardPrice = standardPrice;
+    public void setExecutiveSuitePrice(Double executiveSuitePrice) {
+        this.executiveSuitePrice = executiveSuitePrice;
+    }
+
+    public Double getBusinessSuiteAPrice() {
+        return businessSuiteAPrice;
+    }
+
+    public void setBusinessSuiteAPrice(Double businessSuiteAPrice) {
+        this.businessSuiteAPrice = businessSuiteAPrice;
+    }
+
+    public Double getBusinessSuiteBPrice() {
+        return businessSuiteBPrice;
+    }
+
+    public void setBusinessSuiteBPrice(Double businessSuiteBPrice) {
+        this.businessSuiteBPrice = businessSuiteBPrice;
+    }
+
+    public Double getExecutiveDeluxePrice() {
+        return executiveDeluxePrice;
+    }
+
+    public void setExecutiveDeluxePrice(Double executiveDeluxePrice) {
+        this.executiveDeluxePrice = executiveDeluxePrice;
     }
 
     public Double getDeluxePrice() {
@@ -23,19 +56,11 @@ public class RoomPricesSummary {
         this.deluxePrice = deluxePrice;
     }
 
-    public Double getExecutivePrice() {
-        return executivePrice;
+    public Double getClassicPrice() {
+        return classicPrice;
     }
 
-    public void setExecutivePrice(Double executivePrice) {
-        this.executivePrice = executivePrice;
-    }
-
-    public Double getVipPrice() {
-        return vipPrice;
-    }
-
-    public void setVipPrice(Double vipPrice) {
-        this.vipPrice = vipPrice;
+    public void setClassicPrice(Double classicPrice) {
+        this.classicPrice = classicPrice;
     }
 }

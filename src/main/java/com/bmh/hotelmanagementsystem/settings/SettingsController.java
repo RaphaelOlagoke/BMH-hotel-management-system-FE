@@ -45,14 +45,29 @@ public class SettingsController extends Controller {
         this.previousLocation = previousLocation;
     }
 
+//    @FXML
+//    private TextField standard_room_textfield;
+//    @FXML
+//    private TextField deluxe_room_textfield;
+//    @FXML
+//    private TextField executive_room_textfield;
+//    @FXML
+//    private TextField vip_room_textfield;
+
+
     @FXML
-    private TextField standard_room_textfield;
+    private TextField executive_suite_textfield;
+    @FXML
+    private TextField business_suite_a_textfield;
+    @FXML
+    private TextField business_suite_b_textfield;
+    @FXML
+    private TextField executive_deluxe_textfield;
     @FXML
     private TextField deluxe_room_textfield;
     @FXML
-    private TextField executive_room_textfield;
-    @FXML
-    private TextField vip_room_textfield;
+    private TextField classic_room_textfield;
+
 
     @FXML
     private Button update;
@@ -78,10 +93,13 @@ public class SettingsController extends Controller {
             if (apiResponse.getResponseHeader().getResponseCode().equals("00")){
                 Platform.runLater(() -> {
                     loadingStage.close();
-                    standard_room_textfield.setText(apiResponse.getData().getStandardPrice().toString());
+                    classic_room_textfield.setText(apiResponse.getData().getClassicPrice().toString());
                     deluxe_room_textfield.setText(apiResponse.getData().getDeluxePrice().toString());
-                    executive_room_textfield.setText(apiResponse.getData().getExecutivePrice().toString());
-                    vip_room_textfield.setText(apiResponse.getData().getVipPrice().toString());
+                    executive_suite_textfield.setText(apiResponse.getData().getExecutiveSuitePrice().toString());
+                    business_suite_a_textfield.setText(apiResponse.getData().getBusinessSuiteAPrice().toString());
+                    business_suite_b_textfield.setText(apiResponse.getData().getBusinessSuiteBPrice().toString());
+                    executive_deluxe_textfield.setText(apiResponse.getData().getExecutiveDeluxePrice().toString());
+
 
                 });
             }
@@ -115,10 +133,13 @@ public class SettingsController extends Controller {
             try {
                 RoomPricesSummary request = new RoomPricesSummary();
                 try {
-                    request.setStandardPrice(Double.valueOf(standard_room_textfield.getText()));
+                    request.setClassicPrice(Double.valueOf(classic_room_textfield.getText()));
                     request.setDeluxePrice(Double.valueOf(deluxe_room_textfield.getText()));
-                    request.setExecutivePrice(Double.valueOf(executive_room_textfield.getText()));
-                    request.setVipPrice(Double.valueOf(vip_room_textfield.getText()));
+                    request.setExecutiveSuitePrice(Double.valueOf(executive_suite_textfield.getText()));
+                    request.setBusinessSuiteAPrice(Double.valueOf(business_suite_a_textfield.getText()));
+                    request.setBusinessSuiteBPrice(Double.valueOf(business_suite_b_textfield.getText()));
+                    request.setExecutiveDeluxePrice(Double.valueOf(executive_deluxe_textfield.getText()));
+
                 } catch (Exception e) {
                     Platform.runLater(() -> {
                         loadingStage.close();

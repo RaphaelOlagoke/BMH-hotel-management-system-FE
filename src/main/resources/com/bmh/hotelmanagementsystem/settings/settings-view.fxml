@@ -32,17 +32,17 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" spacing="20.0">
                            <children>
-                              <Label prefWidth="150.0" text="Standard Room Price:">
+                              <Label prefWidth="200.0" text="Classic Room Price:">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="standard_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                              <TextField fx:id="classic_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="20.0">
                            <children>
-                              <Label prefWidth="150.0" text="Deluxe Room Price:">
+                              <Label prefWidth="200.0" text="Deluxe Room Price:">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -52,22 +52,42 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="64.0" spacing="20.0">
                            <children>
-                              <Label prefWidth="150.0" text="Executive Room Price:">
+                              <Label prefHeight="19.0" prefWidth="200.0" text="Executive Suite Room Price:">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="executive_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                              <TextField fx:id="executive_suite_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
                            </children>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="222.0" spacing="20.0">
                            <children>
-                              <Label prefWidth="150.0" text="VIP Room Price:">
+                              <Label prefHeight="19.0" prefWidth="200.0" text="Executive Deluxe Room Price:">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="vip_room_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                              <TextField fx:id="executive_deluxe_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="202.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="200.0" text="Business Suit A Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="business_suite_a_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="25.0" layoutY="348.0" spacing="20.0">
+                           <children>
+                              <Label prefWidth="200.0" text="Business Suit B Room Price:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="business_suite_b_textfield" style="-fx-border-color: grey;" styleClass="box" stylesheets="@../css/styles.css" />
                            </children>
                         </HBox>
                         <HBox alignment="TOP_RIGHT" spacing="50.0" stylesheets="@../css/styles.css">

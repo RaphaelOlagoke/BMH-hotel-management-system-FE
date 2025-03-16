@@ -17,8 +17,8 @@ public class BMHApplication extends Application {
         scene.getStylesheets().add(getClass().getResource("css/styles.css").toExternalForm());
 
 
-        stage.setHeight(stage.getMaxHeight());
-        stage.setWidth(stage.getMaxWidth());
+//        stage.setHeight(stage.getMaxHeight());
+//        stage.setWidth(stage.getMaxWidth());
         stage.setScene(scene);
 //        stage.setFullScreen(true);
 //        stage.setFullScreenExitHint("");
