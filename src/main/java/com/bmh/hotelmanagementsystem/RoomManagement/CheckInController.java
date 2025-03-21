@@ -218,7 +218,7 @@ public class CheckInController extends Controller {
 //                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
                             DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-                            String formattedPrice = formatter.format(roomPrice.getRoomPrice());
+                            String formattedPrice = formatter.format(roomPrice.getRoomPrice() + ((vat/100) * roomPrice.getRoomPrice()) + tax);
                             price.setText("₦" + formattedPrice);
 
                             currentPrice = roomPrice.getRoomPrice();

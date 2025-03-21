@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.AdditionalChargesSummary;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
@@ -37,6 +38,9 @@ public class AddRoomController extends Controller {
     private String previousLocation;
 
     private GuestLog data;
+
+    private Double tax = 0.0;
+    private Double vat = 0.0;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -128,7 +132,7 @@ public class AddRoomController extends Controller {
 //                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
                             DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-                            String formattedPrice = formatter.format(roomPrice.getRoomPrice());
+                            String formattedPrice = formatter.format(roomPrice.getRoomPrice() + ((vat/100) * roomPrice.getRoomPrice()) + tax);
                             price.setText("₦" + formattedPrice);
                         });
 
@@ -167,6 +171,36 @@ public class AddRoomController extends Controller {
 
 
     public void initialize() {
+
+        Stage loadingStage = showLoadingScreen(primaryStage);
+
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+                String response = RestClient.get("/additionalCharge/");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<AdditionalChargesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<AdditionalChargesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        tax = apiResponse.getData().getTaxPrice();
+                        vat = apiResponse.getData().getVatPrice();
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
 
         add_room.setOnAction(event -> addRoom());
 

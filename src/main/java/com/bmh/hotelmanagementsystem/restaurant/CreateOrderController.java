@@ -55,8 +55,8 @@ public class CreateOrderController extends Controller {
     @FXML
     private TableColumn<OrderItem, Double> priceColumn;
 
-    @FXML
-    private TextField discount_code;
+//    @FXML
+//    private TextField discount_code;
 
     private ObservableList<OrderItem> tableData = FXCollections.observableArrayList();
 
@@ -109,6 +109,8 @@ public class CreateOrderController extends Controller {
 
         subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
         totalLabel.setText("Total:  ₦" + formatter.format(total));
+        discountLabel.setText("Discount:  ₦0.00");
+        taxLabel.setText("");
 
 
         for (TableColumn<OrderItem, ?> column : itemsTable.getColumns()) {
@@ -127,60 +129,60 @@ public class CreateOrderController extends Controller {
         confirmPayment.setOnAction(event -> createOrder());
     }
 
-    public void getDiscount(){
-        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
-        Platform.runLater(() -> loadingStage.show());
-
-        new Thread(() -> {
-            try {
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
-
-                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
-                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
-                });
-
-                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        subTotal = 0.0;
-                        discount = 0.0;
-                        total = 0.0;
-                        for (BillItem billItem : this.data.getBillItems()) {
-
-
-                            double itemTotal = billItem.getPrice() * billItem.getQuantity();
-                            subTotal += itemTotal;
-                        }
-
-                        total = (subTotal) + tax;
-
-                        discount = total * apiResponse.getData().getPercentage()/100.0;
-                        total = (subTotal - discount) + tax;
-
-                        discountLabel.setText("Discount:  ₦" + formatter.format(discount));
-                        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
-                        totalLabel.setText("Total:  ₦" + formatter.format(total));
-
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
-                    });
-
-                }
-
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    loadingStage.close();
-                    e.printStackTrace();
-                    Utils.showGeneralErrorDialog();
-                });
-            }
-        }).start();
-    }
+//    public void getDiscount(){
+//        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
+//        Platform.runLater(() -> loadingStage.show());
+//
+//        new Thread(() -> {
+//            try {
+//
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                objectMapper.registerModule(new JavaTimeModule());
+//
+//                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
+//                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
+//                });
+//
+//                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+//                    Platform.runLater(() -> {
+//                        loadingStage.close();
+//                        subTotal = 0.0;
+//                        discount = 0.0;
+//                        total = 0.0;
+//                        for (BillItem billItem : this.data.getBillItems()) {
+//
+//
+//                            double itemTotal = billItem.getPrice() * billItem.getQuantity();
+//                            subTotal += itemTotal;
+//                        }
+//
+//                        total = (subTotal) + tax;
+//
+//                        discount = total * apiResponse.getData().getPercentage()/100.0;
+//                        total = (subTotal - discount) + tax;
+//
+//                        discountLabel.setText("Discount:  ₦" + formatter.format(discount));
+//                        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
+//                        totalLabel.setText("Total:  ₦" + formatter.format(total));
+//
+//                    });
+//                } else {
+//                    Platform.runLater(() -> {
+//                        loadingStage.close();
+//                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+//                    });
+//
+//                }
+//
+//            } catch (Exception e) {
+//                Platform.runLater(() -> {
+//                    loadingStage.close();
+//                    e.printStackTrace();
+//                    Utils.showGeneralErrorDialog();
+//                });
+//            }
+//        }).start();
+//    }
 
     public void createOrder(){
         Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);

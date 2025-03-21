@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,6 +42,18 @@ public class LoginController extends Controller{
     @FXML
     private PasswordField password;
 
+
+    public void initialize() {
+        password.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                try {
+                    onLoginButtonClick();
+                } catch (IOException e) {
+                    Utils.showGeneralErrorDialog();
+                }
+            }
+        });
+    }
     @FXML
     protected void onLoginButtonClick() throws IOException {
 

@@ -191,6 +191,9 @@ public class RestaurantController extends Controller {
         transfer.setOnAction(event -> onSelectedPaymentMethod(transferVbox, transferLabel, PaymentMethod.TRANSFER));
         chargeToRoom.setOnAction(event -> chargeToRoom());
 
+
+        create.setOnAction(event -> create());
+
 //        if (credentials != null) {
 //            department = credentials[2];
 //        }

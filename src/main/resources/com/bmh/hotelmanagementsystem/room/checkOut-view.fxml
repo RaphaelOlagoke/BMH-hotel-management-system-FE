@@ -46,7 +46,7 @@
                   </Label>
                   <HBox spacing="30.0">
                      <children>
-                        <Label text="Total  Price:">
+                        <Label text="Total Amount Paid:">
                            <font>
                               <Font size="18.0" />
                            </font>

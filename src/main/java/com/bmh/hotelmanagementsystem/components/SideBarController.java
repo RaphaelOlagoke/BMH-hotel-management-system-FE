@@ -43,6 +43,9 @@ public class SideBarController {
         else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml"));
         }
+        else if(LoginDepartment.valueOf(department) == LoginDepartment.RESTAURANT_BAR){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml"));
+        }
         else {
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/home-view.fxml"));
         }
@@ -110,7 +113,7 @@ public class SideBarController {
     protected void restaurant() throws IOException {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/Restaurant/restaurant-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
         primaryStage.setScene(scene);

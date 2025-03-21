@@ -40,7 +40,7 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <TextField fx:id="searchField" prefHeight="37.0" prefWidth="181.0" promptText="Search" styleClass="whiteBackGround" stylesheets="@../css/styles.css" />
+                              <TextField fx:id="searchField" prefHeight="40.0" prefWidth="299.0" promptText="Search" styleClass="whiteBackGround" stylesheets="@../css/styles.css" />
                            </children>
                         </HBox>
                      </children>

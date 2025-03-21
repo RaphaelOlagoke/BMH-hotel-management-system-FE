@@ -20,6 +20,7 @@
    <content>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
+         <fx:include fx:id="side_bar" maxWidth="300.0" source="../components/sideBar.fxml" />
             <VBox spacing="29.0" styleClass="box" stylesheets="@../css/styles.css">
                <children>
                   <fx:include fx:id="back" source="../components/back_button.fxml" />
@@ -122,9 +123,6 @@
                </padding>
             </VBox>
          </children>
-         <padding>
-            <Insets left="50.0" />
-         </padding>
       </HBox>
    </content>
 </ScrollPane>

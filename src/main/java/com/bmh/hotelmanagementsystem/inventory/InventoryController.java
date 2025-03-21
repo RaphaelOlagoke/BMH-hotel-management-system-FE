@@ -53,7 +53,7 @@ public class InventoryController extends Controller {
             currentlySelectedVBox = this.data.getCurrentlySelectedVBox();
             currentlySelectedLabel = this.data.getCurrentlySelectedLabel();
 
-            onCategorySelected(currentlySelectedVBox, currentlySelectedLabel, this.data.getStockItemCategory());
+            onCategorySelected(roomVBox, roomLabel, this.data.getStockItemCategory());
         }
         this.previousLocation = previousLocation;
     }
@@ -116,6 +116,9 @@ public class InventoryController extends Controller {
     private DatePicker end_expirationDatePicker;
     @FXML
     private Button create;
+
+    @FXML
+    private Button apply;
 
     @FXML
     private CheckBox lowInStock;
@@ -254,6 +257,7 @@ public class InventoryController extends Controller {
 
         create.setOnAction(event -> create());
         search.setOnAction(event -> getStockItems(currentlySelectedCategory, page, pageSize));
+        apply.setOnAction(event -> getStockItems(currentlySelectedCategory, page, pageSize));
         searchField.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
                 getStockItems(currentlySelectedCategory, page, pageSize);

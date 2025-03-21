@@ -109,7 +109,7 @@ public class CreateStockController extends Controller {
 
                 CreateStockItemRequest request = new CreateStockItemRequest();
                 request.setName(name.getText());
-                request.setUnit(unit.getText() == null? unit.getText() : "");
+                request.setUnit(unit.getText() != null? unit.getText() : "");
                 try{
                     request.setQuantity(Integer.valueOf(quantity.getText()));
                 }
