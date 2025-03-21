@@ -40,11 +40,25 @@
     -fx-background-color: #FFFFFF;
     -fx-text-fill: #000000;
     fx-font-size: 24px;
-/*    -fx-font-weight: bold;*/
+    -fx-font-weight: bold;
+}
+
+.active-side-bar-button{
+    -fx-background-color: #0059AC;
+    -fx-text-fill: #FFFFFF;
+    fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 5;
+}
+
+.active-button-label{
+    -fx-text-fill: #FFFFFF;
+    fx-font-size: 24px;
+    -fx-font-weight: bold;
 }
 
 .side-bar-button:hover{
-    -fx-background-color: #d0cfcf;
+    -fx-background-color: #d5edff;
     -fx-text-fill: #FFFFFF;
     -fx-background-radius: 15;
 }
@@ -168,4 +182,42 @@
     -fx-text-fill: #868080; /* Set text color to #868080 */
     -fx-padding: 15px 7px;
 }
+
+.login-background {
+    -fx-background-color: #F4F7FC; /* Light soft background color */
+}
+
+
+
+
+
+
+/* Company name text style */
+.company-name {
+    -fx-font-family: "Arial", sans-serif;
+    -fx-font-size: 22px;
+    -fx-text-fill: #2D2D2D;
+    -fx-font-weight: bold;
+    -fx-padding: 10px;
+}
+
+/* Text field styling */
+.text-field, .password-field {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+    -fx-background-color: #FFFFFF;
+    -fx-border-radius: 8px;
+    -fx-border-color: #DCDCDC;
+    -fx-text-fill: #333333;
+}
+
+/* Focused text field styling */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #0059AC; /* Light green when focused */
+    -fx-background-color: #f0f0f0;
+}
+
+
+
+
 

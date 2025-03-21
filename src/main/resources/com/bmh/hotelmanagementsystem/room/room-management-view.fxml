@@ -14,9 +14,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.RoomManagementController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.RoomManagementController">
    <content>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+      <HBox minHeight="-Infinity" minWidth="-Infinity">
          <children>
          <!--             Side Bar -->
                 <fx:include fx:id="side_bar" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
@@ -24,7 +24,7 @@
             
             <VBox maxHeight="1.7976931348623157E308" spacing="30.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
                <children>
-                  <HBox alignment="CENTER_RIGHT" styleClass="whiteBackGround" stylesheets="@../css/styles.css">
+                  <HBox alignment="CENTER_RIGHT" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
                      <children>
                         <Button fx:id="inventory" mnemonicParsing="false" prefHeight="57.0" prefWidth="104.0" styleClass="transparent-background" stylesheets="@../css/styles.css">
                            <graphic>
@@ -165,7 +165,7 @@
                   <Insets />
                </HBox.margin>
                <padding>
-                  <Insets left="10.0" right="10.0" />
+                  <Insets right="10.0" />
                </padding>
             </VBox>
          </children>

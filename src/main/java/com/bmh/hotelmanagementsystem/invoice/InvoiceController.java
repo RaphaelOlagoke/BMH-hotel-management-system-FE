@@ -98,6 +98,13 @@ public class InvoiceController extends Controller {
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
         String formattedOutstandingPrice = formatter.format(guestLog.getTotalAmountDue());
+
+        if(guestLog.getTotalAmountDue() <= guestLog.getCreditAmount()){
+            formattedOutstandingPrice = formatter.format(0.0);
+        } else if (guestLog.getTotalAmountDue() > guestLog.getCreditAmount()) {
+            formattedOutstandingPrice = formatter.format(guestLog.getTotalAmountDue() - guestLog.getCreditAmount());
+        }
+
         total_outstanding_payment.setText("Outstanding Payments:   " + formattedOutstandingPrice);
 
 
@@ -174,6 +181,7 @@ public class InvoiceController extends Controller {
         payment_Methods.add(PaymentMethod.CARD.toJson());
         payment_Methods.add(PaymentMethod.TRANSFER.toJson());
         payment_Methods.add(PaymentMethod.CASH.toJson());
+        payment_Methods.add(PaymentMethod.NONE.toJson());
 
         payment_method.setItems(payment_Methods);
     }

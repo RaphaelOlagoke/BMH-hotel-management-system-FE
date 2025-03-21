@@ -167,7 +167,8 @@ public class CheckOutController extends Controller {
                         }
                     }
 
-                    String formattedPrice = formatter.format(total_price);
+//                    String formattedPrice = formatter.format(total_price);
+                    String formattedPrice = formatter.format(guestLog.getAmountPaid());
                     room_price.setText(formattedPrice);
 
                     guest_name.setText("Name:    " + guestLog.getGuestName());

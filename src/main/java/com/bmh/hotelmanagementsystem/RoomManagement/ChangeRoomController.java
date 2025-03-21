@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.AdditionalChargesSummary;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.*;
@@ -35,6 +36,9 @@ public class ChangeRoomController extends Controller {
     private String previousLocation;
 
     private GuestLog data;
+
+    private Double tax = 0.0;
+    private Double vat = 0.0;
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -95,6 +99,7 @@ public class ChangeRoomController extends Controller {
 
                                 ObservableList<Integer> listOfAllRooms = FXCollections.observableArrayList();
 
+
                                 for (Room room : apiResponse.getData()) {
                                     listOfAllRooms.add(room.getRoomNumber());
                                 }
@@ -105,6 +110,7 @@ public class ChangeRoomController extends Controller {
                         } else {
                             Platform.runLater(() -> {
                                 loadingStage.close();
+                                new_room_comboBox.getItems().clear();
                                 Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
                             });
                         }
@@ -116,6 +122,39 @@ public class ChangeRoomController extends Controller {
                             Utils.showGeneralErrorDialog();
                         });
                     }
+
+                    try {
+                        String response = RestClient.get("/roomPrices/?roomType=" + newValue);
+
+                        ObjectMapper objectMapper = new ObjectMapper();
+
+                        // Convert JSON string to ApiResponse
+                        ApiResponseSingleData<RoomPrices> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<RoomPrices>>() {
+                        });
+
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            RoomPrices roomPrice;
+                            roomPrice = apiResponse.getData();
+//                    checkInData.setRoomPrice(roomPrice.getRoomPrice());
+                            DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+                            String formattedPrice = formatter.format(roomPrice.getRoomPrice() + ((vat/100) * roomPrice.getRoomPrice()) + tax);
+                            price.setText("₦" + formattedPrice);
+                        });
+
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            System.out.println(e);
+                            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                            errorAlert.setTitle("Sever Error");
+                            errorAlert.setContentText("Something went wrong");
+                            errorAlert.showAndWait();
+                        });
+                    }
+
                 }).start();
             }
 
@@ -134,10 +173,46 @@ public class ChangeRoomController extends Controller {
     @FXML
     private ComboBox<String> room_type;
 
+    @FXML
+    private Label price;
+
+    @FXML
+    private Label rooms_message;
+
 
     public void initialize() {
 
         change_room.setOnAction(event -> changeRoom());
+
+        Stage loadingStage = showLoadingScreen(primaryStage);
+
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+                String response = RestClient.get("/additionalCharge/");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<AdditionalChargesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<AdditionalChargesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        tax = apiResponse.getData().getTaxPrice();
+                        vat = apiResponse.getData().getVatPrice();
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
     }
 
     public void changeRoom(){
@@ -153,6 +228,7 @@ public class ChangeRoomController extends Controller {
             Platform.runLater(() -> loadingStage.show());
 
             new Thread(() -> {
+
                 try {
 
                     if (old_room_comboBox.getSelectionModel().getSelectedItem() == null || new_room_comboBox.getSelectionModel().getSelectedItem() == null){

@@ -1,5 +1,8 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
+import com.bmh.hotelmanagementsystem.BMHApplication;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.dto.room.MaintenanceRow;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Maintenance;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.Room;
@@ -9,6 +12,7 @@ import com.bmh.hotelmanagementsystem.Utils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
@@ -114,7 +118,19 @@ public class MaintenanceHistoryController extends Controller {
         try {
             Utils utils = new Utils();
 //            utils.switchScreen(previousLocation, primaryStage);
-            utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,data, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/singleRoom-view.fxml", primaryStage,data, "/com/bmh/hotelmanagementsystem/room/room-management-view.fxml");
+            }
+            else{
+                utils.switchScreenWithData("/com/bmh/hotelmanagementsystem/room/general-admin-singleRoom-view.fxml", primaryStage,data, "/com/bmh/hotelmanagementsystem/room/general-admin-room-management-view.fxml");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

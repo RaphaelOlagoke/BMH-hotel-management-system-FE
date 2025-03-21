@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.settings;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.entities.AdditionalChargesSummary;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogFilterRequest;
@@ -70,49 +71,93 @@ public class SettingsController extends Controller {
 
 
     @FXML
+    private TextField vat_price_textfield;
+    @FXML
+    private TextField tax_price_textfield;
+
+
+    @FXML
     private Button update;
 
     @FXML
+    private Button updateAdditionalPrices;
+
+    @FXML
     public void initialize()  {
+
+        update.setOnAction(event -> updatePrices());
+        updateAdditionalPrices.setOnAction(event -> updateAdditionalPrices());
 
         Stage loadingStage = showLoadingScreen(primaryStage);
 
         Platform.runLater(() -> loadingStage.show());
 
 
-        try {
-            RoomPrices roomPrice;
+        new Thread(() -> {
 
-            String response = RestClient.get("/roomPrices/all");
+            try {
+                RoomPrices roomPrice;
 
-            ObjectMapper objectMapper = new ObjectMapper();
+                String response = RestClient.get("/roomPrices/all");
 
-            ApiResponseSingleData<RoomPricesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<RoomPricesSummary>>() {
-            });
+                ObjectMapper objectMapper = new ObjectMapper();
 
-            if (apiResponse.getResponseHeader().getResponseCode().equals("00")){
+                ApiResponseSingleData<RoomPricesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<RoomPricesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+//                        loadingStage.close();
+                        classic_room_textfield.setText(apiResponse.getData().getClassicPrice().toString());
+                        deluxe_room_textfield.setText(apiResponse.getData().getDeluxePrice().toString());
+                        executive_suite_textfield.setText(apiResponse.getData().getExecutiveSuitePrice().toString());
+                        business_suite_a_textfield.setText(apiResponse.getData().getBusinessSuiteAPrice().toString());
+                        business_suite_b_textfield.setText(apiResponse.getData().getBusinessSuiteBPrice().toString());
+                        executive_deluxe_textfield.setText(apiResponse.getData().getExecutiveDeluxePrice().toString());
+
+
+                    });
+                }
+
+            } catch (Exception e) {
                 Platform.runLater(() -> {
-                    loadingStage.close();
-                    classic_room_textfield.setText(apiResponse.getData().getClassicPrice().toString());
-                    deluxe_room_textfield.setText(apiResponse.getData().getDeluxePrice().toString());
-                    executive_suite_textfield.setText(apiResponse.getData().getExecutiveSuitePrice().toString());
-                    business_suite_a_textfield.setText(apiResponse.getData().getBusinessSuiteAPrice().toString());
-                    business_suite_b_textfield.setText(apiResponse.getData().getBusinessSuiteBPrice().toString());
-                    executive_deluxe_textfield.setText(apiResponse.getData().getExecutiveDeluxePrice().toString());
-
-
+                    System.out.println(e);
+//                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
                 });
             }
 
-        } catch (Exception e) {
-            Platform.runLater(() -> {
-                System.out.println(e);
-                loadingStage.close();
-                Utils.showGeneralErrorDialog();
-            });
-        }
+            try {
+                String response = RestClient.get("/additionalCharge/");
 
-        update.setOnAction(event -> updatePrices());
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<AdditionalChargesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<AdditionalChargesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        vat_price_textfield.setText(apiResponse.getData().getVatPrice().toString());
+                        tax_price_textfield.setText(apiResponse.getData().getTaxPrice().toString());
+                    });
+                }
+                else{
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        Utils.showAlertDialog(Alert.AlertType.INFORMATION, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
+
 
     }
 
@@ -130,48 +175,112 @@ public class SettingsController extends Controller {
 
             Platform.runLater(() -> loadingStage.show());
 
-            try {
-                RoomPricesSummary request = new RoomPricesSummary();
+            new Thread(() -> {
+
                 try {
-                    request.setClassicPrice(Double.valueOf(classic_room_textfield.getText()));
-                    request.setDeluxePrice(Double.valueOf(deluxe_room_textfield.getText()));
-                    request.setExecutiveSuitePrice(Double.valueOf(executive_suite_textfield.getText()));
-                    request.setBusinessSuiteAPrice(Double.valueOf(business_suite_a_textfield.getText()));
-                    request.setBusinessSuiteBPrice(Double.valueOf(business_suite_b_textfield.getText()));
-                    request.setExecutiveDeluxePrice(Double.valueOf(executive_deluxe_textfield.getText()));
+                    RoomPricesSummary request = new RoomPricesSummary();
+                    try {
+                        request.setClassicPrice(Double.valueOf(classic_room_textfield.getText()));
+                        request.setDeluxePrice(Double.valueOf(deluxe_room_textfield.getText()));
+                        request.setExecutiveSuitePrice(Double.valueOf(executive_suite_textfield.getText()));
+                        request.setBusinessSuiteAPrice(Double.valueOf(business_suite_a_textfield.getText()));
+                        request.setBusinessSuiteBPrice(Double.valueOf(business_suite_b_textfield.getText()));
+                        request.setExecutiveDeluxePrice(Double.valueOf(executive_deluxe_textfield.getText()));
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid Request", "Invalid Price");
+                        });
+                        return;
+                    }
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+
+                    String jsonString = objectMapper.writeValueAsString(request);
+
+                    String response = RestClient.post("/roomPrices/update", jsonString);
+
+                    ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
+                    });
+
+                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            initialize();
+                        });
+                    }
 
                 } catch (Exception e) {
                     Platform.runLater(() -> {
+                        System.out.println(e);
                         loadingStage.close();
-                        Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid Request", "Invalid Price");
+                        Utils.showGeneralErrorDialog();
                     });
-                    return;
                 }
+            }).start();
+        }
+        else {
+            confirmationAlert.close();
+        }
+    }
 
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
+    public void updateAdditionalPrices(){
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Action");
+        confirmationAlert.setHeaderText("Are you sure you want to update additional charge prices?");
+        confirmationAlert.setContentText("Please confirm your action.");
 
-                String jsonString = objectMapper.writeValueAsString(request);
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
 
-                String response = RestClient.post("/roomPrices/update", jsonString);
 
-                ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
-                });
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage loadingStage = showLoadingScreen(primaryStage);
 
-                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+            Platform.runLater(() -> loadingStage.show());
+
+            new Thread(() -> {
+
+                try {
+                    AdditionalChargesSummary request = new AdditionalChargesSummary();
+                    try {
+                        request.setVatPrice(Double.valueOf(vat_price_textfield.getText()));
+                        request.setTaxPrice(Double.valueOf(tax_price_textfield.getText()));
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid Request", "Invalid Price");
+                        });
+                        return;
+                    }
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+
+                    String jsonString = objectMapper.writeValueAsString(request);
+
+                    String response = RestClient.post("/additionalCharge/update", jsonString);
+
+                    ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
+                    });
+
+                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            initialize();
+                        });
+                    }
+
+                } catch (Exception e) {
                     Platform.runLater(() -> {
+                        System.out.println(e);
                         loadingStage.close();
-                        initialize();
+                        Utils.showGeneralErrorDialog();
                     });
                 }
-
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    System.out.println(e);
-                    loadingStage.close();
-                    Utils.showGeneralErrorDialog();
-                });
-            }
+            }).start();
         }
         else {
             confirmationAlert.close();

@@ -70,6 +70,11 @@ public class InvoiceLogController extends Controller {
     private Label debitCount;
     @FXML
     private Label debitValue;
+
+    @FXML
+    private Label creditCount;
+    @FXML
+    private Label creditValue;
     @FXML
     private Label refundedCount;
     @FXML
@@ -199,60 +204,7 @@ public class InvoiceLogController extends Controller {
 
         service_comboBox.setItems(service_type);
 
-        try {
-            InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
-            request.setQuery(searchField.getText());
-            request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
-            request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
-            request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
 
-            request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
-            request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
-
-
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.registerModule(new JavaTimeModule());
-
-            String jsonString = objectMapper.writeValueAsString(request);
-
-            String response = RestClient.post("/invoice/invoiceSummary", jsonString);
-            ApiResponseSingleData<InvoiceSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<InvoiceSummary>>() {});
-
-
-            Platform.runLater(() -> {
-                try {
-                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-
-                        InvoiceSummary invoiceSummary = apiResponse.getData();
-
-                        paidCount.setText("Count: " + invoiceSummary.getNoOfPaidInvoice());
-                        paidValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfPaidInvoice()));
-
-                        dueCount.setText("Count: " + invoiceSummary.getNoOfUnPaidInvoice());
-                        dueValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfUnPaidInvoice()));
-
-                        debitCount.setText("Count: " + invoiceSummary.getNoOfDebitInvoice());
-                        debitValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfDebitInvoice()));
-
-                        refundedCount.setText("Count: " + invoiceSummary.getNoOfRefundedInvoice());
-                        refundedValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfRefundedInvoice()));
-
-                    } else {
-                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Utils.showGeneralErrorDialog();
-                }
-            });
-
-
-        } catch (Exception e) {
-            Platform.runLater(() -> {
-                e.printStackTrace();
-                Utils.showGeneralErrorDialog();
-            });
-        }
 
         pagination.setPageFactory(this::createPage);
 
@@ -276,6 +228,64 @@ public class InvoiceLogController extends Controller {
         new Thread(() -> {
             ObservableList<Integer> listOfRooms = FXCollections.observableArrayList();
             listOfRooms.add(null);
+
+            try {
+                InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
+                request.setQuery(searchField.getText());
+                request.setPaymentMethod(payment_method_comboBox.getSelectionModel().getSelectedItem() != null? PaymentMethod.valueOf(payment_method_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setPaymentStatus(payment_status_comboBox.getSelectionModel().getSelectedItem() != null? PaymentStatus.valueOf(payment_status_comboBox.getSelectionModel().getSelectedItem()) : null);
+                request.setService(service_comboBox.getSelectionModel().getSelectedItem() != null? ServiceType.valueOf(service_comboBox.getSelectionModel().getSelectedItem()) : null);
+
+                request.setStartDate(start_datePicker.getValue() != null ? start_datePicker.getValue().atStartOfDay() : null);
+                request.setEndDate(end_datePicker.getValue() != null ? end_datePicker.getValue().atTime(23, 59, 0) : null);
+
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.registerModule(new JavaTimeModule());
+
+                String jsonString = objectMapper.writeValueAsString(request);
+
+                String response = RestClient.post("/invoice/invoiceSummary", jsonString);
+                ApiResponseSingleData<InvoiceSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<InvoiceSummary>>() {});
+
+
+                Platform.runLater(() -> {
+                    try {
+                        if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+
+                            InvoiceSummary invoiceSummary = apiResponse.getData();
+
+                            paidCount.setText("Count: " + invoiceSummary.getNoOfPaidInvoice());
+                            paidValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfPaidInvoice()));
+
+                            dueCount.setText("Count: " + invoiceSummary.getNoOfUnPaidInvoice());
+                            dueValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfUnPaidInvoice()));
+
+                            debitCount.setText("Count: " + invoiceSummary.getNoOfDebitInvoice());
+                            debitValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfDebitInvoice()));
+
+                            creditCount.setText("Count: " + invoiceSummary.getNoOfCreditInvoice());
+                            creditValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfCreditInvoice()));
+
+                            refundedCount.setText("Count: " + invoiceSummary.getNoOfRefundedInvoice());
+                            refundedValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfRefundedInvoice()));
+
+                        } else {
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Utils.showGeneralErrorDialog();
+                    }
+                });
+
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    e.printStackTrace();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
 
             try {
                 InvoiceLogFilterRequest request = new InvoiceLogFilterRequest();
@@ -593,6 +603,9 @@ public class InvoiceLogController extends Controller {
 
                             debitCount.setText("Count: " + invoiceSummary.getNoOfDebitInvoice());
                             debitValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfDebitInvoice()));
+
+                            creditCount.setText("Count: " + invoiceSummary.getNoOfCreditInvoice());
+                            creditValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfCreditInvoice()));
 
                             refundedCount.setText("Count: " + invoiceSummary.getNoOfRefundedInvoice());
                             refundedValue.setText("Value: ₦" + priceFormatter.format(invoiceSummary.getTotalValueOfRefundedInvoice()));

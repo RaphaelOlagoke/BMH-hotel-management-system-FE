@@ -72,7 +72,7 @@ public class LoginController extends Controller{
                             loadingStage.close();
 
 //                            AuthFileCache.saveCredentials(apiResponse.getData().getToken(),apiResponse.getData().getUser().getUsername());
-                            TokenStorage.saveCredentials(apiResponse.getData().getUser().getUsername(),apiResponse.getData().getToken());
+                            TokenStorage.saveCredentials(apiResponse.getData().getUser().getUsername(),apiResponse.getData().getToken(), apiResponse.getData().getUser().getDepartment().toJson());
 
                             FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("home-view.fxml"));
 
@@ -80,13 +80,16 @@ public class LoginController extends Controller{
                                 fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("home-view.fxml"));
                             }
                             else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.ADMIN ) {
-                                fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
+                                fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml"));
                             }
                             else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.RESTAURANT_BAR){
                                 fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml"));
                             }
-                            else{
-                                fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
+                            else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.SUPER_ADMIN ) {
+                                fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml"));
+                            }
+                            else {
+                                fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("home-view.fxml"));
                             }
 
                             ScrollPane homeRoot = fxmlLoader.load();

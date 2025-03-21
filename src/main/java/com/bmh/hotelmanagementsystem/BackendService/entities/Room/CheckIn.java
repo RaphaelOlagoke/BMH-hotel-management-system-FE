@@ -21,6 +21,7 @@ public class CheckIn {
     private PaymentMethod paymentMethod;
 
     private Double totalPrice;
+    private Double totalPriceWithoutAdditionalCharges;
 
     private int noOfDays;
 
@@ -95,6 +96,14 @@ public class CheckIn {
 
     public void setTotalPrice(Double totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Double getTotalPriceWithoutAdditionalCharges() {
+        return totalPriceWithoutAdditionalCharges;
+    }
+
+    public void setTotalPriceWithoutAdditionalCharges(Double totalPriceWithoutAdditionalCharges) {
+        this.totalPriceWithoutAdditionalCharges = totalPriceWithoutAdditionalCharges;
     }
 
     public int getNoOfDays() {

@@ -119,11 +119,11 @@ public class CreateOrderController extends Controller {
 
     @FXML
     public void initialize() throws IOException {
-        discount_code.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                getDiscount();
-            }
-        });
+//        discount_code.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                getDiscount();
+//            }
+//        });
         confirmPayment.setOnAction(event -> createOrder());
     }
 
@@ -201,9 +201,9 @@ public class CreateOrderController extends Controller {
                     request.setCustomerName(customerName.getText());
                     request.setItems(data.getBillItems());
                     request.setPaymentMethod(data.getPaymentMethod());
-                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
-                        request.setDiscountCode(discount_code.getText());
-                    }
+//                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
+//                        request.setDiscountCode(discount_code.getText());
+//                    }
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.registerModule(new JavaTimeModule());

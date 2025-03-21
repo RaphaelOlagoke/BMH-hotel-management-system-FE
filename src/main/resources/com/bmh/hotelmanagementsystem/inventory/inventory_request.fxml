@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.inventory.InventoryRequestController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.inventory.InventoryRequestController">
    <content>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1120.0" prefWidth="1621.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>

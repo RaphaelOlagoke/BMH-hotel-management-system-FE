@@ -82,9 +82,7 @@ public class UpdateEmployeeController extends Controller {
 
         accessLevels.add(null);
         for (LoginDepartment access : LoginDepartment.values()) {
-            if(access != LoginDepartment.SUPER_ADMIN) {
-                accessLevels.add(access.toJson());
-            }
+            accessLevels.add(access.toJson());
         }
 
         access_comboBox.setItems(accessLevels);

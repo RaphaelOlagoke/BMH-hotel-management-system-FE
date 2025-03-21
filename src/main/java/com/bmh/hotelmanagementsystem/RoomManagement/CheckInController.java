@@ -90,9 +90,44 @@ public class CheckInController extends Controller {
     private List<SelectedRoom> selectedRoomList = new ArrayList<>();
 
     private Double total;
+    private Double totalWithoutAdditionalCharges;
+
+    private Double tax = 0.0;
+    private Double vat = 0.0;
 
     @FXML
     public void initialize() throws IOException {
+
+        Stage loadingStage = showLoadingScreen(primaryStage);
+
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+                String response = RestClient.get("/additionalCharge/");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<AdditionalChargesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<AdditionalChargesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        tax = apiResponse.getData().getTaxPrice();
+                        vat = apiResponse.getData().getVatPrice();
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
+
 
         no_of_days.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -230,8 +265,25 @@ public class CheckInController extends Controller {
 
                         total = 0.0;
                         for (SelectedRoom item : selectedRoomList){
-                            total += item.getRoomPrice();
+                            total += item.getRoomPrice() + tax + ((vat/100) * item.getRoomPrice());
                         }
+
+                        totalWithoutAdditionalCharges = 0.0;
+                        for (SelectedRoom item : selectedRoomList){
+                            totalWithoutAdditionalCharges += item.getRoomPrice();
+                        }
+
+
+                        int noOfDays = 1;
+                        try {
+                             noOfDays = Integer.parseInt(no_of_days.getText());
+                        }
+                        catch (Exception e){
+                             noOfDays = 1;
+                        }
+                        total = total * noOfDays;
+                        totalWithoutAdditionalCharges = totalWithoutAdditionalCharges * noOfDays;
+
                         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
                         String formattedPrice = formatter.format(total);
@@ -254,10 +306,18 @@ public class CheckInController extends Controller {
         int noOfDays = 0;
         try{
             noOfDays = Integer.parseInt(no_of_days.getText());
-            Double total = 0.0;
+            total = 0.0;
             for (SelectedRoom item : selectedRoomList){
-                total += item.getRoomPrice();
+                total += item.getRoomPrice() + tax + ((vat/100) * item.getRoomPrice());
             }
+
+            totalWithoutAdditionalCharges = 0.0;
+            for (SelectedRoom item : selectedRoomList){
+                totalWithoutAdditionalCharges += item.getRoomPrice();
+            }
+
+            totalWithoutAdditionalCharges = totalWithoutAdditionalCharges * noOfDays;
+
             total = total * noOfDays;
 
             DecimalFormat formatter = new DecimalFormat("#,###.00");
@@ -266,7 +326,7 @@ public class CheckInController extends Controller {
             total_price.setText("₦"+formattedPrice);
         }
         catch (Exception e){
-            Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-15");
+            Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-30");
         }
     }
 
@@ -275,10 +335,26 @@ public class CheckInController extends Controller {
         selectedRooms.remove(roomNumber);
         selectedRoomList.remove(selectedRoom);
 
+        int noOfDays = 1;
+        try {
+            noOfDays = Integer.parseInt(no_of_days.getText());
+        }
+        catch (Exception e){
+            noOfDays = 1;
+        }
         total = 0.0;
         for (SelectedRoom item : selectedRoomList){
-            total += item.getRoomPrice();
+            total += item.getRoomPrice() + tax + ((vat/100) * item.getRoomPrice());
         }
+
+        totalWithoutAdditionalCharges = 0.0;
+        for (SelectedRoom item : selectedRoomList){
+            totalWithoutAdditionalCharges += item.getRoomPrice();
+        }
+
+        totalWithoutAdditionalCharges = totalWithoutAdditionalCharges * noOfDays;
+
+        total = total * noOfDays;
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
         String formattedPrice = formatter.format(total);
@@ -292,8 +368,8 @@ public class CheckInController extends Controller {
         try {
             try{
                 checkInData.setNoOfDays(Integer.parseInt(no_of_days.getText()));
-                if (checkInData.getNoOfDays() > 15 || checkInData.getNoOfDays() < 1){
-                    Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-15");
+                if (checkInData.getNoOfDays() > 30 || checkInData.getNoOfDays() < 1){
+                    Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Invalid request", "No of days must be in the range of 1-30");
                     return;
                 }
             }
@@ -304,6 +380,7 @@ public class CheckInController extends Controller {
             checkInData.setGuestName(guest_name.getText());
             checkInData.setSelectedRooms(selectedRoomList != null && !selectedRoomList.isEmpty() ? selectedRoomList : null);
             checkInData.setTotalPrice(total);
+            checkInData.setTotalPriceWithoutAdditionalCharges(totalWithoutAdditionalCharges);
             checkInData.setIdType(id_type.getSelectionModel().getSelectedItem() != null ? ID_TYPE.valueOf(id_type.getSelectionModel().getSelectedItem()) : null);
             checkInData.setIdRef(id_ref.getText());
             checkInData.setPhoneNumber(phone_number.getText());

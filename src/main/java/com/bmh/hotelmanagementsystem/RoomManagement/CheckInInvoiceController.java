@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.bmh.hotelmanagementsystem.Utils.showLoadingScreen;
+
 public class CheckInInvoiceController extends Controller {
 
     private Stage primaryStage;
@@ -65,7 +67,7 @@ public class CheckInInvoiceController extends Controller {
         room_type.setText("Room Type(s):  " + types);
         DecimalFormat formatter = new DecimalFormat("#,###.00");
 
-        String formattedPrice = formatter.format(checkInData.getTotalPrice() * checkInData.getNoOfDays());
+        String formattedPrice = formatter.format(checkInData.getTotalPrice());
         room_charge.setText("Room Charge:  ₦" + formattedPrice);
         subTotal = checkInData.getTotalPrice();
         tax = 0.0;
@@ -104,12 +106,44 @@ public class CheckInInvoiceController extends Controller {
 
     private Double subTotal = 0.0;
     private Double tax = 0.0;
+    private Double vat = 0.0;
     private Double total = 0.0;
 
     DecimalFormat formatter = new DecimalFormat("#,###.00");
 
     @FXML
     public void initialize() throws IOException {
+
+        Stage loadingStage = showLoadingScreen(primaryStage);
+
+        Platform.runLater(() -> loadingStage.show());
+
+        new Thread(() -> {
+            try {
+                String response = RestClient.get("/additionalCharge/");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<AdditionalChargesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<AdditionalChargesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        tax = apiResponse.getData().getTaxPrice();
+                        vat = apiResponse.getData().getVatPrice();
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+        }).start();
+
         ObservableList<String> payment_Methods = FXCollections.observableArrayList();
 
 //        for (PaymentMethod paymentMethod : PaymentMethod.values()) {
@@ -152,8 +186,8 @@ public class CheckInInvoiceController extends Controller {
                         total = checkInData.getTotalPrice();
                         subTotal = checkInData.getTotalPrice();
 
-                        discount = total * apiResponse.getData().getPercentage()/100.0;
-                        total = (subTotal - discount) + tax;
+                        discount = checkInData.getTotalPriceWithoutAdditionalCharges() * apiResponse.getData().getPercentage()/100.0;
+                        total = (subTotal - discount);
 
                         DecimalFormat formatter = new DecimalFormat("#,###.00");
 

@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.TokenStorage;
@@ -165,6 +166,10 @@ public class RestaurantController extends Controller {
     PaymentMethod paymentMethod;
 
     DecimalFormat formatter = new DecimalFormat("#,###.00");
+
+    String[] credentials = TokenStorage.loadCredentials();
+    String department = "";
+
     @FXML
     public void initialize() throws IOException {
         String[] credentials = TokenStorage.loadCredentials();
@@ -186,7 +191,18 @@ public class RestaurantController extends Controller {
         transfer.setOnAction(event -> onSelectedPaymentMethod(transferVbox, transferLabel, PaymentMethod.TRANSFER));
         chargeToRoom.setOnAction(event -> chargeToRoom());
 
-        create.setOnAction(event -> create());
+//        if (credentials != null) {
+//            department = credentials[2];
+//        }
+//        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+//            create.setOnAction(event -> create());
+//        }
+//        else{
+//            create.setDisable(true);
+//            create.setVisible(false);
+//        }
+
+
 //        List<Menu> menuList = new ArrayList<>();
 //        menuList.add(new Menu("Burger", 5000.0));
 //
@@ -313,8 +329,18 @@ public class RestaurantController extends Controller {
                                 });
 
                                 name.setText(menuItem.getName());
-                                price.setText("$" + formatter.format(menuItem.getPrice()));
-                                viewMore.setOnAction(event -> editMenuItem(menuItem));
+                                price.setText("₦" + formatter.format(menuItem.getPrice()));
+                                if (credentials != null) {
+                                    department = credentials[2];
+                                }
+                                if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                                    viewMore.setOnAction(event -> editMenuItem(menuItem));
+                                }
+                                else{
+                                    viewMore.setDisable(true);
+                                    viewMore.setVisible(false);
+                                }
+
 
                                 menu_flowPane.getChildren().add(vBox);
                             }
@@ -371,9 +397,10 @@ public class RestaurantController extends Controller {
                             menuCategory.setText("Search result");
 
                             for (MenuItemDto menuItem : apiResponse.getData()){
-                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/Restaurant/menu_item.fxml"));
+                                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/restaurant/menu_item.fxml"));
                                 VBox vBox = fxmlLoader.load();
 
+                                Button viewMore = (Button) vBox.lookup("#viewMore");
                                 Label name = (Label) vBox.lookup("#name");
                                 Label price = (Label) vBox.lookup("#price");
                                 Button add = (Button) vBox.lookup("#add");
@@ -389,6 +416,16 @@ public class RestaurantController extends Controller {
 
                                 name.setText(menuItem.getName());
                                 price.setText("₦" + formatter.format(menuItem.getPrice()));
+                                if (credentials != null) {
+                                    department = credentials[2];
+                                }
+                                if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                                    viewMore.setOnAction(event -> editMenuItem(menuItem));
+                                }
+                                else{
+                                    viewMore.setDisable(true);
+                                    viewMore.setVisible(false);
+                                }
 
                                 menu_flowPane.getChildren().add(vBox);
                             }
@@ -429,7 +466,7 @@ public class RestaurantController extends Controller {
         Button decreaseQuantity = (Button) hBox.lookup("#reduce_quantity");
 
         name.setText(menuItem.getName());
-        price.setText("$" + formatter.format(menuItem.getPrice()));
+        price.setText("₦" + formatter.format(menuItem.getPrice()));
         quantity.setText("1");
 
         BillItem billItem = new BillItem();

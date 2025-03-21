@@ -1,11 +1,14 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
+import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogRoom;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
 import com.bmh.hotelmanagementsystem.HouseKeeping.UpdateCleaningLogController;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.bmh.hotelmanagementsystem.dto.HouseKeeping.CleaningRow;
 import javafx.fxml.FXML;
@@ -13,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
@@ -36,6 +40,9 @@ public class SingleGuestLogController extends Controller {
     private Label check_in_date;
     @FXML
     private Label check_out_date;
+
+    @FXML
+    private Label expected_check_out_date;
     @FXML
     private Label rooms;
     @FXML
@@ -46,6 +53,12 @@ public class SingleGuestLogController extends Controller {
     private Label total_amount_paid;
     @FXML
     private Label total_amount_due;
+
+    @FXML
+    private Label credit_amount;
+
+    @FXML
+    private Label amount_due;
     @FXML
     private Label status;
 
@@ -71,10 +84,13 @@ public class SingleGuestLogController extends Controller {
     private Button room_service;
 
     @FXML
-    private Button extend;
+    private MenuItem extend;
 
     @FXML
-    private Button change_room;
+    private MenuItem change_room;
+
+    @FXML
+    private MenuItem add_room;
 
     @FXML
     private Button back;
@@ -114,6 +130,7 @@ public class SingleGuestLogController extends Controller {
         if (guestLog.getCheckOutDate() != null) {
             check_out_date.setText("Check-out Date:   " + guestLog.getCheckOutDate().format(formatter));
         }
+        expected_check_out_date.setText("Expected Check-out date:   " + guestLog.getExpectedCheckOutDate().format(formatter));
         payment_status.setText(guestLog.getPaymentStatus().toJson());
         if (guestLog.getPaymentStatus() == PaymentStatus.PAID) {
             payment_status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
@@ -129,15 +146,27 @@ public class SingleGuestLogController extends Controller {
         DecimalFormat amountFormatter = new DecimalFormat("#,###.00");
 
         String formattedOutstandingPrice = amountFormatter.format(guestLog.getTotalAmountDue());
+
+        if(guestLog.getTotalAmountDue() <= guestLog.getCreditAmount()){
+            formattedOutstandingPrice = amountFormatter.format(0.0);
+        } else if (guestLog.getTotalAmountDue() > guestLog.getCreditAmount()) {
+            formattedOutstandingPrice = amountFormatter.format(guestLog.getTotalAmountDue() - guestLog.getCreditAmount());
+        }
+//        String formattedOutstandingPrice = amountFormatter.format(Math.abs(guestLog.getTotalAmountDue() - guestLog.getCreditAmount()));
+        String formattedAmountDue = amountFormatter.format(guestLog.getTotalAmountDue());
+        String formattedCreditAmount = amountFormatter.format(guestLog.getCreditAmount());
         String formattedAmountPaid = amountFormatter.format(guestLog.getAmountPaid());
 
         total_amount_due.setText("Outstanding Payments:   ₦" + formattedOutstandingPrice);
+        amount_due.setText("Amount Due:   ₦" + formattedAmountDue);
+        credit_amount.setText("Credit Amount:   ₦" + formattedCreditAmount);
         total_amount_paid.setText("Amount Paid:   ₦" + formattedAmountPaid);
 
         if(this.guestLog.getStatus() == GuestLogStatus.COMPLETE){
             room_service.setDisable(true);
             change_room.setDisable(true);
             extend.setDisable(true);
+            add_room.setDisable(true);
         }
     }
 
@@ -147,12 +176,30 @@ public class SingleGuestLogController extends Controller {
         room_service.setOnAction(event -> roomService());
         change_room.setOnAction(event -> changeRoom());
         extend.setOnAction(event -> extend());
+        add_room.setOnAction(event -> addRoom());
     }
 
     public void generateInvoice(){
         try {
-            Utils utils = new Utils();
-            utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                Utils utils = new Utils();
+                utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                Utils utils = new Utils();
+                utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
+            }
+            else {
+                Utils utils = new Utils();
+                utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            }
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -169,7 +216,23 @@ public class SingleGuestLogController extends Controller {
 
             Controller controller = loader.getController();
             controller.setPrimaryStage(formStage);
-            controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
+            }
+            else {
+                controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            }
+
+//            controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/home-view.fxml");
 
             Scene formScene = new Scene(form);
             formStage.setScene(formScene);
@@ -194,7 +257,23 @@ public class SingleGuestLogController extends Controller {
 
             Controller controller = loader.getController();
             controller.setPrimaryStage(formStage);
-            controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
+            }
+            else {
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            }
+
+//            controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
 
             Scene formScene = new Scene(form);
             formStage.setScene(formScene);
@@ -220,7 +299,22 @@ public class SingleGuestLogController extends Controller {
 
             Controller controller = loader.getController();
             controller.setPrimaryStage(formStage);
-            controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
+            }
+            else {
+                controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            }
+//            controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
 
             Scene formScene = new Scene(form);
             formStage.setScene(formScene);
@@ -234,12 +328,72 @@ public class SingleGuestLogController extends Controller {
         }
     }
 
+
+    public void addRoom(){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/bmh/hotelmanagementsystem/room/add_room_to_guest_log.fxml"));
+            Region form = loader.load();
+
+            Stage formStage = new Stage();
+            formStage.initModality(Modality.APPLICATION_MODAL);
+            formStage.setTitle("Fill out the Form");
+
+            Controller controller = loader.getController();
+            controller.setPrimaryStage(formStage);
+
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
+            }
+            else {
+                controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+            }
+
+//            controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/home-view.fxml");
+
+            Scene formScene = new Scene(form);
+            formStage.setScene(formScene);
+            formStage.showAndWait();
+
+            goBack();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            Utils.showGeneralErrorDialog();
+        }
+
+    }
+
     public void goBack(){
         try {
-            Utils utils = new Utils();
-            utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+            String[] credentials = TokenStorage.loadCredentials();
+            String department = "";
+            if (credentials != null) {
+                department = credentials[2];
+            }
+
+            if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                Utils utils = new Utils();
+                utils.switchScreen("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml", primaryStage);
+            }
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                Utils utils = new Utils();
+                utils.switchScreen("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml", primaryStage);
+            }
+            else {
+                Utils utils = new Utils();
+                utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 }
+

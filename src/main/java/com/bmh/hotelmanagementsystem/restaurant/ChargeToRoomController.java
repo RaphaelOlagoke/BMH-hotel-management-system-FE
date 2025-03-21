@@ -70,6 +70,7 @@ public class ChargeToRoomController extends Controller {
 
         subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
         totalLabel.setText("Total:  ₦" + formatter.format(total));
+        taxLabel.setText("");
     }
 
     @FXML
@@ -90,18 +91,18 @@ public class ChargeToRoomController extends Controller {
     @FXML
     private Label totalLabel;
 
-    @FXML
-    private TextField discount_code;
+//    @FXML
+//    private TextField discount_code;
 
     DecimalFormat formatter = new DecimalFormat("#,###.00");
 
     public void initialize() {
 
-        discount_code.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.ENTER) {
-                getDiscount();
-            }
-        });
+//        discount_code.setOnKeyPressed(event -> {
+//            if (event.getCode() == KeyCode.ENTER) {
+//                getDiscount();
+//            }
+//        });
 
         Stage loadingStage = showLoadingScreen(primaryStage);
 
@@ -205,60 +206,60 @@ public class ChargeToRoomController extends Controller {
         charge.setOnAction(event -> chargeToRoom());
     }
 
-    public void getDiscount(){
-        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
-        Platform.runLater(() -> loadingStage.show());
-
-        new Thread(() -> {
-            try {
-
-                ObjectMapper objectMapper = new ObjectMapper();
-                objectMapper.registerModule(new JavaTimeModule());
-
-                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
-                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
-                });
-
-                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        subTotal = 0.0;
-                        discount = 0.0;
-                        total = 0.0;
-                        for (BillItem billItem : this.data.getBillItems()) {
-
-
-                            double itemTotal = billItem.getPrice() * billItem.getQuantity();
-                            subTotal += itemTotal;
-                        }
-
-                        total = (subTotal) + tax;
-
-                        discount = total * apiResponse.getData().getPercentage()/100.0;
-                        total = (subTotal - discount) + tax;
-
-                        discountLabel.setText("Discount:  ₦" + formatter.format(discount));
-                        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
-                        totalLabel.setText("Total:  ₦" + formatter.format(total));
-
-                    });
-                } else {
-                    Platform.runLater(() -> {
-                        loadingStage.close();
-                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
-                    });
-
-                }
-
-            } catch (Exception e) {
-                Platform.runLater(() -> {
-                    loadingStage.close();
-                    e.printStackTrace();
-                    Utils.showGeneralErrorDialog();
-                });
-            }
-        }).start();
-    }
+//    public void getDiscount(){
+//        Stage loadingStage = Utils.showLoadingScreen(primaryStage);
+//        Platform.runLater(() -> loadingStage.show());
+//
+//        new Thread(() -> {
+//            try {
+//
+//                ObjectMapper objectMapper = new ObjectMapper();
+//                objectMapper.registerModule(new JavaTimeModule());
+//
+//                String response = RestClient.get("/discount/code?code=" + discount_code.getText());
+//                ApiResponseSingleData<Discount> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<Discount>>() {
+//                });
+//
+//                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+//                    Platform.runLater(() -> {
+//                        loadingStage.close();
+//                        subTotal = 0.0;
+//                        discount = 0.0;
+//                        total = 0.0;
+//                        for (BillItem billItem : this.data.getBillItems()) {
+//
+//
+//                            double itemTotal = billItem.getPrice() * billItem.getQuantity();
+//                            subTotal += itemTotal;
+//                        }
+//
+//                        total = (subTotal) + tax;
+//
+//                        discount = total * apiResponse.getData().getPercentage()/100.0;
+//                        total = (subTotal - discount) + tax;
+//
+//                        discountLabel.setText("Discount:  ₦" + formatter.format(discount));
+//                        subTotalLabel.setText("Subtotal:  ₦" + formatter.format(subTotal));
+//                        totalLabel.setText("Total:  ₦" + formatter.format(total));
+//
+//                    });
+//                } else {
+//                    Platform.runLater(() -> {
+//                        loadingStage.close();
+//                        Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+//                    });
+//
+//                }
+//
+//            } catch (Exception e) {
+//                Platform.runLater(() -> {
+//                    loadingStage.close();
+//                    e.printStackTrace();
+//                    Utils.showGeneralErrorDialog();
+//                });
+//            }
+//        }).start();
+//    }
 
     public void chargeToRoom() {
         if (room_comboBox.getSelectionModel().isEmpty()) {
@@ -288,9 +289,9 @@ public class ChargeToRoomController extends Controller {
                     request.setItems(data.getBillItems());
                     request.setPaymentMethod(data.getPaymentMethod());
                     request.setRoomNumber(room_comboBox.getSelectionModel().getSelectedItem());
-                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
-                        request.setDiscountCode(discount_code.getText());
-                    }
+//                    if(discount_code.getText() != null || !discount_code.getText().equals("")){
+//                        request.setDiscountCode(discount_code.getText());
+//                    }
 
                     ObjectMapper objectMapper = new ObjectMapper();
                     objectMapper.registerModule(new JavaTimeModule());

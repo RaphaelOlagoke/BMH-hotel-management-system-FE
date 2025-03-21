@@ -1,0 +1,19 @@
+<component name="ArtifactManager">
+  <artifact type="jpackage" name="BMHHotelManagementSystem2">
+    <output-path>$PROJECT_DIR$/out/artifacts/BMHHotelManagementSystem2</output-path>
+    <properties id="jpackage-properties">
+      <options>
+        <option name="version" value="" />
+        <option name="copyright" value="" />
+        <option name="description" value="" />
+        <option name="vendor" value="" />
+        <option name="mainClass" value="com.bmh.hotelmanagementsystem.BMHApplication" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="BMHHotelManagementSystem.jar">
+        <element id="module-output" name="BMHHotelManagementSystem" />
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -21,7 +21,8 @@
       <HBox minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
          <!--             Side Bar -->
-              <fx:include fx:id="side_bar" maxWidth="-Infinity" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
+<!--               <fx:include fx:id="side_bar" maxWidth="-Infinity" prefWidth="300.0" source="../components/admin_sidebar.fxml" /> -->
+                    <fx:include fx:id="side_bar" maxWidth="300.0" source="../components/sideBar.fxml" />
          <!--             Side Bar -->
       
             <VBox spacing="10.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
@@ -65,162 +66,208 @@
                         <Insets bottom="15.0" top="15.0" />
                      </padding>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="171.0" spacing="40.0" styleClass="box" stylesheets="@../css/styles.css">
-                   <children>
-                      <HBox maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: green; -fx-border-radius: 10; -fx-background-color: EFFFF6;" stylesheets="@../css/styles.css">
+                  <VBox maxHeight="-Infinity" maxWidth="-Infinity" styleClass="box" stylesheets="@../css/styles.css">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="171.0" spacing="40.0">
                          <children>
-                            <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                               <image>
-                                  <Image url="@../images/check.png" />
-                               </image>
-                            </ImageView>
-                            <VBox prefHeight="122.0" spacing="20.0">
+                            <HBox maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: green; -fx-border-radius: 10; -fx-background-color: EFFFF6;" stylesheets="@../css/styles.css">
                                <children>
-                                  <Label prefHeight="17.0" prefWidth="88.0" text="PAID">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox spacing="20.0">
-                                       <children>
-                                        <Label fx:id="paidCount" text="Count:">
-                                           <font>
-                                              <Font size="15.0" />
-                                           </font>
-                                        </Label>
-                                          <Label fx:id="paidValue" text="Value" textFill="GREEN">
+                                  <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                     <image>
+                                        <Image url="@../images/check.png" />
+                                     </image>
+                                  </ImageView>
+                                  <VBox prefHeight="122.0" spacing="20.0">
+                                     <children>
+                                        <Label prefHeight="17.0" prefWidth="88.0" text="PAID">
                                              <font>
-                                                <Font size="15.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
-                                             <padding>
-                                                <Insets left="10.0" right="10.0" />
-                                             </padding>
                                           </Label>
-                                       </children>
-                                    </HBox>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                              <Label fx:id="paidCount" text="Count:">
+                                                 <font>
+                                                    <Font size="15.0" />
+                                                 </font>
+                                              </Label>
+                                                <Label fx:id="paidValue" text="Value" textFill="GREEN">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="10.0" right="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                     </children>
+                                  </VBox>
                                </children>
-                            </VBox>
+                                 <padding>
+                                    <Insets top="15.0" />
+                                 </padding>
+                            </HBox>
+                              <HBox layoutX="25.0" layoutY="48.0" maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: #8B8000; -fx-border-radius: 10; -fx-background-color: fff9c4;">
+                                 <children>
+                                    <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/clock.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox prefHeight="122.0" spacing="20.0">
+                                       <children>
+                                          <Label prefHeight="17.0" prefWidth="88.0" text="UNPAID">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <Label fx:id="dueCount" text="Count:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="dueValue" text="Value" textFill="#8b8000">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" top="15.0" />
+                                 </padding>
+                              </HBox>
                          </children>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
+                         <padding>
+                            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                         </padding>
                       </HBox>
-                        <HBox layoutX="25.0" layoutY="48.0" maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: #8B8000; -fx-border-radius: 10; -fx-background-color: fff9c4;">
-                           <children>
-                              <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/clock.png" />
-                                 </image>
-                              </ImageView>
-                              <VBox prefHeight="122.0" spacing="20.0">
-                                 <children>
-                                    <Label prefHeight="17.0" prefWidth="88.0" text="UNPAID">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox spacing="20.0">
-                                       <children>
-                                          <Label fx:id="dueCount" text="Count:">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                          <Label fx:id="dueValue" text="Value" textFill="#8b8000">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                           </children>
+                        <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" prefHeight="171.0" spacing="40.0">
                            <padding>
-                              <Insets left="10.0" right="10.0" top="15.0" />
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                            </padding>
-                        </HBox>
-                        <HBox layoutX="261.0" layoutY="27.0" maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: DF0404; -fx-border-radius: 10; -fx-background-color: ffd2d2;">
                            <children>
-                              <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/arrow-circle-down.png" />
-                                 </image>
-                              </ImageView>
-                              <VBox prefHeight="122.0" spacing="20.0">
+                              <HBox maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: DF0404; -fx-border-radius: 10; -fx-background-color: ffd2d2;">
                                  <children>
-                                    <Label prefHeight="17.0" prefWidth="88.0" text="DEBIT">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox spacing="20.0">
+                                    <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/arrow-circle-down.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox prefHeight="122.0" spacing="20.0">
                                        <children>
-                                          <Label fx:id="debitCount" text="Count:">
+                                          <Label prefHeight="26.0" prefWidth="108.0" text="EXPENSES">
                                              <font>
-                                                <Font size="15.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="debitValue" text="Value" textFill="#df0404">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <Label fx:id="debitCount" text="Count:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="debitValue" text="Value" textFill="#df0404">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
-                              </VBox>
-                           </children>
-                           <padding>
-                              <Insets left="10.0" right="10.0" top="15.0" />
-                           </padding>
-                        </HBox>
-                        <HBox layoutX="25.0" layoutY="27.0" maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: #0059AC; -fx-border-radius: 10; -fx-background-color: e0e0f7;" stylesheets="@../css/styles.css">
-                           <children>
-                              <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/sync.png" />
-                                 </image>
-                              </ImageView>
-                              <VBox prefHeight="122.0" spacing="20.0">
+                                 <padding>
+                                    <Insets left="10.0" right="10.0" top="15.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: #0059AC; -fx-border-radius: 10; -fx-background-color: e0e0f7;" stylesheets="@../css/styles.css">
                                  <children>
-                                    <Label prefHeight="17.0" text="REFUNDED">
-                                       <font>
-                                          <Font name="System Bold" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox spacing="20.0">
+                                    <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/sync.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox prefHeight="122.0" spacing="20.0">
                                        <children>
-                                          <Label fx:id="refundedCount" text="Count:">
+                                          <Label prefHeight="17.0" text="REFUNDED">
                                              <font>
-                                                <Font size="15.0" />
+                                                <Font name="System Bold" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="refundedValue" text="Value" textFill="#0059ac">
-                                             <font>
-                                                <Font size="15.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets left="10.0" right="10.0" />
-                                             </padding>
-                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <Label fx:id="refundedCount" text="Count:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="refundedValue" text="Value" textFill="#0059ac">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="10.0" right="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </HBox>
                                        </children>
-                                    </HBox>
+                                    </VBox>
                                  </children>
-                              </VBox>
+                                 <padding>
+                                    <Insets top="15.0" />
+                                 </padding>
+                              </HBox>
+                              <HBox layoutX="271.0" layoutY="36.0" maxHeight="-Infinity" prefHeight="120.0" spacing="20.0" style="-fx-border-color: #0059AC; -fx-border-radius: 10; -fx-background-color: e0e0f7;" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="56.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/sync.png" />
+                                       </image>
+                                    </ImageView>
+                                    <VBox prefHeight="122.0" spacing="20.0">
+                                       <children>
+                                          <Label prefHeight="17.0" text="CREDIT">
+                                             <font>
+                                                <Font name="System Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox spacing="20.0">
+                                             <children>
+                                                <Label fx:id="creditCount" text="Count:">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="creditValue" text="Value" textFill="#0059ac">
+                                                   <font>
+                                                      <Font size="15.0" />
+                                                   </font>
+                                                   <padding>
+                                                      <Insets left="10.0" right="10.0" />
+                                                   </padding>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets top="15.0" />
+                                 </padding>
+                              </HBox>
                            </children>
-                           <padding>
-                              <Insets top="15.0" />
-                           </padding>
                         </HBox>
-                   </children>
-                   <VBox.margin>
-                      <Insets />
-                   </VBox.margin>
-                   <padding>
-                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                   </padding>
-                </HBox>
+                     </children>
+                  </VBox>
                   <VBox alignment="CENTER" prefHeight="200.0" spacing="15.0">
                      <children>
                         <HBox spacing="50.0" styleClass="box" stylesheets="@../css/styles.css">

@@ -14,12 +14,12 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.refund.RefundLogController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.refund.RefundLogController">
    <content>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
          <!--             Side Bar -->
-              <fx:include fx:id="side_bar" maxWidth="-Infinity" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
+              <fx:include fx:id="side_bar" maxWidth="300.0" source="../components/sideBar.fxml" />
          <!--             Side Bar -->
 
             <VBox spacing="10.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
@@ -65,7 +65,7 @@
                   </HBox>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="15.0">
                      <children>
-                        <HBox alignment="TOP_RIGHT" spacing="50.0" styleClass="box" stylesheets="@../css/styles.css">
+                        <HBox spacing="50.0" styleClass="box" stylesheets="@../css/styles.css">
                            <children>
                               <VBox alignment="CENTER_LEFT" spacing="20.0">
                                  <children>

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.GeneralAdminSingleRoomController">
+   <content>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+         <children>
+          <!--             Side Bar -->
+            <fx:include fx:id="side_bar" prefWidth="300.0" source="../components/general_admin_sidebar.fxml" />
+            <VBox spacing="25.0" styleClass="box" stylesheets="@../css/styles.css">
+               <children>
+               <fx:include fx:id="back" source="../components/back_button.fxml" />
+                  <HBox alignment="CENTER" prefHeight="60.0">
+                     <children>
+                        <Label fx:id="room_number" styleClass="title_text" stylesheets="@../css/styles.css" text="Room" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <VBox spacing="15.0" />
+                     </children>
+                  </HBox>
+                  <VBox spacing="15.0">
+                     <children>
+                        <Label fx:id="room_type" text="Room Type:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="archived" text="Archived:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="needs_cleaning" layoutX="10.0" layoutY="44.0" text="Needs Cleaning:">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="needs_maintenance" layoutX="10.0" layoutY="78.0" text="Needs Maintenance::">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                           <children>
+                              <Label layoutX="10.0" layoutY="10.0" text="Status:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+      <!--                         <Label fx:id="room_price" layoutX="115.0" layoutY="162.0" text="Room Price:"> -->
+      <!--                            <font> -->
+      <!--                               <Font size="20.0" /> -->
+      <!--                            </font> -->
+      <!--                         </Label> -->
+                              <Label fx:id="room_status">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets left="20.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets bottom="30.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox spacing="30.0">
+                     <children>
+                        <Label fx:id="maintenance_description" text="Maintenence Description:" wrapText="true">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                        <FlowPane fx:id="maintenance_flowpane" rowValignment="TOP" vgap="30.0">
+                           <padding>
+                              <Insets bottom="20.0" left="10.0" right="10.0" top="20.0" />
+                           </padding>
+                        </FlowPane>
+                        <VBox spacing="10.0">
+                           <children>
+                              <Label text="Schedule Maintenance:" />
+                              <TextArea fx:id="maintenance_textBox" prefHeight="200.0" prefWidth="612.0" promptText="Description" wrapText="true" />
+                           </children>
+                           <padding>
+                              <Insets top="30.0" />
+                           </padding>
+                        </VBox>
+                        <HBox prefHeight="100.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT">
+                                 <children>
+                                    <Button fx:id="maintenanceHistory" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Maintenance History">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="802.0">
+                                 <children>
+                                    <Button fx:id="scheduleMaintenance" mnemonicParsing="false" prefHeight="60.0" prefWidth="172.0" styleClass="btn" stylesheets="@../css/styles.css" text="Submit">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

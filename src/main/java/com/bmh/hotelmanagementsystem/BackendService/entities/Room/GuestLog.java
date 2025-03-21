@@ -17,6 +17,7 @@ public class GuestLog {
     private PaymentStatus paymentStatus;
     private Double totalAmountDue;
     private Double amountPaid;
+    private Double creditAmount = 0.0;
     private String notes;
     private GuestLogStatus status;
     private List<Invoice> invoices;
@@ -90,6 +91,14 @@ public class GuestLog {
 
     public void setAmountPaid(Double amountPaid) {
         this.amountPaid = amountPaid;
+    }
+
+    public Double getCreditAmount() {
+        return creditAmount;
+    }
+
+    public void setCreditAmount(Double creditAmount) {
+        this.creditAmount = creditAmount;
     }
 
     public String getNotes() {

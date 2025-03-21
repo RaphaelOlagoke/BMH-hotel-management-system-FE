@@ -81,6 +81,7 @@ public class SingleOrderLogController extends Controller {
         orderRef.setText("Order Ref:  " + this.data.getRef());
         customerName.setText("Customer's Name:  " + this.data.getCustomerName());
         date.setText("Date:  " + dateTimeFormatter.format(this.data.getCreatedDateTime()));
+        tax.setText("");
         status.setText(this.data.getStatus().toJson());
         if (this.data.getStatus() == RestaurantOrderStatus.COMPLETED) {
             status.setStyle("-fx-text-fill: green; -fx-background-color: #e0f7e0; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
@@ -102,6 +103,8 @@ public class SingleOrderLogController extends Controller {
             amountPaid.setText("Amount Paid:  ₦" + formatter.format(this.data.getInvoice().getAmountPaid()));
             discount.setText("Discount:  ₦" + 0.0);
         }
+        tax.setText("");
+        change.setText("");
 
         double totalPrice = 0.0;
 

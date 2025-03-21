@@ -1,6 +1,7 @@
 package com.bmh.hotelmanagementsystem.restaurant;
 
 import com.bmh.hotelmanagementsystem.BMHApplication;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
 import com.bmh.hotelmanagementsystem.Controller;
@@ -28,7 +29,18 @@ public class RestaurantSideBarController {
     protected void home() throws IOException {
         Stage primaryStage = (Stage) side_bar_orders.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/Restaurant/restaurant-view.fxml"));
+        String[] credentials = TokenStorage.loadCredentials();
+        String department = "";
+        if (credentials != null) {
+            department = credentials[2];
+        }
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml"));
+
+        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml"));
+        }
+
         Scene scene = new Scene(fxmlLoader.load());
 
         Controller homeController = fxmlLoader.getController();
@@ -48,7 +60,7 @@ public class RestaurantSideBarController {
     protected void orders() throws IOException {
         Stage primaryStage = (Stage) side_bar_orders.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/Restaurant/order-log-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/restaurant/order-log-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
 //        primaryStage.setTitle("BMH - Rooms");

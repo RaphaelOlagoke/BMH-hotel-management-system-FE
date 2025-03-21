@@ -1,8 +1,7 @@
 package com.bmh.hotelmanagementsystem.components;
 
-import com.bmh.hotelmanagementsystem.BMHApplication;
-import com.bmh.hotelmanagementsystem.HomeController;
-import com.bmh.hotelmanagementsystem.Utils;
+import com.bmh.hotelmanagementsystem.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -19,18 +18,38 @@ public class SideBarController {
 
     @FXML
     private Button side_bar_rooms;
+
+    @FXML
+    private Button side_bar_home;
+
 //    public void setPrimaryStage(Stage primaryStage) {
 //        this.primaryStage = primaryStage;
 //    }
 
     @FXML
     protected void home() throws IOException {
-        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+        Stage primaryStage = (Stage) side_bar_home.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/home-view.fxml"));
+        FXMLLoader fxmlLoader;
+
+        String[] credentials = TokenStorage.loadCredentials();
+        String department = "";
+        if (credentials != null) {
+            department = credentials[2];
+        }
+        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml"));
+        }
+        else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml"));
+        }
+        else {
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/home-view.fxml"));
+        }
+
         Scene scene = new Scene(fxmlLoader.load());
 
-        HomeController homeController = fxmlLoader.getController();
+        Controller homeController = fxmlLoader.getController();
         homeController.setPrimaryStage(primaryStage);
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
 ////        primaryStage.setTitle("BMH");
@@ -105,6 +124,20 @@ public class SideBarController {
         Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
 
         FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/inventory/inventory-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
+        primaryStage.setScene(scene);
+        Utils utils = new Utils();
+        utils.setControllerPrimaryStage(fxmlLoader, primaryStage);
+        primaryStage.show();
+    }
+
+    @FXML
+    protected void logout() throws IOException {
+        TokenStorage.clearCredentials();
+        Stage primaryStage = (Stage) side_bar_home.getScene().getWindow() ;
+
+        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         scene.getStylesheets().add(getClass().getResource("/com/bmh/hotelmanagementsystem/css/styles.css").toExternalForm());
         primaryStage.setScene(scene);

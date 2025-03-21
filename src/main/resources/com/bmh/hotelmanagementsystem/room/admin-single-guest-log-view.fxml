@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.SingleGuestLogController">
+   <content>
+      <HBox minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+         <children>
+          <!--             Side Bar -->
+            <fx:include fx:id="side_bar" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" spacing="25.0" styleClass="box" stylesheets="@../css/styles.css">
+               <children>
+               <fx:include fx:id="back" source="../components/back_button.fxml" />
+                  <HBox alignment="CENTER">
+                     <children>
+                        <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Guest Log" />
+                     </children>
+                  </HBox>
+                  <HBox spacing="50.0">
+                     <children>
+                        <Button fx:id="change_room" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Change room" />
+                        <Button fx:id="extend" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Extend Stay" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" maxWidth="-Infinity" prefHeight="26.0" prefWidth="830.0" spacing="10.0">
+                     <children>
+                        <Label layoutX="782.0" layoutY="10.0" text="Status:">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="status">
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="BASELINE_LEFT" spacing="200.0">
+                     <children>
+                        <VBox prefHeight="259.0" spacing="15.0">
+                           <children>
+                              <Label text="Guest Details:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <HBox spacing="50.0">
+                                 <children>
+                                    <VBox spacing="15.0">
+                                       <children>
+                                          <Label fx:id="guest_name" text="Name:">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                  <!--                         <Label layoutX="137.0" layoutY="331.0" text="Email:"> -->
+                  <!--                            <font> -->
+                  <!--                               <Font size="24.0" /> -->
+                  <!--                            </font> -->
+                  <!--                         </Label> -->
+                  <!--                         <Label layoutX="135.0" layoutY="368.0" text="Phone Number:"> -->
+                  <!--                            <font> -->
+                  <!--                               <Font size="24.0" /> -->
+                  <!--                            </font> -->
+                  <!--                         </Label> -->
+                                          <Label fx:id="check_in_date" text="Check-in Date:">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="check_out_date" text="Check-out Date:">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="phone_number" text="Phone number::">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox spacing="15.0">
+                                       <children>
+                                          <Label fx:id="next_of_kin_name" text="Next Of Kin">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="next_of_kin_number" text="Next of Kin Number">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="id_type" text="ID Type">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="id_ref" text="ID Ref">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="30.0" right="30.0" />
+                           </padding>
+                        </VBox>
+                        <VBox maxWidth="500.0" prefHeight="259.0" spacing="15.0">
+                           <children>
+                              <Label text="Room Details:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="rooms" text="Room(s)" wrapText="true">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label layoutX="10.0" layoutY="10.0" text="Payment Status:">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="payment_status">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                              <Label fx:id="total_amount_paid" text="Total amount paid:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="total_amount_due" text="Total amount Due:">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="room_types" text="Types(s)">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="962.0" spacing="200.0">
+                     <children>
+                        <Button fx:id="room_service" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" styleClass="btn" stylesheets="@../css/styles.css" text="Room Service">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="generate_invoice" mnemonicParsing="false" prefHeight="50.0" prefWidth="164.0" styleClass="btn" stylesheets="@../css/styles.css" text="Generate Invoice">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+               <HBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </HBox.margin>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

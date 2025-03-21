@@ -65,6 +65,7 @@ public class OrderReceiptController extends Controller {
 
         date.setText("Date:  " + dateTimeFormatter.format(this.data.getInvoice().getIssueDate()) );
         customerName.setText("Customer's name:  " + this.data.getCustomerName() );
+        tax.setText("");
         subtotal.setText("Subtotal:  ₦" + this.data.getInvoice().getTotalAmount());
         if(this.data.getInvoice().getDiscountCode() != null && !this.data.getInvoice().getDiscountCode().equals("")){
             amountPaid.setText("Amount Paid:  ₦" + formatter.format(this.data.getInvoice().getAmountPaid()) );
@@ -74,6 +75,8 @@ public class OrderReceiptController extends Controller {
             amountPaid.setText("Amount Paid:  ₦" + formatter.format(this.data.getInvoice().getAmountPaid()));
             discount.setText("Discount:  ₦" + 0.0);
         }
+        tax.setText("");
+        change.setText("");
 
         double totalPrice = 0.0;
         DecimalFormat formatter = new DecimalFormat("#,###.00");

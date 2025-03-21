@@ -1,9 +1,7 @@
 package com.bmh.hotelmanagementsystem.inventory;
 
-import com.bmh.hotelmanagementsystem.BMHApplication;
-import com.bmh.hotelmanagementsystem.Controller;
-import com.bmh.hotelmanagementsystem.HomeController;
-import com.bmh.hotelmanagementsystem.Utils;
+import com.bmh.hotelmanagementsystem.*;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -26,7 +24,23 @@ public class InventorySideBarController {
     protected void home() throws IOException {
         Stage primaryStage = (Stage) side_bar_requests.getScene().getWindow() ;
 
-        FXMLLoader fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
+        FXMLLoader fxmlLoader;
+
+        String[] credentials = TokenStorage.loadCredentials();
+        String department = "";
+        if (credentials != null) {
+            department = credentials[2];
+        }
+        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
+        }
+        else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-room-management-view.fxml"));
+        }
+        else {
+            fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-room-management-view.fxml"));
+        }
+
         Scene scene = new Scene(fxmlLoader.load());
 
         Controller homeController = fxmlLoader.getController();

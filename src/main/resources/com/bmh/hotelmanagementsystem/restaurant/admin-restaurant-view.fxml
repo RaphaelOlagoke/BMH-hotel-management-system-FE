@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.AdminRestaurantController">
+   <content>
+      <HBox fx:id="home_background" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+         <children>
+      <!--             Side Bar -->
+           <fx:include fx:id="side_bar" maxWidth="300.0" source="restaurant_side_bar.fxml" />
+      <!--             Side Bar -->
+            <VBox prefWidth="988.0" spacing="15.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="40.0">
+                     <children>
+                        <HBox prefHeight="105.0" prefWidth="679.0" spacing="10.0">
+                           <children>
+                              <TextField fx:id="searchField" prefHeight="54.0" prefWidth="526.0" promptText="Search" style="-fx-background-color: white;" styleClass="box" stylesheets="@../css/styles.css" />
+                              <Button fx:id="search" mnemonicParsing="false" prefHeight="58.0" prefWidth="66.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox alignment="CENTER" prefHeight="39.0" prefWidth="40.0">
+                                       <children>
+                                          <ImageView fitHeight="26.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/search.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox prefHeight="105.0" prefWidth="360.0" spacing="20.0">
+                           <children>
+                              <VBox prefHeight="105.0" prefWidth="218.0">
+                                 <children>
+                                    <Label fx:id="user" prefHeight="19.0" prefWidth="200.0" styleClass="title_text" stylesheets="@../css/styles.css" text="User" wrapText="true">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" right="10.0" top="30.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+                  <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Choose Category" />
+                  <HBox prefWidth="200.0" spacing="30.0">
+                     <children>
+                        <Button fx:id="appetizerCategory" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="appetizerVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Cake.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="appetizerLabel" text="Appetizers">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="mainCategory" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="mainVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Union%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="mainLabel" text="Mains">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="dessertCategory" layoutX="172.0" layoutY="20.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="dessertVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Union%20(2).png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="dessertLabel" text="Dessert">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="sidesCategory" layoutX="172.0" layoutY="20.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="sidesVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Vector.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="sidesLabel" text="Sides">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="beverageCategory" layoutX="167.0" layoutY="20.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="beverageVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Union.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="beverageLabel" text="Beverages">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="specialCategory" layoutX="159.0" layoutY="20.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                           <graphic>
+                              <VBox fx:id="specialVBox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                 <children>
+                                    <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                       <image>
+                                          <Image url="@../images/restaurant/Star_fill.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label fx:id="specialLabel" text="Specials">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="menuCategory" styleClass="title_text" stylesheets="@../css/styles.css" text="Menu" />
+                        <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="735.0">
+                           <children>
+                              <Button fx:id="create" mnemonicParsing="false" prefHeight="45.0" prefWidth="105.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <FlowPane fx:id="menu_flowPane" hgap="30.0" prefHeight="200.0" prefWidth="200.0" vgap="30.0" />
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+               </padding>
+            </VBox>
+            <VBox prefWidth="700.0">
+               <children>
+                  <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Bills" />
+                  <ScrollPane prefWidth="600.0">
+                     <content>
+                        <VBox fx:id="bill_flowPane" prefHeight="400.0" prefWidth="600.0" />
+                     </content>
+                  </ScrollPane>
+                  <VBox prefHeight="327.0" prefWidth="670.0" spacing="30.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="19.0" prefWidth="121.0" text="Subtotal">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="522.0">
+                                 <children>
+                                    <Label fx:id="subtotalLabel" text="0.00">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="19.0" prefWidth="121.0" text="Discount">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="522.0">
+                                 <children>
+                                    <Label fx:id="discountLabel" text="0.00">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="29.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="19.0" prefWidth="121.0" text="Tax">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="522.0">
+                                 <children>
+                                    <Label fx:id="taxLabel" text="0.00">
+                                       <font>
+                                          <Font size="15.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                        <Line endX="553.3400268554688" endY="-0.8286713361740112" startX="-100.0" />
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="108.0" prefWidth="200.0">
+                           <children>
+                              <Label prefHeight="19.0" prefWidth="121.0" text="Total">
+                                 <font>
+                                    <Font name="System Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER_RIGHT" prefWidth="522.0">
+                                 <children>
+                                    <Label fx:id="totalLabel" text="0.00">
+                                       <font>
+                                          <Font name="System Bold" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" right="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox prefHeight="276.0" prefWidth="670.0" spacing="20.0">
+                     <children>
+                        <Label styleClass="title_text" stylesheets="@../css/styles.css" text="Payment Method" />
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="30.0">
+                           <children>
+                              <Button fx:id="cash" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox fx:id="cashVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Money_fill.png" />
+                                             </image></ImageView>
+                                          <Label fx:id="cashLabel" text="Cash">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="card" layoutX="134.0" layoutY="47.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox fx:id="cardVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Credit%20card_fill.png" />
+                                             </image></ImageView>
+                                          <Label fx:id="cardLabel" text="Card">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="transfer" layoutX="563.0" layoutY="47.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox fx:id="transferVbox" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Phone.png" />
+                                             </image></ImageView>
+                                          <Label fx:id="transferLabel" text="Transfer">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="chargeToRoom" layoutX="436.0" layoutY="10.0" mnemonicParsing="false" styleClass="transparent-background" stylesheets="@../css/styles.css">
+                                 <graphic>
+                                    <VBox fx:id="transferVbox1" alignment="CENTER" prefHeight="121.0" prefWidth="105.0" spacing="10.0" styleClass="box" stylesheets="@../css/styles.css">
+                                       <children>
+                                          <ImageView fitHeight="39.0" fitWidth="63.0" pickOnBounds="true" preserveRatio="true" styleClass="round-image">
+                                             <image>
+                                                <Image url="@../images/Key.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Label fx:id="transferLabel1" text="Charge to room">
+                                             <font>
+                                                <Font size="15.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="BOTTOM_RIGHT" prefHeight="107.0" prefWidth="670.0">
+                           <children>
+                              <Button fx:id="payment" mnemonicParsing="false" prefHeight="57.0" prefWidth="154.0" styleClass="btn" stylesheets="@../css/styles.css" text="Proceed to Payment" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </content>
+</ScrollPane>

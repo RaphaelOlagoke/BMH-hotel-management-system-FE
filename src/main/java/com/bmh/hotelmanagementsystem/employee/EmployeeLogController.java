@@ -127,6 +127,7 @@ public class EmployeeLogController extends Controller {
 
         ObservableList<String> roles = FXCollections.observableArrayList();
 
+        roles.add(null);
         for (UserRoles userRole : UserRoles.values()) {
             roles.add(userRole.toJson());
         }

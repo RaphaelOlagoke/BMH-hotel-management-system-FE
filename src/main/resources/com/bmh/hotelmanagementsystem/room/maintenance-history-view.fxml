@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.paint.Color?>
 
-<ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.MaintenanceHistoryController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.MaintenanceHistoryController">
    <content>
-      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
          <!--             Side Bar -->
-              <fx:include fx:id="side_bar" maxWidth="-Infinity" prefWidth="300.0" source="../components/admin_sidebar.fxml" />
-            <VBox styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+              <fx:include fx:id="side_bar" maxWidth="300.0" source="../components/sideBar.fxml" />
+            <VBox styleClass="lightGreyBackground" stylesheets="@../css/styles.css" HBox.hgrow="ALWAYS">
                <children>
                <!--             Side Bar -->
                   <VBox prefHeight="639.0" prefWidth="1002.0" spacing="30.0" styleClass="box" stylesheets="@../css/styles.css">

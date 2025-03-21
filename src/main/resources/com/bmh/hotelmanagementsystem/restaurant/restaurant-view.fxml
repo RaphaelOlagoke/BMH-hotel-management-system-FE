@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<ScrollPane fx:id="scrollPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantController">
+<ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.restaurant.RestaurantController">
    <content>
       <HBox fx:id="home_background" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
@@ -269,14 +269,14 @@
                         </HBox>
                         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="29.0" prefWidth="200.0">
                            <children>
-                              <Label prefHeight="19.0" prefWidth="121.0" text="Tax">
+                              <Label prefHeight="19.0" prefWidth="121.0" text="Tax" visible="false">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
                               </Label>
                               <HBox alignment="CENTER_RIGHT" prefWidth="522.0">
                                  <children>
-                                    <Label fx:id="taxLabel" text="0.00">
+                                    <Label fx:id="taxLabel" text="0.00" visible="false">
                                        <font>
                                           <Font size="15.0" />
                                        </font>

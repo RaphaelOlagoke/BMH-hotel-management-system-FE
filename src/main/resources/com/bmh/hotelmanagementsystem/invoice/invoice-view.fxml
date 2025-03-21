@@ -14,7 +14,7 @@
    <content>
       <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
-         <fx:include fx:id="side_bar" maxWidth="300.0" source="../room/room_sidebar.fxml" />
+         <fx:include fx:id="side_bar" maxWidth="300.0" source="../components/sideBar.fxml" />
             <VBox spacing="25.0" styleClass="box" stylesheets="@../css/styles.css">
                <padding>
                   <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
