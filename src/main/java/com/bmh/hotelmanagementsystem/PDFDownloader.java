@@ -10,7 +10,7 @@ import java.nio.file.StandardCopyOption;
 
 public class PDFDownloader {
 
-    private static final String BASE_URL = "http://localhost:8080/api/v1";
+    private static final String BASE_URL = "https://bmh-backend-api.onrender.com/api/v1";
 
     private static String getToken(){
         String[] credentials = TokenStorage.loadCredentials();
