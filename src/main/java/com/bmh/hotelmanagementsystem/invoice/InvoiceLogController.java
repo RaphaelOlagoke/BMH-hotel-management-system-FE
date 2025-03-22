@@ -177,6 +177,9 @@ public class InvoiceLogController extends Controller {
             }
         });
 
+        start_datePicker.setValue(LocalDate.now());
+        end_datePicker.setValue(LocalDate.now());
+
         ObservableList<String> payment_status = FXCollections.observableArrayList();
 
         payment_status.add(null);

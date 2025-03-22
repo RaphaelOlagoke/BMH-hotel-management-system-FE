@@ -175,6 +175,9 @@ public class GeneralAdminGuestLogController extends Controller {
             }
         });
 
+        start_date.setValue(LocalDate.now());
+        end_date.setValue(LocalDate.now());
+
         ObservableList<String> guest_log_status = FXCollections.observableArrayList();
 
         guest_log_status.add(null);
@@ -183,6 +186,8 @@ public class GeneralAdminGuestLogController extends Controller {
         }
 
         status_comboBox.setItems(guest_log_status);
+
+        status_comboBox.setValue(GuestLogStatus.ACTIVE.toJson());
 
 
         ObservableList<String> payment_status = FXCollections.observableArrayList();
