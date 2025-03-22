@@ -25,7 +25,7 @@
             <Label styleClass="company-name" text="Broadway Mercantile &amp; Hospitality Ltd" />
 
             <!-- Username Field -->
-            <TextField fx:id="username" prefHeight="40.0" prefWidth="250.0" promptText="Email" styleClass="text-field" stylesheets="@css/styles.css" />
+            <TextField fx:id="username" prefHeight="40.0" prefWidth="250.0" promptText="User ID" styleClass="text-field" stylesheets="@css/styles.css" />
 
             <!-- Password Field -->
             <PasswordField fx:id="password" prefHeight="40.0" prefWidth="250.0" promptText="Password" styleClass="password-field" stylesheets="@css/styles.css" />
