@@ -231,8 +231,14 @@
                   </HBox>
                   <HBox alignment="CENTER" spacing="500.0">
                      <children>
-                        <Button fx:id="cancel" mnemonicParsing="false" prefHeight="60.0" prefWidth="184.0" style="-fx-background-color: #f50000; -fx-text-fill: #ffffff;" stylesheets="@../css/styles.css" text="Cancel" />
-                        <Button fx:id="checkIn" mnemonicParsing="false" onAction="#checkIn" prefHeight="60.0" prefWidth="184.0" styleClass="btn" stylesheets="@../css/styles.css" text="Check-in" />
+                        <Button fx:id="cancel" mnemonicParsing="false" prefHeight="60.0" prefWidth="184.0" style="-fx-background-color: #c33c3c; -fx-text-fill: #ffffff;" stylesheets="@../css/styles.css" text="Cancel">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Button>
+                        <Button fx:id="checkIn" mnemonicParsing="false" onAction="#checkIn" prefHeight="60.0" prefWidth="184.0" styleClass="btn" stylesheets="@../css/styles.css" text="Check-in">
+                           <font>
+                              <Font size="15.0" />
+                           </font></Button>
                      </children>
                   </HBox>
                </children>

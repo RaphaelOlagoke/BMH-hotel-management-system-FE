@@ -28,7 +28,7 @@
                      <children>
                         <VBox spacing="15.0">
                            <children>
-                              <Button fx:id="archiveRoom" mnemonicParsing="false" prefHeight="46.0" prefWidth="156.0" style="-fx-background-color: red;" styleClass="btn" stylesheets="@../css/styles.css" text="Archive">
+                              <Button fx:id="archiveRoom" mnemonicParsing="false" prefHeight="46.0" prefWidth="156.0" style="-fx-background-color: #c33c3c;" styleClass="btn" stylesheets="@../css/styles.css" text="Archive">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
