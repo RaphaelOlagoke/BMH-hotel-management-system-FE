@@ -139,6 +139,17 @@ public class AdminSideBarController {
     }
 
     @FXML
+    protected void reservation(){
+        Stage primaryStage = (Stage) side_bar_rooms.getScene().getWindow() ;
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/reservation-log-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     protected void restaurant() throws IOException {
         onOptionSelected(restaurantHbox, restaurantLabel);
 

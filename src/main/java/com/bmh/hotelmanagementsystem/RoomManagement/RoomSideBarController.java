@@ -48,6 +48,18 @@ public class RoomSideBarController {
         }
     }
 
+
+    @FXML
+    protected void reservation(){
+        Stage primaryStage = (Stage) side_bar_home.getScene().getWindow() ;
+        try {
+            Utils utils = new Utils();
+            utils.switchScreen("/com/bmh/hotelmanagementsystem/room/reservation-log-view.fxml", primaryStage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @FXML
     protected void home() throws IOException {
         Stage primaryStage = (Stage) side_bar_home.getScene().getWindow() ;

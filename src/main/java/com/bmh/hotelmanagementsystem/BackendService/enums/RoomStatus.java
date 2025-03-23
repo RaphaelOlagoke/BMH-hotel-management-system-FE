@@ -3,7 +3,7 @@ package com.bmh.hotelmanagementsystem.BackendService.enums;
 
 public enum RoomStatus {
 
-    AVAILABLE, OCCUPIED;
+    AVAILABLE, OCCUPIED, RESERVED;
 //    , CLEANING, MAINTENANCE;
 
     public static RoomStatus fromString(String value) {

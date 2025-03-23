@@ -1,12 +1,15 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
+import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CheckIn;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CreateGuestLogRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.discount.Discount;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentMethod;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +18,7 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -291,7 +295,24 @@ public class CheckInInvoiceController extends Controller {
 
                                 // Switch screen to home view
                                 Utils utils = new Utils();
-                                utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+                                String[] credentials = TokenStorage.loadCredentials();
+                                String department = "";
+                                if (credentials != null) {
+                                    department = credentials[2];
+                                }
+                                if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
+                                    utils.switchScreen("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml", primaryStage);
+                                }
+                                else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                                    utils.switchScreen("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml", primaryStage);
+                                }
+                                else if(LoginDepartment.valueOf(department) == LoginDepartment.RESTAURANT_BAR){
+                                    utils.switchScreen("/com/bmh/hotelmanagementsystem/restaurant/restaurant-view.fxml", primaryStage);
+                                }
+                                else {
+                                    utils.switchScreen("/com/bmh/hotelmanagementsystem/home-view.fxml", primaryStage);
+                                }
+
                             } else {
                                 // Close the loading screen
                                 loadingStage.close();

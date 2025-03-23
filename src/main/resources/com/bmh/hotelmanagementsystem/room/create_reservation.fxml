@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.RoomManagement.CreateReservationController">
+   <content>
+      <HBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="725.0" prefWidth="972.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+          <children>
+         
+          <!--             Side Bar -->
+
+                <VBox maxHeight="-Infinity" spacing="15.0" styleClass="box" stylesheets="@../css/styles.css">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="76.0" prefWidth="900.0">
+                     <children>
+                        <Label alignment="CENTER" styleClass="title_text" stylesheets="@../css/styles.css" text="Create Reservation" />
+                     </children>
+                  </HBox>
+                  <Label text="Guest Details:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <HBox spacing="50.0">
+                     <children>
+                        <HBox alignment="CENTER" spacing="10.0" style="-fx-background-radius: 15;">
+                           <children>
+                              <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/userIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="guest_name" prefHeight="51.0" prefWidth="318.0" promptText="Name" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0" style="-fx-background-radius: 15;">
+                           <children>
+                              <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/PhoneIcon.png" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="phone_number" prefHeight="51.0" prefWidth="318.0" promptText="Phone Number" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                           </children>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                        </HBox>
+<!--                               <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground"> -->
+<!--                                  <children> -->
+<!--                                     <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true"> -->
+<!--                                        <image> -->
+<!--                                           <Image url="@images/EmailIcon.png" /> -->
+<!--                                        </image> -->
+<!--                                     </ImageView> -->
+<!--                                     <TextField prefHeight="37.0" prefWidth="214.0" promptText="Email" styleClass="text-field" stylesheets="@css/styles.css" /> -->
+<!--                                  </children> -->
+<!--                                  <padding> -->
+<!--                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" /> -->
+<!--                                  </padding> -->
+<!--                               </HBox> -->
+<!--                               <HBox alignment="CENTER" prefHeight="45.0" prefWidth="232.0" spacing="10.0" style="-fx-background-radius: 15;" styleClass="lightGreyBackground"> -->
+<!--                                  <children> -->
+<!--                                     <ImageView fitHeight="23.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true"> -->
+<!--                                        <image> -->
+<!--                                           <Image url="@images/PhoneIcon.png" /> -->
+<!--                                        </image> -->
+<!--                                     </ImageView> -->
+<!--                                     <TextField prefHeight="37.0" prefWidth="214.0" promptText="Phone number" styleClass="text-field" stylesheets="@css/styles.css" /> -->
+<!--                                  </children> -->
+<!--                                  <padding> -->
+<!--                                     <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" /> -->
+<!--                                  </padding> -->
+<!--                               </HBox> -->
+                     </children>
+                  </HBox>
+                  <Label text="Room Details:">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+                  <ScrollPane fx:id="rooms_scrollPane" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+                     <content>
+                        <FlowPane fx:id="rooms_flowPane" maxHeight="1.7976931348623157E308" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                     </content>
+                  </ScrollPane>
+                  <HBox alignment="CENTER_LEFT" spacing="100.0">
+                     <children>
+                        <VBox spacing="25.0">
+                           <children>
+                              <Label text="Room  Type:">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="room_type" prefHeight="40.0" prefWidth="254.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                           </children>
+                        </VBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="279.0" spacing="15.0">
+                           <children>
+                              <Label alignment="CENTER" stylesheets="@../css/styles.css" text="Price:">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="price" text="0.00">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets top="35.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" spacing="100.0">
+                     <children>
+                        <VBox spacing="25.0">
+                           <children>
+                              <Label text="Room :">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="room" prefHeight="40.0" prefWidth="254.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css" />
+                           </children>
+                        </VBox>
+                        <Label fx:id="rooms_message" textFill="#dd1c1c">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                           <padding>
+                              <Insets top="35.0" />
+                           </padding>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="77.0" prefWidth="400.0" spacing="15.0">
+                     <children>
+                        <Label alignment="CENTER" styleClass="title_text" stylesheets="@../css/styles.css" text="Total Price:" />
+                        <Label fx:id="total_price" text="0.00">
+                           <font>
+                              <Font size="32.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT">
+                     <children>
+                        <Button fx:id="create" mnemonicParsing="false" prefHeight="60.0" prefWidth="184.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create" />
+                     </children>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+               <HBox.margin>
+                  <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+               </HBox.margin>
+            </VBox>
+          </children>
+      </HBox>
+   </content>
+</ScrollPane>
