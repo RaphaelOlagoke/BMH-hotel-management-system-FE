@@ -14,10 +14,9 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-
-<ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.CreateInvoiceController">
+<ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.CreateInvoiceController">
    <content>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="1076.0" prefWidth="1200.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
             <HBox alignment="CENTER" prefHeight="51.0" prefWidth="600.0">
                <children>
