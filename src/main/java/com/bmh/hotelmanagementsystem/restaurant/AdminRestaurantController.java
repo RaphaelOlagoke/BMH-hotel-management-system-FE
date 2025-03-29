@@ -313,7 +313,7 @@ public class AdminRestaurantController extends Controller {
                                 });
 
                                 name.setText(menuItem.getName());
-                                price.setText("$" + formatter.format(menuItem.getPrice()));
+                                price.setText("₦" + formatter.format(menuItem.getPrice()));
                                 viewMore.setOnAction(event -> editMenuItem(menuItem));
 
                                 menu_flowPane.getChildren().add(vBox);
@@ -429,7 +429,7 @@ public class AdminRestaurantController extends Controller {
         Button decreaseQuantity = (Button) hBox.lookup("#reduce_quantity");
 
         name.setText(menuItem.getName());
-        price.setText("$" + formatter.format(menuItem.getPrice()));
+        price.setText("₦" + formatter.format(menuItem.getPrice()));
         quantity.setText("1");
 
         BillItem billItem = new BillItem();

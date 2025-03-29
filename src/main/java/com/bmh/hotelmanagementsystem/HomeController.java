@@ -211,6 +211,7 @@ public class HomeController extends Controller {
                 ApiResponseSingleData<RoomSummary> apiResponse = objectMapper.readValue(responseAvailable, new TypeReference<ApiResponseSingleData<RoomSummary>>() {});
 
                 Platform.runLater(() -> {
+                    loadingStage.close();
                     if (apiResponse.getData() != null) {
                         availableRoomsCount.setText(String.valueOf(apiResponse.getData().getNoOfAvailableRooms()));
                     }
@@ -227,6 +228,7 @@ public class HomeController extends Controller {
 
             } catch (Exception e) {
                 Platform.runLater(() -> {
+                    loadingStage.close();
                     System.out.println(e);
                     Utils.showGeneralErrorDialog();
                 });
