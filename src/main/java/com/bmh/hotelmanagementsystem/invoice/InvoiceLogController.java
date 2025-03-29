@@ -17,6 +17,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -24,6 +25,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
@@ -650,6 +652,12 @@ public class InvoiceLogController extends Controller {
             Stage formStage = new Stage();
             formStage.initModality(Modality.APPLICATION_MODAL);
             formStage.setTitle("Fill out the Form");
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            formStage.setX(screenBounds.getMinX());
+            formStage.setY(screenBounds.getMinY());
+            formStage.setWidth(screenBounds.getWidth());
+            formStage.setHeight(screenBounds.getHeight());
 
             Controller controller = loader.getController();
             controller.setPrimaryStage(formStage);

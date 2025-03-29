@@ -16,7 +16,7 @@
 
 <ScrollPane fitToHeight="true" fitToWidth="true" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bmh.hotelmanagementsystem.invoice.CreateInvoiceController">
    <content>
-      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="1076.0" prefWidth="1200.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
+      <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="842.0" prefWidth="1127.0" styleClass="lightGreyBackground" stylesheets="@../css/styles.css">
          <children>
             <HBox alignment="CENTER" prefHeight="51.0" prefWidth="600.0">
                <children>
