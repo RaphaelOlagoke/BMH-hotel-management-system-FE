@@ -5,10 +5,12 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponse;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
 import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.StockRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.StockRequestFilterRequest;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockRequestStatus;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.bmh.hotelmanagementsystem.dto.inventory.StockRequestRow;
 import com.bmh.hotelmanagementsystem.dto.room.GuestReservation;
@@ -99,6 +101,7 @@ public class InventoryRequestController extends Controller {
 
     @FXML
     public void initialize() throws IOException {
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         start_datePicker.setConverter(new javafx.util.StringConverter<LocalDate>() {
@@ -247,16 +250,32 @@ public class InventoryRequestController extends Controller {
                     private final Button btn = new Button();
 
                     {
+                        String[] credentials = TokenStorage.loadCredentials();
+                        String username = "";
+                        String userDepartment = "";
+                        if (credentials != null) {
+                            username = credentials[0];
+                            userDepartment = credentials[2];
+                        }
+
+
                         btn.setStyle("-fx-text-fill: white; -fx-background-color: green; -fx-font-weight: bold; -fx-padding: 5px 10px; -fx-background-radius: 5;");
-                        btn.setOnAction(event -> {
-                            StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
-                            if(getTableView().getItems().get(getIndex()).getStockRequest().getStatus() == StockRequestStatus.APPROVED) {
-                                markRequestAsRetrieved(stockRequestRow);
-                            }
-                            else {
-                                approveRequest(stockRequestRow);
-                            }
-                        });
+                        if(LoginDepartment.valueOf(userDepartment) == LoginDepartment.SUPER_ADMIN || LoginDepartment.valueOf(userDepartment) == LoginDepartment.ACCOUNTS) {
+                            btn.setOnAction(event -> {
+                                StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
+                                if(getTableView().getItems().get(getIndex()).getStockRequest().getStatus() == StockRequestStatus.APPROVED) {
+                                    markRequestAsRetrieved(stockRequestRow);
+                                }
+                                else {
+                                    approveRequest(stockRequestRow);
+                                }
+                            });
+                        }
+                        else{
+                            btn.setDisable(true);
+//                            btn.setVisible(false);
+                        }
+
                     }
 
                     @Override
@@ -305,11 +324,27 @@ public class InventoryRequestController extends Controller {
                     private final Button btn = new Button("Decline");
 
                     {
+                        String[] credentials = TokenStorage.loadCredentials();
+                        String username = "";
+                        String userDepartment = "";
+                        if (credentials != null) {
+                            username = credentials[0];
+                            userDepartment = credentials[2];
+                        }
+
                         btn.setStyle("-fx-text-fill: white; -fx-background-color: red; -fx-font-weight: bold; -fx-padding: 5px 15px; -fx-background-radius: 5;");
-                        btn.setOnAction(event -> {
-                            StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
-                            declineRequest(stockRequestRow);
-                        });
+
+                        if(LoginDepartment.valueOf(userDepartment) == LoginDepartment.SUPER_ADMIN || LoginDepartment.valueOf(userDepartment) == LoginDepartment.ACCOUNTS) {
+                            btn.setOnAction(event -> {
+                                StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
+                                declineRequest(stockRequestRow);
+                            });
+                        }
+                        else{
+                            btn.setDisable(true);
+//                            btn.setVisible(false);
+                        }
+
                     }
 
                     @Override
@@ -353,10 +388,25 @@ public class InventoryRequestController extends Controller {
                     private final Button btn = new Button("Mark As Retrieved");
 
                     {
-                        btn.setOnAction(event -> {
-                            StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
-                            markRequestAsRetrieved(stockRequestRow);
-                        });
+                        String[] credentials = TokenStorage.loadCredentials();
+                        String username = "";
+                        String userDepartment = "";
+                        if (credentials != null) {
+                            username = credentials[0];
+                            userDepartment = credentials[2];
+                        }
+
+                        if(LoginDepartment.valueOf(userDepartment) == LoginDepartment.SUPER_ADMIN || LoginDepartment.valueOf(userDepartment) == LoginDepartment.ACCOUNTS) {
+                            btn.setOnAction(event -> {
+                                StockRequestRow stockRequestRow = getTableView().getItems().get(getIndex());
+                                markRequestAsRetrieved(stockRequestRow);
+                            });
+                        }
+                        else{
+                            btn.setDisable(true);
+//                            btn.setVisible(false);
+                        }
+
                     }
 
                     @Override

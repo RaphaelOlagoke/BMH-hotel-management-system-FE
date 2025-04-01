@@ -2,12 +2,9 @@ package com.bmh.hotelmanagementsystem;
 
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.ApiResponseSingleData;
-import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CreateGuestLogRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.UserLoginDetails;
 import com.bmh.hotelmanagementsystem.BackendService.entities.UserLoginRequest;
 import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
-import com.bmh.hotelmanagementsystem.BackendService.utils.AuthFileCache;
-import com.bmh.hotelmanagementsystem.components.SideBarController;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -17,9 +14,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -92,7 +86,7 @@ public class LoginController extends Controller{
                             if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.RECEPTIONIST){
                                 fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("home-view.fxml"));
                             }
-                            else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.ADMIN ) {
+                            else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.ACCOUNTS || apiResponse.getData().getUser().getDepartment() == LoginDepartment.MANAGER) {
                                 fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml"));
                             }
                             else if(apiResponse.getData().getUser().getDepartment() == LoginDepartment.RESTAURANT_BAR){

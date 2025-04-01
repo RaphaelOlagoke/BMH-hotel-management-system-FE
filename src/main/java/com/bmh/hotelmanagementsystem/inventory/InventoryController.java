@@ -159,8 +159,10 @@ public class InventoryController extends Controller {
     public void initialize() throws IOException {
         String[] credentials = TokenStorage.loadCredentials();
         String username = "";
+        String department = "";
         if (credentials != null) {
             username = credentials[0];
+            department = credentials[2];
         }
         user.setText("Hello " + username);
 
@@ -255,7 +257,13 @@ public class InventoryController extends Controller {
         officeCategory.setOnAction(event -> onCategorySelected(officeVBox, officeLabel, StockItemCategory.OFFICE_SUPPLIES));
         othersCategory.setOnAction(event -> onCategorySelected(othersVBox, othersLabel, StockItemCategory.OTHERS));
 
-        create.setOnAction(event -> create());
+        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN || LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS) {
+            create.setOnAction(event -> create());
+        }
+        else{
+            create.setDisable(true);
+            create.setVisible(false);
+        }
         search.setOnAction(event -> getStockItems(currentlySelectedCategory, page, pageSize));
         apply.setOnAction(event -> getStockItems(currentlySelectedCategory, page, pageSize));
         searchField.setOnKeyPressed(event -> {

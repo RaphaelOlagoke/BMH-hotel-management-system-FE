@@ -327,15 +327,15 @@ public class EmployeeLogController extends Controller {
                     });
                 }
                 else{
-                    loadingStage.close();
                     Platform.runLater(() -> {
+                        loadingStage.close();
                         Utils.showAlertDialog(Alert.AlertType.ERROR,apiResponse.getResponseHeader().getResponseMessage(),apiResponse.getError() );
                     });
                 }
 
             } catch (Exception e) {
-                loadingStage.close();
                 Platform.runLater(() -> {
+                    loadingStage.close();
                     System.out.println(e);
                     Utils.showGeneralErrorDialog();
                 });

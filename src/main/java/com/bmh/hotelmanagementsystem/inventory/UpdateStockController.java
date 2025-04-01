@@ -6,10 +6,12 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.MenuItem
 import com.bmh.hotelmanagementsystem.BackendService.entities.Restaurant.UpdateMenuItemRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.StockItem;
 import com.bmh.hotelmanagementsystem.BackendService.entities.inventory.UpdateStockItemRequest;
+import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.MenuItemType;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockActionReason;
 import com.bmh.hotelmanagementsystem.BackendService.enums.StockItemCategory;
 import com.bmh.hotelmanagementsystem.Controller;
+import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -64,6 +66,14 @@ public class UpdateStockController extends Controller {
     private Button update;
 
     public void initialize() {
+        String[] credentials = TokenStorage.loadCredentials();
+        String username = "";
+        String department = "";
+        if (credentials != null) {
+            username = credentials[0];
+            department = credentials[2];
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         expiration_datePicker.setConverter(new javafx.util.StringConverter<LocalDate>() {
             @Override
@@ -102,7 +112,15 @@ public class UpdateStockController extends Controller {
 
         reason_comboBox.setItems(reasons);
 
-        update.setOnAction(event -> updateStockItem());
+        if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN || LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS) {
+            update.setOnAction(event -> updateStockItem());
+        }
+        else{
+            update.setDisable(true);
+            update.setVisible(false);
+        }
+
+//        update.setOnAction(event -> updateStockItem());
     }
 
     public void updateStockItem(){

@@ -40,7 +40,7 @@ public class SideBarController {
         if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml"));
         }
-        else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+        else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml"));
         }
         else if(LoginDepartment.valueOf(department) == LoginDepartment.RESTAURANT_BAR){

@@ -61,6 +61,9 @@ public class UpdateEmployeeController extends Controller {
     @FXML
     private Button create;
 
+    @FXML
+    private Button resendLink;
+
 
     public void initialize() {
         ObservableList<String> roles = FXCollections.observableArrayList();
@@ -88,6 +91,9 @@ public class UpdateEmployeeController extends Controller {
         access_comboBox.setItems(accessLevels);
 
         create.setOnAction(event -> updateUser());
+        password.setDisable(true);
+        password.setVisible(false);
+        resendLink.setOnAction(event -> resendPasswordLink());
     }
 
     public void updateUser(){
@@ -144,12 +150,12 @@ public class UpdateEmployeeController extends Controller {
                     UpdateUserRequest request = new UpdateUserRequest();
                     request.setUsername(username.getText());
 
-                    if (password.getText() == null || password.getText().equals("")) {
-                        request.setNewPassword(null);
-                    }
-                    else{
-                        request.setNewPassword(password.getText());
-                    }
+//                    if (password.getText() == null || password.getText().equals("")) {
+//                        request.setNewPassword(null);
+//                    }
+//                    else{
+//                        request.setNewPassword(password.getText());
+//                    }
 
                     request.setOldEmail(this.data.getEmail());
                     request.setNewEmail(email.getText());
@@ -170,6 +176,63 @@ public class UpdateEmployeeController extends Controller {
                         Platform.runLater(() -> {
                             loadingStage.close();
                             Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Updated Successfully", "User Updated successfully");
+                            primaryStage.close();
+
+                        });
+                    } else {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, apiResponse.getResponseHeader().getResponseMessage(), apiResponse.getError());
+                        });
+
+                    }
+
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        loadingStage.close();
+                        e.printStackTrace();
+                        Utils.showGeneralErrorDialog();
+                    });
+                }
+            }).start();
+        }else {
+            confirmationAlert.close();
+        }
+
+    }
+
+
+    public void resendPasswordLink(){
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm action");
+        confirmationAlert.setHeaderText("Are you sure you want to send reset password link?");
+        confirmationAlert.setContentText("Please confirm your action.");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage loadingStage = Utils.showLoadingScreen(primaryStage);
+            Platform.runLater(() -> loadingStage.show());
+
+            new Thread(() -> {
+                try {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+
+                    User request = new User();
+                    request.setEmail( this.data.getEmail());
+
+                    String jsonString = objectMapper.writeValueAsString(request);
+
+
+                    String response = RestClient.post("/admin/send-reset-password-link", jsonString);
+                    ApiResponseSingleData<User> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<User>>() {
+                    });
+
+                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Utils.showAlertDialog(Alert.AlertType.INFORMATION, "Sent Successfully", "Password reset link sent successfully");
                             primaryStage.close();
 
                         });

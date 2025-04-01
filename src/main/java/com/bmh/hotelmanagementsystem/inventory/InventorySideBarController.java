@@ -34,7 +34,7 @@ public class InventorySideBarController {
         if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/room-management-view.fxml"));
         }
-        else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+        else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
             fxmlLoader = new FXMLLoader(BMHApplication.class.getResource("/com/bmh/hotelmanagementsystem/room/general-admin-room-management-view.fxml"));
         }
         else {

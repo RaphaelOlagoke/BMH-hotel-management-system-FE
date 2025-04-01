@@ -190,7 +190,7 @@
                         <Label fx:id="stockCategory" prefHeight="29.0" prefWidth="282.0" styleClass="title_text" stylesheets="@../css/styles.css" wrapText="true" />
                         <HBox alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="46.0" prefWidth="684.0">
                            <children>
-                              <Button fx:id="create" mnemonicParsing="false" prefHeight="46.0" prefWidth="91.0" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
+                              <Button fx:id="create" mnemonicParsing="false" styleClass="btn" stylesheets="@../css/styles.css" text="Create">
                                  <font>
                                     <Font size="15.0" />
                                  </font>

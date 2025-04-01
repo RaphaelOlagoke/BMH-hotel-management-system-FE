@@ -1,6 +1,5 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
-import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.RestClient;
 import com.bmh.hotelmanagementsystem.BackendService.entities.*;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.CheckIn;
@@ -18,7 +17,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -303,7 +301,7 @@ public class CheckInInvoiceController extends Controller {
                                 if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
                                     utils.switchScreen("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml", primaryStage);
                                 }
-                                else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+                                else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                                     utils.switchScreen("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml", primaryStage);
                                 }
                                 else if(LoginDepartment.valueOf(department) == LoginDepartment.RESTAURANT_BAR){

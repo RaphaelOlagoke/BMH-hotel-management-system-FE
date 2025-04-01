@@ -80,6 +80,9 @@ public class CreateEmployeeController extends Controller {
 
         access_comboBox.setItems(accessLevels);
 
+        password.setDisable(true);
+        password.setVisible(false);
+
         create.setOnAction(event -> createUser());
     }
 
@@ -133,17 +136,17 @@ public class CreateEmployeeController extends Controller {
                         });
                         return;
                     }
-                    if (password.getText() == null || password.getText().equals("")) {
-                        Platform.runLater(() -> {
-                            loadingStage.close();
-                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid request", "Password cannot be empty");
-                        });
-                        return;
-                    }
+//                    if (password.getText() == null || password.getText().equals("")) {
+//                        Platform.runLater(() -> {
+//                            loadingStage.close();
+//                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid request", "Password cannot be empty");
+//                        });
+//                        return;
+//                    }
 
                     User request = new User();
                     request.setUsername(username.getText());
-                    request.setPassword(password.getText());
+//                    request.setPassword(password.getText());
                     request.setEmail(email.getText());
                     request.setRole(role_comboBox.getSelectionModel().getSelectedItem());
                     request.setEnabled(enabled_comboBox.getSelectionModel().getSelectedItem());

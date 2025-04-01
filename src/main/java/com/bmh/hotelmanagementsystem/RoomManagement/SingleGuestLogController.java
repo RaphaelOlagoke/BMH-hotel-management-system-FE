@@ -1,23 +1,19 @@
 package com.bmh.hotelmanagementsystem.RoomManagement;
 
-import com.bmh.hotelmanagementsystem.BMHApplication;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogRoom;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.LoginDepartment;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.Controller;
-import com.bmh.hotelmanagementsystem.HouseKeeping.UpdateCleaningLogController;
 import com.bmh.hotelmanagementsystem.TokenStorage;
 import com.bmh.hotelmanagementsystem.Utils;
-import com.bmh.hotelmanagementsystem.dto.HouseKeeping.CleaningRow;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.Region;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -190,7 +186,7 @@ public class SingleGuestLogController extends Controller {
                 Utils utils = new Utils();
                 utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 Utils utils = new Utils();
                 utils.switchScreenWithGuestLog("/com/bmh/hotelmanagementsystem/invoice/invoice-view.fxml", primaryStage,guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
             }
@@ -225,7 +221,7 @@ public class SingleGuestLogController extends Controller {
             if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
                 controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 controller.setData(guestLog.getGuestLogRooms().get(0).getRoom(), "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
             }
             else {
@@ -266,7 +262,7 @@ public class SingleGuestLogController extends Controller {
             if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
                 controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
             }
             else {
@@ -308,7 +304,7 @@ public class SingleGuestLogController extends Controller {
             if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
                 controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 controller.setData(guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
             }
             else {
@@ -349,7 +345,7 @@ public class SingleGuestLogController extends Controller {
             if(LoginDepartment.valueOf(department) == LoginDepartment.SUPER_ADMIN){
                 controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml");
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 controller.setData(this.guestLog, "/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml");
             }
             else {
@@ -383,7 +379,7 @@ public class SingleGuestLogController extends Controller {
                 Utils utils = new Utils();
                 utils.switchScreen("/com/bmh/hotelmanagementsystem/room/admin-guest-logs-view.fxml", primaryStage);
             }
-            else if(LoginDepartment.valueOf(department) == LoginDepartment.ADMIN){
+            else if(LoginDepartment.valueOf(department) == LoginDepartment.ACCOUNTS || LoginDepartment.valueOf(department) == LoginDepartment.MANAGER){
                 Utils utils = new Utils();
                 utils.switchScreen("/com/bmh/hotelmanagementsystem/room/general-admin-guest-logs-view.fxml", primaryStage);
             }

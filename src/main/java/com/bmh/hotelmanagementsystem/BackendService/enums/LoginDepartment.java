@@ -4,7 +4,8 @@ public enum LoginDepartment {
 
     RECEPTIONIST,
     RESTAURANT_BAR,
-    ADMIN,
+    ACCOUNTS,
+    MANAGER,
     SUPER_ADMIN;
 
     public static LoginDepartment fromString(String value) {
