@@ -7,6 +7,8 @@ import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLog;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.GuestLogFilterRequest;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.RoomPrices;
 import com.bmh.hotelmanagementsystem.BackendService.entities.Room.RoomPricesSummary;
+import com.bmh.hotelmanagementsystem.BackendService.entities.hall.HallPrices;
+import com.bmh.hotelmanagementsystem.BackendService.entities.hall.HallPricesSummary;
 import com.bmh.hotelmanagementsystem.BackendService.enums.GuestLogStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.PaymentStatus;
 import com.bmh.hotelmanagementsystem.BackendService.enums.RoomType;
@@ -70,6 +72,15 @@ public class SettingsController extends Controller {
     private TextField classic_room_textfield;
 
 
+
+    @FXML
+    private TextField coference_room_textfield;
+    @FXML
+    private TextField meeting_hall_textfield;
+    @FXML
+    private TextField meeting_room_textfield;
+
+
     @FXML
     private TextField vat_price_textfield;
     @FXML
@@ -79,6 +90,10 @@ public class SettingsController extends Controller {
     @FXML
     private Button update;
 
+
+    @FXML
+    private Button updateHallPrices;
+
     @FXML
     private Button updateAdditionalPrices;
 
@@ -87,6 +102,7 @@ public class SettingsController extends Controller {
 
         update.setOnAction(event -> updatePrices());
         updateAdditionalPrices.setOnAction(event -> updateAdditionalPrices());
+        updateHallPrices.setOnAction(event -> updateHallPrices());
 
         Stage loadingStage = showLoadingScreen(primaryStage);
 
@@ -115,6 +131,36 @@ public class SettingsController extends Controller {
                         business_suite_b_textfield.setText(apiResponse.getData().getBusinessSuiteBPrice().toString());
                         executive_deluxe_textfield.setText(apiResponse.getData().getExecutiveDeluxePrice().toString());
 
+
+                    });
+                }
+
+            } catch (Exception e) {
+                Platform.runLater(() -> {
+                    System.out.println(e);
+//                    loadingStage.close();
+                    Utils.showGeneralErrorDialog();
+                });
+            }
+
+
+
+            try {
+                HallPrices hallPrices;
+
+                String response = RestClient.get("/hallPrices/all");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+
+                ApiResponseSingleData<HallPricesSummary> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<HallPricesSummary>>() {
+                });
+
+                if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                    Platform.runLater(() -> {
+//                        loadingStage.close();
+                        coference_room_textfield.setText(apiResponse.getData().getConferenceHallPrice().toString());
+                        meeting_hall_textfield.setText(apiResponse.getData().getMeetingHallPrice().toString());
+                        meeting_room_textfield.setText(apiResponse.getData().getMeetingRoomPrice().toString());
 
                     });
                 }
@@ -201,6 +247,70 @@ public class SettingsController extends Controller {
                     String jsonString = objectMapper.writeValueAsString(request);
 
                     String response = RestClient.post("/roomPrices/update", jsonString);
+
+                    ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
+                    });
+
+                    if (apiResponse.getResponseHeader().getResponseCode().equals("00")) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            initialize();
+                        });
+                    }
+
+                } catch (Exception e) {
+                    Platform.runLater(() -> {
+                        System.out.println(e);
+                        loadingStage.close();
+                        Utils.showGeneralErrorDialog();
+                    });
+                }
+            }).start();
+        }
+        else {
+            confirmationAlert.close();
+        }
+    }
+
+
+    public void updateHallPrices(){
+        Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmationAlert.setTitle("Confirm Action");
+        confirmationAlert.setHeaderText("Are you sure you want to update hall prices?");
+        confirmationAlert.setContentText("Please confirm your action.");
+
+        Optional<ButtonType> result = confirmationAlert.showAndWait();
+
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Stage loadingStage = showLoadingScreen(primaryStage);
+
+            Platform.runLater(() -> loadingStage.show());
+
+            new Thread(() -> {
+
+                try {
+                    HallPricesSummary request = new HallPricesSummary();
+                    try {
+                        request.setConferenceHallPrice(Double.valueOf(coference_room_textfield.getText()));
+                        request.setMeetingHallPrice(Double.valueOf(meeting_hall_textfield.getText()));
+                        request.setMeetingRoomPrice(Double.valueOf(meeting_room_textfield.getText()));
+
+
+                    } catch (Exception e) {
+                        Platform.runLater(() -> {
+                            loadingStage.close();
+                            Utils.showAlertDialog(Alert.AlertType.ERROR, "Invalid Request", "Invalid Price");
+                        });
+                        return;
+                    }
+
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    objectMapper.registerModule(new JavaTimeModule());
+
+                    String jsonString = objectMapper.writeValueAsString(request);
+
+                    String response = RestClient.post("/hallPrices/update", jsonString);
 
                     ApiResponseSingleData<?> apiResponse = objectMapper.readValue(response, new TypeReference<ApiResponseSingleData<?>>() {
                     });
